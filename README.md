@@ -11,13 +11,13 @@ You need to prepare the Salt directory and create certificates on the `certs/` f
 git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
 ln -s /srv/salt/pillar /srv/pillar
 
-
-curl -o cfssl https://pkg.cfssl.org/R1.2/cfssl_darwin-amd64
-curl -o cfssljson https://pkg.cfssl.org/R1.2/cfssljson_darwin-amd64
-chmod +x cfssl cfssljson
-sudo mv cfssl cfssljson /usr/local/bin/
+wget -q --show-progress --https-only --timestamping \
+  https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
+  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
+sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
+sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
-
 ### IMPORTANT Point
 You need to modify `certs/kubernetes-csr.json` and put every Nodes (Masters/Workers) of your cluster in the `hosts` field.
 You can use IP or Name (name is recommanded).
