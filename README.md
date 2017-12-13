@@ -6,15 +6,44 @@ A Saltstack recipe to deploy Kubernetes cluster.
 To prepare the deployment of the Kubernetes cluster, you need to create certificates on the `certs/` folder using `CFSSL tool`: 
 
 ```
-wget ...
+git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
+ln -s /srv/salt/pillar /srv/pillar
+
+curl -o cfssl https://pkg.cfssl.org/R1.2/cfssl_darwin-amd64
+curl -o cfssljson https://pkg.cfssl.org/R1.2/cfssljson_darwin-amd64
+chmod +x cfssl cfssljson
+sudo mv cfssl cfssljson /usr/local/bin/
+
+# You can modify certs/*json files to match your Country / Cluster Name (not mandatory)
+
+cd /srv/salt/certs 
+cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+
+cfssl gencert \
+  -ca=ca.pem \
+  -ca-key=ca-key.pem \
+  -config=ca-config.json \
+  -profile=kubernetes \
+  kubernetes-csr.json | cfssljson -bare kubernetes
 
 ```
-
 After that, you need to tweak the `pillar/cluster_config.sls` to adapt version / configuration of Kubernetes : 
 
 ```
-
-
+k8s:
+  apiServerHost: k8s-master.domain.tld 
+  kubernetesVersion: v1.8.5
+  etcdVersion: v3.11.1
+  calicoCniVersin: 
+  cniVersion: 
+  dockerVersion: 
+  kubeletToken:
+  adminToken: 
+  calicoToken:
+  clusterDomain: cluster.local
+  clusterIpRange: 10.32.0.0/16
+  podsIpRange: 192.160.0.0/16
+  enableIPv6: True
 ```
 
 
