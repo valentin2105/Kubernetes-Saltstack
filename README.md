@@ -37,21 +37,20 @@ cfssl gencert \
 ```
 After that, you need to tweak the `pillar/cluster_config.sls` to adapt version / configuration of Kubernetes : 
 
-```
+``
 k8s:
   apiServerHost: k8s-master.domain.tld 
   kubernetesVersion: v1.8.5
-  etcdVersion: v3.11.1
-  calicoCniVersin: 
-  cniVersion: 
-  dockerVersion: 
-  kubeletToken:
-  adminToken: 
-  calicoToken:
+  etcdVersion: v3.2.11
+  calicoCniVersion: v1.11.1
+  cniVersion: v0.6.0
+  dockerVersion: 17.09.0-ce
   clusterDomain: cluster.local
   clusterIpRange: 10.32.0.0/16
   podsIpRange: 192.160.0.0/16
-  enableIPv6: True
+  kubeletToken: ch@nG3mee
+  adminToken: ch@nG3mee
+  calicoToken: ch@nG3mee
 ```
 
 ## II - Deployment
