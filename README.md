@@ -3,19 +3,27 @@ A Saltstack recipe to deploy Kubernetes cluster.
 
 ## I - Preparation
 
-To prepare the deployment of the Kubernetes cluster, you need to create certificates on the `certs/` folder using `CFSSL tool`: 
+To prepare the deployment of the Kubernetes cluster, 
+
+You need to prepare the Salt directory and create certificates on the `certs/` folder using `CFSSL tool`: 
 
 ```
 git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
 ln -s /srv/salt/pillar /srv/pillar
 
+
 curl -o cfssl https://pkg.cfssl.org/R1.2/cfssl_darwin-amd64
 curl -o cfssljson https://pkg.cfssl.org/R1.2/cfssljson_darwin-amd64
 chmod +x cfssl cfssljson
 sudo mv cfssl cfssljson /usr/local/bin/
+```
 
-# You can modify certs/*json files to match your Country / Cluster Name (not mandatory)
+### IMPORTANT Point
+You need to modify `certs/kubernetes-csr.json` and put every Nodes (Masters/Workers) of your cluster in the `Hosts` field.
+You can use IP or Name (name is recommanded).
+You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
 
+```
 cd /srv/salt/certs 
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
@@ -46,7 +54,6 @@ k8s:
   enableIPv6: True
 ```
 
-
 ## II - Deployment
 
 To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. 
@@ -60,9 +67,11 @@ The Kubernetes Master can also be the Salt Master if you want a small number of 
 
 The Minion's roles are matched with Salt Grains, so you need to apply theses grains on your servers : 
 
-`echo "role: k8s-master" >> /etc/salt/grains (on Kubernetes master)`
+```
+echo "role: k8s-master" >> /etc/salt/grains (on Kubernetes master)
 
-`echo "role: k8s-worker" >> /etc/salt/grains (on Kubernetes workers)`
+echo "role: k8s-worker" >> /etc/salt/grains (on Kubernetes workers)
+```
 
 
 After that, you can apply your configuration on your minions :
