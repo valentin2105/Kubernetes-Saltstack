@@ -37,7 +37,7 @@ cfssl gencert \
 ```
 After that, you need to tweak the `pillar/cluster_config.sls` to adapt version / configuration of Kubernetes : 
 
-``
+```
 k8s:
   apiServerHost: k8s-master.domain.tld 
   kubernetesVersion: v1.8.5
@@ -62,7 +62,9 @@ The Kubernetes Master can also be the Salt Master if you want a small number of 
 #### The recommanded configuration is : 
 
 - a Salt-Master
+
 - a Kubernetes-Master (also Salt-minion)
+
 - one or more Kubernetes-Workers (also Salt-minion)
 
 The Minion's roles are matched with Salt Grains, so you need to apply theses grains on your servers : 
