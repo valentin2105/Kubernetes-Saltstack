@@ -1,5 +1,5 @@
 # Kubernetes-Saltstack
-A Saltstack recipe to deploy Kubernetes cluster. 
+Saltstack recipe to deploy Kubernetes cluster from scratch. 
 
 ## I - Preparation
 
@@ -19,7 +19,7 @@ sudo mv cfssl cfssljson /usr/local/bin/
 ```
 
 ### IMPORTANT Point
-You need to modify `certs/kubernetes-csr.json` and put every Nodes (Masters/Workers) of your cluster in the `Hosts` field.
+You need to modify `certs/kubernetes-csr.json` and put every Nodes (Masters/Workers) of your cluster in the `hosts` field.
 You can use IP or Name (name is recommanded).
 You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
 
@@ -57,11 +57,12 @@ k8s:
 ## II - Deployment
 
 To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. 
+
 The Kubernetes Master can also be the Salt Master if you want a small number of servers. 
 
 #### The recommanded configuration is : 
 
-- a Salt-Master VM
+- a Salt-Master
 - a Kubernetes-Master (also Salt-minion)
 - one or more Kubernetes-Workers (also Salt-minion)
 
@@ -85,3 +86,7 @@ salt -G 'roles:k8s-worker' state.highstate
 
 ```
 
+## III - Good to know
+
+- Kubernetes-master H/A will be available soon (need some tests).
+- You can easily upgrade your cluster by changing values in `pillar/cluster_config.sls` and apply a `salt '*' state.highstate`.
