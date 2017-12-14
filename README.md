@@ -14,12 +14,13 @@ ln -s /srv/salt/pillar /srv/pillar
 wget -q --show-progress --https-only --timestamping \
   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
   https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+
 chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
 sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
-### IMPORTANT Point
+##### IMPORTANT Point
 You need to modify `certs/kubernetes-csr.json` and put every Nodes (Masters/Workers) of your cluster in the `hosts` field.
 You can use IP or Hostname (name is recommended).
 
@@ -35,7 +36,6 @@ cfssl gencert \
   -config=ca-config.json \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
-
 ```
 After that, You need to tweak the `pillar/cluster_config.sls` to adapt version / config of Kubernetes :
 
@@ -57,7 +57,7 @@ k8s:
   calicoToken: ch@nG3mee
   kubeletToken: ch@nG3mee
 ```
-(don't forget the change tokens using tool like `pwgen`)
+(don't forget to change tokens using command like `pwgen 128 3`)
 
 ## II - Deployment
 
@@ -67,13 +67,13 @@ The Kubernetes Master can also be the Salt Master if you want decrease the numbe
 
 #### The recommended configuration is :
 
-- a Salt-Master
+- one Salt-Master
 
-- a Kubernetes-Master (also Salt-minion)
+- one Kubernetes-Master (also Salt-minion)
 
 - one or more Kubernetes-Workers (also Salt-minion)
 
-The Minion's roles are matched with Salt Grains, so you need to apply theses grains on your servers :
+The Minion's roles are matched with `Salt Grains`, so you need to define theses grains on your servers :
 
 ```
 # Kubernetes Master
@@ -97,4 +97,10 @@ salt -G 'role:k8s-worker' state.highstate
 ## III - Good to know
 
 - Kubernetes-master H/A will be available soon (need some tests).
+- It work and created to work on Debian / Ubuntu distribution. (PR welcome for Fedora/RedHat support).
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `salt '*' state.highstate`.
+- This configuration use ECDSA certificates (you can switch to `rsa` if needed).
+- This configuration use Calico as CNI-Provider and Policy-Controller.
+
+
+
