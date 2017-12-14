@@ -125,5 +125,5 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
 - If you add a node, just add his hostname is the `kubernetes-csr.json` file, relaunch last cfssl command and apply a `state.highstate`
 - This configuration use Calico as CNI-Provider and Policy-Controller and lauch Calico Node on all workers to share IP routes using BGP.
-- You can tweak IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number (...)
+- You can tweak IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
 
