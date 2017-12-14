@@ -64,7 +64,7 @@ k8s:
 
 To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. You can use Salt-Bootstrap to enhance the process. 
 
-The configuration is done to use the Kubernetes Master as the Salt Master too, but you can separate them if needed (the `post_install/script.sh` requiere `kubectl` and acces to the `pillar` file.
+The configuration is done to use the Salt-Master as the Kubernetes-Master too but you can separate them if needed (the `post_install/script.sh` requiere `kubectl` and access to the `pillar` files).
 
 #### The recommended configuration is :
 
