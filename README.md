@@ -19,7 +19,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
 ##### IMPORTANT Point
-You need to add every Hostnames of the Kubernetes cluster (Master & Workers) in the  `certs/kubernetes-csr.json` file (`hosts` field).  
+You need to add **every Hostnames off the Kubernetes cluster** (Master & Workers) in the  `certs/kubernetes-csr.json` (`hosts` field).  
 
 You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
 
@@ -121,8 +121,9 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 
 - Kubernetes-master H/A will be available soon (need some tests).
 - It work and created for Debian / Ubuntu distributions. (PR welcome for Fedora/RedHat support).
-- You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `salt '*' state.highstate`.
+- You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
+- If you add a node, just add his hostname is the `kubernetes-csr.json` file, relaunch last cfssl command and apply a `state.highstate`
 - This configuration use Calico as CNI-Provider and Policy-Controller and lauch Calico Node on all workers to share IP routes using BGP.
 - You can tweak IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number (...)
 
