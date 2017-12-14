@@ -77,7 +77,7 @@ The Minion's roles are matched with `Salt Grains`, so you need to define theses 
 echo "role: k8s-master" >> /etc/salt/grains
 
 # Kubernetes Workers
-echo "role: k8s-worker" >> /etc/salt/grains (on Kubernetes workers)
+echo "role: k8s-worker" >> /etc/salt/grains 
 ```
 
 The master can also be a Kubernetes worker like that  (`/etc/salt/grains`) :
