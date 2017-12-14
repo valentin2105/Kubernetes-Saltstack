@@ -41,7 +41,7 @@ After that, You need to tweak the `pillar/cluster_config.sls` to adapt version /
 
 ```
 k8s:
-  apiServerHost: k8s-master.domain.tld
+  apiServerHost: k8s-master.domain.tld 
   clusterDomain: cluster.local
   kubernetesVersion: v1.8.5
   etcdVersion: v3.2.11
@@ -51,13 +51,17 @@ k8s:
   calicoctlVersion: v1.3.0
   calicoNodeVersion: v2.6.3
   clusterIpRange: 10.32.0.0/16
-  podsIpRange: 192.160.0.0/16
+  podsIPv4Range: 192.160.0.0/16
   enableIPv6: true
+  enableIPv6NAT: true
+  podsIPv6Range: fd80:24e2:f998:72d6::/64
+  enableIPinIP: always
+  calicoASnumber: 64512
   adminToken: ch@nG3mee
   calicoToken: ch@nG3mee
   kubeletToken: ch@nG3mee
 ```
-(don't forget to change tokens using command like `pwgen 128 3`)
+(don't forget to change Tokens using command like `pwgen 128 3` !!)
 
 ## II - Deployment
 
@@ -67,11 +71,10 @@ The Kubernetes Master can also be the Salt Master if you want decrease the numbe
 
 #### The recommended configuration is :
 
-- one Salt-Master
-
-- one Kubernetes-Master (also Salt-minion)
+- one Kubernetes-Master (also Salt-Master)
 
 - one or more Kubernetes-Workers (also Salt-minion)
+
 
 The Minion's roles are matched with `Salt Grains`, so you need to define theses grains on your servers :
 
@@ -83,7 +86,15 @@ echo "role: k8s-master" >> /etc/salt/grains
 echo "role: k8s-worker" >> /etc/salt/grains (on Kubernetes workers)
 ```
 
-After that, you can apply your configuration on your minions :
+The master can also be a Kubernetes Node like that  (`/etc/salt/grains`) :
+
+```
+role:
+  - k8s-master
+  - k8s-worker
+```
+
+After that, you can apply your configuration (`highstate`) on Minions :
 
 ```
 # Apply kubernetes Master
@@ -94,7 +105,7 @@ salt -G 'role:k8s-worker' state.highstate
 
 ```
 
-To finish and add some add-ons on the Kubernetes cluster, you can launch the `post_install/` script :
+To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
 
 ```
 /srv/salt/post_install/setup.sh
@@ -103,10 +114,10 @@ To finish and add some add-ons on the Kubernetes cluster, you can launch the `po
 ## III - Good to know
 
 - Kubernetes-master H/A will be available soon (need some tests).
-- It work and created to work on Debian / Ubuntu distribution. (PR welcome for Fedora/RedHat support).
+- It work and created for Debian / Ubuntu distributions. (PR welcome for Fedora/RedHat support).
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `salt '*' state.highstate`.
-- This configuration use ECDSA certificates (you can switch to `rsa` if needed).
-- This configuration use Calico as CNI-Provider and Policy-Controller.
+- This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
+- This configuration use Calico as CNI-Provider and Policy-Controller and lauch Calico Node on each worker to share route using BGP (`AS number` is tweakable).
 
 
 
