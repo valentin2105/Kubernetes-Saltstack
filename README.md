@@ -35,22 +35,25 @@ cfssl gencert \
   kubernetes-csr.json | cfssljson -bare kubernetes
 
 ```
-After that, you need to tweak the `pillar/cluster_config.sls` to adapt version / configuration of Kubernetes : 
+After that, can tweak the `pillar/cluster_config.sls` to adapt version / configuration of Kubernetes  (you need to change the 3 tokens using tool like `pwgen`) : 
 
 ```
 k8s:
   apiServerHost: k8s-master.domain.tld 
+  clusterDomain: cluster.local
   kubernetesVersion: v1.8.5
   etcdVersion: v3.2.11
-  calicoCniVersion: v1.11.1
   cniVersion: v0.6.0
   dockerVersion: 17.09.0-ce
-  clusterDomain: cluster.local
+  calicoCniVersion: v1.11.1
+  calicoctlVersion: v1.3.0
+  calicoNodeVersion: v2.6.3
   clusterIpRange: 10.32.0.0/16
   podsIpRange: 192.160.0.0/16
-  kubeletToken: ch@nG3mee
+  enableIPv6: true
   adminToken: ch@nG3mee
   calicoToken: ch@nG3mee
+  kubeletToken: ch@nG3mee
 ```
 
 ## II - Deployment
@@ -80,10 +83,10 @@ After that, you can apply your configuration on your minions :
 
 ```
 # Install Master
-salt -G 'roles:k8s-master' state.highstate
+salt -G 'role:k8s-master' state.highstate
 
 # Install Worker
-salt -G 'roles:k8s-worker' state.highstate
+salt -G 'role:k8s-worker' state.highstate
 
 ```
 
