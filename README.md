@@ -3,9 +3,7 @@ Saltstack recipe to deploy Kubernetes cluster from scratch.
 
 ## I - Preparation
 
-To prepare the deployment of the Kubernetes cluster,
-
-You need to clone the git repo and create certificates on the `certs/` folder using `CfSSL tools`:
+Let's clone the git repo on a Salt-Master and create certificates on the `certs/` folder using `CfSSL tools`:
 
 ```
 git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
