@@ -18,9 +18,11 @@ chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
 sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
+
 ### IMPORTANT Point
 You need to modify `certs/kubernetes-csr.json` and put every Nodes (Masters/Workers) of your cluster in the `hosts` field.
 You can use IP or Name (name is recommanded).
+
 You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
 
 ```
@@ -35,7 +37,7 @@ cfssl gencert \
   kubernetes-csr.json | cfssljson -bare kubernetes
 
 ```
-After that, can tweak the `pillar/cluster_config.sls` to adapt version / configuration of Kubernetes  (you need to change the 3 tokens using tool like `pwgen`) : 
+After that, can tweak the `pillar/cluster_config.sls` to adapt version / config / tokens of Kubernetes :
 
 ```
 k8s:
@@ -55,7 +57,7 @@ k8s:
   calicoToken: ch@nG3mee
   kubeletToken: ch@nG3mee
 ```
-
+(don't forget the change tokens using tool like `pwgen`)
 ## II - Deployment
 
 To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. 
