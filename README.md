@@ -94,6 +94,12 @@ salt -G 'role:k8s-worker' state.highstate
 
 ```
 
+To finish and add some add-ons on the Kubernetes cluster, you can launch the `post_install/` script :
+
+```
+/srv/salt/post_install/setup.sh
+```
+
 ## III - Good to know
 
 - Kubernetes-master H/A will be available soon (need some tests).
