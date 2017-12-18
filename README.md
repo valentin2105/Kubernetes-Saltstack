@@ -6,31 +6,31 @@ Saltstack recipe to deploy Kubernetes cluster from scratch.
 Let's clone the git repo on a Salt-Master and create certificates on the `certs/` folder using `CfSSL tools`:
 
 ```
-git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
-ln -s /srv/salt/pillar /srv/pillar
+~# git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
+~# ln -s /srv/salt/pillar /srv/pillar
 
-wget -q --show-progress --https-only --timestamping \
-  https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
-  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+~# wget -q --show-progress --https-only --timestamping \
+     https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
+     https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 
-chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
-sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
-sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
+~# chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
+~# sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
+~# sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
 ##### IMPORTANT Point
 You need to add **every Hostnames of the Kubernetes cluster** (Master & Workers) in the  `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
 
 ```
-cd /srv/salt/certs
-cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+~# cd /srv/salt/certs
+~# cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
-cfssl gencert \
-  -ca=ca.pem \
-  -ca-key=ca-key.pem \
-  -config=ca-config.json \
-  -profile=kubernetes \
-  kubernetes-csr.json | cfssljson -bare kubernetes
+~# cfssl gencert \
+    -ca=ca.pem \
+    -ca-key=ca-key.pem \
+    -config=ca-config.json \
+    -profile=kubernetes \
+    kubernetes-csr.json | cfssljson -bare kubernetes
 ```
 After that, You need to tweak the `pillar/cluster_config.sls` to adapt version / config of Kubernetes :
 
@@ -58,7 +58,7 @@ k8s:
 ```
 ##### Don't forget to change Tokens using command like `pwgen 64` !
 
-If your hosts doesn't have IPv6, you need to change `enableIPv6` to false. 
+If you want to enable IPv6 on pod's side, you need to change `enableIPv6` to `true`. 
 
 ## II - Deployment
 
@@ -76,18 +76,17 @@ The Minion's roles are matched with `Salt Grains`, so you need to define theses 
 
 ```
 # Kubernetes Master
-echo "role: k8s-master" >> /etc/salt/grains
-
-# Kubernetes Workers
-echo "role: k8s-worker" >> /etc/salt/grains 
-```
-
-The master can also be a Kubernetes worker like that  (`/etc/salt/grains`) :
-
-```
+~# cat << EOF > /etc/salt/grains
 role:
   - k8s-master
   - k8s-worker
+EOF
+
+# Kubernetes Workers
+~# cat << EOF > /etc/salt/grains
+role:
+  - k8s-worker
+EOF
 ```
 
 After that, you can apply your configuration (`highstate`) on Minions :
@@ -114,7 +113,7 @@ k8s-salt-worker01   Ready     <none>    7h        v1.8.5    <none>        Ubuntu
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
 
 ```
-/srv/salt/post_install/setup.sh
+~# /srv/salt/post_install/setup.sh
 
 ~# kubectl get pod --all-namespaces
 NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
