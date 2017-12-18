@@ -19,7 +19,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
 ##### IMPORTANT Point
-You need to add **every Hostnames off the Kubernetes cluster** (Master & Workers) in the  `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
+You need to add **every Hostnames of the Kubernetes cluster** (Master & Workers) in the  `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
 
 ```
 cd /srv/salt/certs
