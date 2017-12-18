@@ -92,7 +92,7 @@ After that, you can apply your configuration (`highstate`) on Minions :
 
 ```
 # Apply kubernetes Master
-~# salt -G 'role:k8s-master' state.highstate
+salt -G 'role:k8s-master' state.highstate
 
 ~# kubectl get componentstatuses
 NAME                 STATUS    MESSAGE              ERROR
@@ -101,7 +101,7 @@ controller-manager   Healthy   ok
 etcd-0               Healthy   {"health": "true"}
 
 # Apply Kubernetes worker
-~# salt -G 'role:k8s-worker' state.highstate
+salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE                       
@@ -112,7 +112,7 @@ k8s-salt-worker01   Ready     <none>    7h        v1.8.5    <none>        Ubuntu
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
 
 ```
-~# /srv/salt/post_install/setup.sh
+/srv/salt/post_install/setup.sh
 
 ~# kubectl get pod --all-namespaces
 NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
