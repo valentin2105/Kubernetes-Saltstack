@@ -58,11 +58,13 @@ k8s:
 ```
 ##### Don't forget to change Tokens using command like `pwgen 64` !
 
+If your hosts doesn't have IPv6, you need to change `enableIPv6` to false. 
+
 ## II - Deployment
 
-To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. You can use Salt-Bootstrap to enhance the process. 
+To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) to enhance the process. 
 
-The configuration is done to use the Salt-Master as the Kubernetes-Master too but you can separate them if needed (the `post_install/script.sh` requiere `kubectl` and access to the `pillar` files).
+The configuration is done to use the Salt-Master as the Kubernetes-Master but you can separate them if needed (the `post_install/script.sh` requiere `kubectl` and access to the `pillar` files).
 
 #### The recommended configuration is :
 
@@ -92,18 +94,18 @@ After that, you can apply your configuration (`highstate`) on Minions :
 
 ```
 # Apply kubernetes Master
-salt -G 'role:k8s-master' state.highstate
+~# salt -G 'role:k8s-master' state.highstate
 
-$ - kubectl get componentstatuses
+~# kubectl get componentstatuses
 NAME                 STATUS    MESSAGE              ERROR
 scheduler            Healthy   ok
 controller-manager   Healthy   ok
 etcd-0               Healthy   {"health": "true"}
 
 # Apply Kubernetes worker
-salt -G 'role:k8s-worker' state.highstate
+~# salt -G 'role:k8s-worker' state.highstate
 
-$ - kubectl get nodes
+~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE                       
 k8s-salt-master     Ready     <none>    10h       v1.8.5    <none>        Debian GNU/Linux 9 (stretch) 
 k8s-salt-worker01   Ready     <none>    7h        v1.8.5    <none>        Ubuntu 16.04.3 LTS 
@@ -113,6 +115,13 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 
 ```
 /srv/salt/post_install/setup.sh
+
+~# kubectl get pod --all-namespaces
+NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
+kube-system   calico-policy-fcc5cb8ff-tfm7v           1/1       Running   0          10m
+kube-system   kube-dns-d44664bbd-596tr                3/3       Running   0          10m
+kube-system   kube-dns-d44664bbd-h8h6m                3/3       Running   0          10m
+kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0          10m
 ```
 
 ## III - Good to know
@@ -124,4 +133,3 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 - If you add a node, just add the hostname in `kubernetes-csr.json` , relaunch the last `cfssl` command and apply a `state.highstate`
 - This configuration use Calico as CNI-Provider, Policy-Controller and lauch Calico Node on all workers to share IP routes using BGP.
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
-
