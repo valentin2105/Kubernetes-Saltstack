@@ -5,31 +5,31 @@
 Let's clone the git repo on a Salt-Master and create certificates on the `certs/` folder using `CfSSL tools`:
 
 ```
-~# git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
-~# ln -s /srv/salt/pillar /srv/pillar
+git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
+ln -s /srv/salt/pillar /srv/pillar
 
-~# wget -q --show-progress --https-only --timestamping \
-     https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
-     https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+wget -q --show-progress --https-only --timestamping \
+   https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 \
+   https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 
-~# chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
-~# sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
-~# sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
+chmod +x cfssl_linux-amd64 cfssljson_linux-amd64
+sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
+sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
 ##### IMPORTANT Point
 You need to add **every Hostnames of the Kubernetes cluster** (Master & Workers) in the  `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
 
 ```
-~# cd /srv/salt/certs
-~# cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+cd /srv/salt/certs
+cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
-~# cfssl gencert \
-    -ca=ca.pem \
-    -ca-key=ca-key.pem \
-    -config=ca-config.json \
-    -profile=kubernetes \
-    kubernetes-csr.json | cfssljson -bare kubernetes
+cfssl gencert \
+  -ca=ca.pem \
+  -ca-key=ca-key.pem \
+  -config=ca-config.json \
+  -profile=kubernetes \
+  kubernetes-csr.json | cfssljson -bare kubernetes
 ```
 After that, You need to tweak the `pillar/cluster_config.sls` to adapt version / config of Kubernetes :
 
@@ -75,14 +75,14 @@ The Minion's roles are matched with `Salt Grains`, so you need to define theses 
 
 ```
 # Kubernetes Master
-~# cat << EOF > /etc/salt/grains
+cat << EOF > /etc/salt/grains
 role:
   - k8s-master
-  - k8s-worker
+  - k8s-worker 
 EOF
 
 # Kubernetes Workers
-~# cat << EOF > /etc/salt/grains
+cat << EOF > /etc/salt/grains
 role:
   - k8s-worker
 EOF
