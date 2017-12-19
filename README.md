@@ -1,4 +1,4 @@
-![banner](https://i.imgur.com/SJAtDZk.png)
+![banner](https://i.imgur.com/SJAtDZk.png){:height="600px" width="180px"}
 
 ## I - Preparation
 
