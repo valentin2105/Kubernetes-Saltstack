@@ -1,6 +1,6 @@
 <a href="url"><img src="https://i.imgur.com/SJAtDZk.png" width="600" height="180" ></a>
 
-This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu servers**. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script for install **few Kubernetes add-ons** (DNS, Dashboard, Helm, kube-controller). Using this configuration, you can easily **scale new workers** in minutes and allow **simple upgrades** of Kubernetes. 
+This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu servers**. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script for install **few Kubernetes add-ons** (DNS, Dashboard, Helm, kube-controller). Using this configuration, you can easily **scale new workers** in minutes and **effortlessly manage** Kubernetes nodes. 
 
 Master H/A will come soon with other exciting features.  
 
