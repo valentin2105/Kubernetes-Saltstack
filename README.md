@@ -46,7 +46,7 @@ k8s:
   calicoNodeVersion: v2.6.3
   helmVersion: v2.7.2
   clusterIpRange: 10.32.0.0/16
-  podsIPv4Range: 192.160.0.0/16
+  podsIPv4Range: 192.168.0.0/16
   enableIPv6: true
   enableIPv6NAT: true
   podsIPv6Range: fd80:24e2:f998:72d6::/64
