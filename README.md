@@ -5,7 +5,7 @@ Using this configuration, you can easily **scale new workers** in minutes and **
 
 ## I - Preparation
 
-Let's clone the git repo on a Salt-Master and create certificates on the `certs/` folder using `CfSSL tools`:
+Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using `CfSSL tools`:
 
 ```
 git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
@@ -22,7 +22,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 
 ##### IMPORTANT Point
 Because you generate our own CA and Certificates for your cluster, You need to put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (it's mandatory)  
-You can use public names (DNS) or private names (after add them on Master's `/etc/hosts`).
+You can use public names (DNS) or private names (after adding them on Master's `/etc/hosts`).
 
 ```
 cd /srv/salt/certs
@@ -88,11 +88,7 @@ role:
 EOF
 
 # Kubernetes Workers
-
-cat << EOF > /etc/salt/grains
-role:
-  - k8s-worker
-EOF
+echo "role: k8s-worker" > /etc/salt/grains
 ```
 
 After that, you can apply your configuration (`highstate`) on Minions :
@@ -112,8 +108,8 @@ salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE                       
-k8s-salt-master     Ready     <none>    10h       v1.8.5    <none>        Debian GNU/Linux 9 (stretch) 
-k8s-salt-worker01   Ready     <none>    7h        v1.8.5    <none>        Ubuntu 16.04.3 LTS 
+k8s-salt-master     Ready     <none>     5m       v1.8.5    <none>        Debian GNU/Linux 9 (stretch) 
+k8s-salt-worker01   Ready     <none>     5m       v1.8.5    <none>        Ubuntu 16.04.3 LTS 
 ```
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
@@ -123,10 +119,11 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 
 ~# kubectl get pod --all-namespaces
 NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
-kube-system   calico-policy-fcc5cb8ff-tfm7v           1/1       Running   0          10m
-kube-system   kube-dns-d44664bbd-596tr                3/3       Running   0          10m
-kube-system   kube-dns-d44664bbd-h8h6m                3/3       Running   0          10m
-kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0          10m
+kube-system   calico-policy-fcc5cb8ff-tfm7v           1/1       Running   0          1m
+kube-system   kube-dns-d44664bbd-596tr                3/3       Running   0          1m
+kube-system   kube-dns-d44664bbd-h8h6m                3/3       Running   0          1m
+kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0          1m
+kube-system   tiller-deploy-546cf9696c-hjdbm          1/1       Running   0          1m
 ```
 
 ## III - Good to know
@@ -144,7 +141,7 @@ cfssl gencert \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
 
-After that, lauch a `highstate` to reload your Kubernetes Master and configure automaticly your new Worker.
+After that, just lauch a `highstate` to reload your Kubernetes Master and configure automaticly new Workers.
 
 - Kubernetes-master H/A will be available soon (need some tests).
 - It work and created for Debian / Ubuntu distributions. (PR welcome for Fedora/RedHat support).
@@ -154,3 +151,4 @@ After that, lauch a `highstate` to reload your Kubernetes Master and configure a
 - If you add a node, just add the hostname in `kubernetes-csr.json` , relaunch the last `cfssl` command and apply a `state.highstate`
 - This configuration use Calico as CNI-Provider, Policy-Controller and lauch Calico Node on all workers to share IP routes using BGP.
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
+- If you use `salt-ssh` or `salt-cloud` you can easily scale new workers.
