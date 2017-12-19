@@ -44,6 +44,7 @@ k8s:
   calicoCniVersion: v1.11.1
   calicoctlVersion: v1.3.0
   calicoNodeVersion: v2.6.3
+  helmVersion: v2.7.2
   clusterIpRange: 10.32.0.0/16
   podsIPv4Range: 192.160.0.0/16
   enableIPv6: true
@@ -75,13 +76,15 @@ The Minion's roles are matched with `Salt Grains`, so you need to define theses 
 
 ```
 # Kubernetes Master
+
 cat << EOF > /etc/salt/grains
 role:
   - k8s-master
-  - k8s-worker 
+  - k8s-worker  # If you want a Master/Worker node. 
 EOF
 
 # Kubernetes Workers
+
 cat << EOF > /etc/salt/grains
 role:
   - k8s-worker
@@ -126,6 +129,7 @@ kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0     
 
 - Kubernetes-master H/A will be available soon (need some tests).
 - It work and created for Debian / Ubuntu distributions. (PR welcome for Fedora/RedHat support).
+- The post_install script install Calico, Kube-DNS, Kubernetes Dashboard and Helm in your cluster. 
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
 - If you add a node, just add the hostname in `kubernetes-csr.json` , relaunch the last `cfssl` command and apply a `state.highstate`
