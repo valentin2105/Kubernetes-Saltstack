@@ -1,4 +1,4 @@
-<a href="url"><img src="https://i.imgur.com/SJAtDZk.png" align="left" height="600" width="180" ></a>
+<a href="url"><img src="https://i.imgur.com/SJAtDZk.png" width="600" height="180" ></a>
 
 
 ## I - Preparation
