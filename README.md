@@ -1,8 +1,8 @@
 <a href="url"><img src="https://i.imgur.com/SJAtDZk.png" width="600" height="180" ></a>
 
-This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu servers**. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script for install **few Kubernetes add-ons** (DNS, Dashboard, Helm, kube-controller). Using this configuration, you can easily **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster. 
+This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script for install **few Kubernetes add-ons** (DNS, Dashboard, Helm, kube-controller). Using this configuration, you can easily **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster. 
 
-Master H/A will come soon with other exciting features.  
+Master H/A will come soon with new exciting features.  
 
 ## I - Preparation
 
@@ -22,7 +22,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
 ##### IMPORTANT Point
-You need to add **every Hostnames of the Kubernetes cluster** (Master & Workers) in the  `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (mandatory)
+You need to pud **every Hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (it's mandatory)
 
 ```
 cd /srv/salt/certs
@@ -54,8 +54,8 @@ k8s:
   enableIPv6: true
   enableIPv6NAT: true
   podsIPv6Range: fd80:24e2:f998:72d6::/64
-  enableIPinIP: always
   calicoASnumber: 64512
+  enableIPinIP: always
   adminToken: ch@nG3mee
   calicoToken: ch@nG3mee
   kubeletToken: ch@nG3mee
@@ -130,6 +130,21 @@ kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0     
 ```
 
 ## III - Good to know
+
+If you want to add a node on your Kubernetes cluster, just add his Hostname on `kubernetes-csr.json` and run theses commands :
+
+```
+cd /srv/salt/certs
+
+cfssl gencert \
+  -ca=ca.pem \
+  -ca-key=ca-key.pem \
+  -config=ca-config.json \
+  -profile=kubernetes \
+  kubernetes-csr.json | cfssljson -bare kubernetes
+```
+
+After that, lauch a `highstate` to reload your Kubernetes Master and configure automaticly your new Worker.
 
 - Kubernetes-master H/A will be available soon (need some tests).
 - It work and created for Debian / Ubuntu distributions. (PR welcome for Fedora/RedHat support).
