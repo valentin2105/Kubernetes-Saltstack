@@ -152,6 +152,6 @@ After that, just lauch a `highstate` to reload your Kubernetes Master and config
 - This configuration use Calico as CNI-Provider, Policy-Controller and lauch Calico Node on all workers to share IP routes using BGP.
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
 - If you use `salt-ssh` or `salt-cloud` you can easily scale new workers.
-
+- Kubernetes v1.9.x will be available soon.
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
