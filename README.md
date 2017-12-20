@@ -143,14 +143,11 @@ cfssl gencert \
 
 After that, just lauch a `highstate` to reload your Kubernetes Master and configure automaticly new Workers.
 
-- Kubernetes-master H/A will be available soon (need some tests).
 - It work and created for Debian / Ubuntu distributions. (PR welcome for Fedora/RedHat support).
 - The post_install script install Calico, Kube-DNS, Kubernetes Dashboard and Helm in your cluster. 
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
-- If you add a node, just add the hostname in `kubernetes-csr.json` , relaunch the last `cfssl` command and apply a `state.highstate`
-- This configuration use Calico as CNI-Provider, Policy-Controller and lauch Calico Node on all workers to share IP routes using BGP.
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
 - If you use `salt-ssh` or `salt-cloud` you can easily scale new workers.
+- Kubernetes-master H/A will be available soon (need some tests).
 - Kubernetes v1.9.x will be available soon.
-
