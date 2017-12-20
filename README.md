@@ -1,4 +1,4 @@
-<a href="url"><img src="https://i.imgur.com/SJAtDZk.png" width="560" height="160" ></a>
+<img src="https://i.imgur.com/SJAtDZk.png" width="560" height="160" >
 
 This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script for install **few Kubernetes add-ons** (DNS, Dashboard, Helm, kube-controller).  
 Using this configuration, you can easily **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
@@ -155,3 +155,4 @@ After that, just lauch a `highstate` to reload your Kubernetes Master and config
 - Kubernetes v1.9.x will be available soon.
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) 
+<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" width="560" height="160" align="center" >
