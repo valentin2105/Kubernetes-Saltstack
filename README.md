@@ -44,7 +44,7 @@ k8s:
   kubernetesVersion: v1.8.5
   etcdVersion: v3.2.11
   cniVersion: v0.6.0
-  dockerVersion: 17.09.0-ce
+  dockerVersion: 17.09.1-ce
   calicoCniVersion: v1.11.1
   calicoctlVersion: v1.3.0
   calicoNodeVersion: v2.6.3
