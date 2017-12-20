@@ -20,7 +20,7 @@ sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
-##### IMPORTANT Point
+### IMPORTANT Point
 Because you generate our own CA and Certificates for your cluster, You need to put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (it's mandatory)  
 You can use public names (DNS) or private names (after adding them on Master's `/etc/hosts`).
 
