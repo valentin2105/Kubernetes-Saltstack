@@ -154,4 +154,3 @@ After that, just lauch a `highstate` to reload your Kubernetes Master and config
 - If you use `salt-ssh` or `salt-cloud` you can easily scale new workers.
 - Kubernetes v1.9.x will be available soon.
 
-<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" align="center" >
