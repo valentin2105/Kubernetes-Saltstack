@@ -95,7 +95,6 @@ service salt-minion restart  # On Both
 After that, you can apply your configuration (`highstate`) on Minions :
 
 ```
-# Check
 # Apply kubernetes Master
 salt -G 'role:k8s-master' state.highstate
 
