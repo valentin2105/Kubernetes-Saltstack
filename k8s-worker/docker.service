@@ -1,0 +1,21 @@
+### THIS FILE IS MANAGED BY SALTSTACK
+[Unit]
+
+Description=Docker Application Container Engine
+Documentation=http://docs.docker.io
+
+[Service]
+LimitNOFILE=1048576
+LimitNPROC=1048576
+ExecStart=/usr/bin/dockerd \
+  --iptables=false \
+  --ip-masq=false \
+  --host=unix:///var/run/docker.sock \
+  --log-level=error \
+  --data-root=/dockerFS \
+  --storage-driver=overlay2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

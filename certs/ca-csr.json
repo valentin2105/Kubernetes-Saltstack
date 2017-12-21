@@ -1,0 +1,17 @@
+{
+  "CN": "Kubernetes",
+  "key": {
+    "algo": "ecdsa",
+    "size": 256
+  },
+  "names": [
+    {
+      "C":  "ANY",
+      "L":  "Country",
+      "O":  "Kubernetes",
+      "OU": "Cluster",
+      "ST": "Local"
+    }
+  ]
+}
+

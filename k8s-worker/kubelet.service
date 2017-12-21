@@ -1,0 +1,34 @@
+{%- set clusterDomain = pillar['k8s']['clusterDomain'] -%}
+### THIS FILE IS MANAGED BY SALTSTACK
+[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/kubelet \
+  --allow-privileged=true \
+  --cluster-dns=10.32.0.10  \
+  --cluster-domain={{ clusterDomain }} \
+  --experimental-bootstrap-kubeconfig=/var/lib/kubelet/kubeconfig \
+  --container-runtime=docker \
+  --docker=unix:///var/run/docker.sock \
+  --network-plugin=cni \
+  --network-plugin-dir=/opt/cni/bin \
+  --kubeconfig=/var/lib/kubelet/kubeconfig \
+  --runtime-cgroups=/systemd/system.slice \
+  --kubelet-cgroups=/systemd/system.slice \
+  --serialize-image-pulls=false \
+  --register-node=true \
+  --tls-cert-file=/var/lib/kubernetes/kubernetes.pem \
+  --tls-private-key-file=/var/lib/kubernetes/kubernetes-key.pem \
+  --eviction-pressure-transition-period 30s \
+  --cert-dir=/var/lib/kubelet \
+  --v=2
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

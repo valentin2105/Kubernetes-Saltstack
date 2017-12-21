@@ -1,0 +1,28 @@
+{%- set clusterDomain =  pillar['k8s']['clusterDomain'] -%}
+### THIS FILE IS MANAGED BY SALTSTACK
+[Unit]
+Description=etcd
+Documentation=https://github.com/coreos
+
+[Service]
+ExecStart=/usr/bin/etcd  \
+--name {{ clusterDomain }} \
+--data-dir=/var/lib/etcd \
+--cert-file=/etc/etcd/kubernetes.pem  \
+--key-file=/etc/etcd/kubernetes-key.pem \
+--peer-cert-file=/etc/etcd/kubernetes.pem \
+--peer-key-file=/etc/etcd/kubernetes-key.pem \
+--trusted-ca-file=/etc/etcd/ca.pem \
+--listen-client-urls http://0.0.0.0:2379 \
+--advertise-client-urls http://0.0.0.0:2379 \
+--listen-peer-urls http://0.0.0.0:2380 \
+--initial-advertise-peer-urls http://0.0.0.0:2380 \
+--peer-client-cert-auth \
+--client-cert-auth
+
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=30000
+
+[Install]
+WantedBy=multi-user.target

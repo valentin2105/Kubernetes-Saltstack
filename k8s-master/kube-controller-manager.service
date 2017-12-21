@@ -1,0 +1,26 @@
+{%- set clusterIpRange =  pillar['k8s']['clusterIpRange'] -%} 
+### THIS FILE IS MANAGED BY SALTSTACK
+[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+
+[Service]
+ExecStart=/usr/bin/kube-controller-manager \
+  --cluster-name=kubernetes \
+  --leader-elect=true \
+  --master=http://127.0.0.1:8080 \
+  --root-ca-file=/var/lib/kubernetes/ca.pem \
+  --pod-eviction-timeout 30s \
+  --service-account-private-key-file=/var/lib/kubernetes/ca-key.pem \
+  --cluster-name=kubernetes \
+  --cluster-signing-cert-file=/var/lib/kubernetes/ca.pem \
+  --cluster-signing-key-file=/var/lib/kubernetes/ca-key.pem \
+  --service-cluster-ip-range={{ clusterIpRange }} \
+  --node-startup-grace-period 30s \
+  --v=2
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
