@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/SJAtDZk.png" width="560" height="150" >
 
-This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script for install **few Kubernetes add-ons** (DNS, Dashboard, Helm, Heapster, kube-controller).  
+This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script to install **few Kubernetes add-ons** (DNS, Dashboard, Helm, Heapster, kube-controller).  
 Using this configuration, you can easily **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
 
 ## I - Preparation
@@ -21,7 +21,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
 ### IMPORTANT Point
-Because you generate our own CA and Certificates for the cluster, You need to put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (it's mandatory)  
+Because you generate our own CA and Certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
 You can use public names (DNS) or private names (you need to add them on Master/Worker `/etc/hosts`).
 
 ```
@@ -148,7 +148,7 @@ cfssl gencert \
 
 After that, just lauch `highstate` to reload your Kubernetes Master and configure automaticly new Workers.
 
-- It work and created for Debian / Ubuntu distributions. (PR welcome for Fedora/RedHat support).
+- It work and created for Debian / Ubuntu distributions. (PR are welcome for Fedora/RedHat support).
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
