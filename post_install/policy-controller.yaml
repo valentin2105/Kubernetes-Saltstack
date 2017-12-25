@@ -23,7 +23,7 @@ spec:
       hostNetwork: true
       restartPolicy: Always
       containers:
-      - image: calico/kube-controllers:v1.0.1
+      - image: calico/kube-controllers:v2.0.0
         name: calico-policy
         env:
         - name: ETCD_ENDPOINTS
