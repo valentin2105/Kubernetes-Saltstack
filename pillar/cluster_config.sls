@@ -2,7 +2,7 @@ k8s:
   apiServerHost: k8s-master-CHANGEME-hostname
   clusterDomain: cluster.local
   kubernetesVersion: v1.8.6
-  etcdVersion: v3.2.11
+  etcdVersion: v3.2.12
   cniVersion: v0.6.0
   dockerVersion: 17.09.1-ce
   calicoCniVersion: v2.0.0
