@@ -1,4 +1,5 @@
 {%- set clusterDomain = pillar['k8s']['clusterDomain'] -%}
+{%- set hostname = salt['grains.get']('fqdn') -%}
 ### THIS FILE IS MANAGED BY SALTSTACK
 [Unit]
 Description=Kubernetes Kubelet
@@ -11,6 +12,7 @@ ExecStart=/usr/bin/kubelet \
   --allow-privileged=true \
   --cluster-dns=10.32.0.10  \
   --cluster-domain={{ clusterDomain }} \
+  --hostname-override={{ hostname }} \
   --experimental-bootstrap-kubeconfig=/var/lib/kubelet/kubeconfig \
   --container-runtime=docker \
   --docker=unix:///var/run/docker.sock \
