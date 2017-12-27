@@ -10,26 +10,30 @@
 /etc/pki/issued_certs:
   file.directory: []    
 
-/etc/pki/ca.crt:
-  x509.certificate_managed:
-    - signing_private_key: /etc/pki/ca.key
-    - CN: ca.example.com
-    - C: US
-    - ST: Utah
-    - L: Salt Lake City
-    - basicConstraints: "critical CA:true"
-    - keyUsage: "critical cRLSign, keyCertSign"
-    - subjectKeyIdentifier: hash
-    - authorityKeyIdentifier: keyid,issuer:always
-    - days_valid: 3650
-    - days_remaining: 0
-    - backup: True
-    - managed_private_key:
-        name: /etc/pki/ca.key
-        bits: 4096
-        backup: True
-    - require:
-      - file: /etc/pki
+/etc/pki/ca.key:                                                
+  x509.private_key_managed:                                     
+    - bits: 4096                                                
+    - backup: True                                              
+    - require:                                                  
+      - file: /etc/pki                                          
+
+/etc/pki/ca.crt:                                                
+  x509.certificate_managed:                                     
+    - signing_private_key: /etc/pki/ca.key                      
+    - CN: ca.example.com                                        
+    - C: US                                                     
+    - ST: Utah                                                  
+    - L: Salt Lake City                                         
+    - basicConstraints: "critical CA:true"                      
+    - keyUsage: "critical cRLSign, keyCertSign"                 
+    - subjectKeyIdentifier: hash                                
+    - authorityKeyIdentifier: keyid,issuer:always               
+    - days_valid: 3650                                          
+    - days_remaining: 0                                         
+    - backup: True                                              
+    - require:                                                  
+      - file: /etc/pki                                          
+      - x509: /etc/pki/ca.key    
 
 mine.send:
   module.run:
