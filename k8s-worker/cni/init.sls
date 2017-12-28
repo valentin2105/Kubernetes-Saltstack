@@ -1,11 +1,7 @@
 {%- set cni-version = pillar['kubernetes']['networking']['cni-version'] -%}
 {%- set cni-provider = pillar['kubernetes']['networking']['provider'] -%}
 include:
-{%- if cni-provider == "calico" -%}
-  - k8s-worker/cni/calico
-{%- elif cni-provider == "flannel" -%}
-  - k8s-worker/cni/flannel
-{%- endif -%}
+  - k8s-worker/cni/{{ cni-provider }}
 
 /etc/cni:
   file.directory:
