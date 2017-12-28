@@ -79,7 +79,7 @@ kubernetes:
 ```
 ##### Don't forget to put your Master hostname & change Tokens using command like `pwgen 64` !
 
-If you want to enable IPv6 on pod's side, you need to change `enableIPv6` to `true`. 
+If you want to enable IPv6 on pod's side, you need to change `ipv6/enable` to `true`. 
 
 ## II - Deployment
 
@@ -126,8 +126,8 @@ salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE 
-k8s-salt-master     Ready     <none>     5m       v1.8.5    <none>        Debian GNU/Linux 9 (stretch) 
-k8s-salt-worker01   Ready     <none>     5m       v1.8.5    <none>        Ubuntu 16.04.3 LTS 
+k8s-salt-master     Ready     <none>     5m       v1.8.6    <none>        Debian GNU/Linux 9 (stretch) 
+k8s-salt-worker01   Ready     <none>     5m       v1.8.6    <none>        Ubuntu 16.04.3 LTS 
 ```
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
