@@ -3,7 +3,7 @@
 {%- set cri-provider = pillar['kubernetes']['runtime']['provider'] -%}
 
 include:
-  - k8s-worker/{{ cri-provider }}
+  - k8s-worker/cri/{{ cri-provider }}
 
 glusterfs-client:
   pkg.latest

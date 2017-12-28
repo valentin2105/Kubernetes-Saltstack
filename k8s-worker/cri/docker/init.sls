@@ -45,7 +45,7 @@ docker-latest-archive:
 
 /etc/systemd/system/docker.service:
     file.managed:
-    - source: salt://k8s-worker/docker/docker.service
+    - source: salt://k8s-worker/cri/docker/docker.service
     - user: root
     - template: jinja
     - group: root
