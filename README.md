@@ -37,7 +37,7 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
-After that, You need to tweak the `pillar/cluster_config.sls` to configure your futur Kubernetes cluster :
+After that, you need to edit the `pillar/cluster_config.sls` to configure your futur Kubernetes cluster :
 
 ```
 kubernetes:
@@ -77,7 +77,7 @@ kubernetes:
     admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
     kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi  
 ```
-##### Don't forget to change Tokens using command like `pwgen 64` !
+##### Don't forget to put your Master hostname & change Tokens using command like `pwgen 64` !
 
 If you want to enable IPv6 on pod's side, you need to change `enableIPv6` to `true`. 
 
