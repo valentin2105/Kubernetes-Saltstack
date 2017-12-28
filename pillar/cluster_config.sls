@@ -19,14 +19,16 @@ kubernetes:
         version: v3.0.1
         cni-version: v2.0.0
         calicoctl-version: v2.0.0
-        enable-ipv6: false
-        ipv4-range: 192.168.0.0/16
-        ipv6-range: fd80:24e2:f998:72d6::/64
-        nat-ipv4: true
-        nat-ipv6: true
         as-number: 64512
-        ip-in-ip: true
         token: hu0daeHais3aCHANGEMEhu0daeHais3a
+        ipv4:
+          range: 192.168.0.0/16
+          nat: true
+          ip-in-ip: true
+        ipv6:
+          enable: false
+          nat: true
+          range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
     helm-version: v2.7.2
