@@ -1,29 +1,32 @@
-{%- set k8sVersion = pillar['k8s']['kubernetesVersion'] -%}
+{%- set k8s-version = pillar['kubernetes']['version'] -%}
+
+include:
+  - k8s-master/etcd
 
 /usr/bin/kube-apiserver:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kube-apiserver
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kube-apiserver
     - skip_verify: true
     - group: root
     - mode: 755
 
 /usr/bin/kube-controller-manager:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kube-controller-manager
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kube-controller-manager
     - skip_verify: true
     - group: root
     - mode: 755
 
 /usr/bin/kube-scheduler:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kube-scheduler
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kube-scheduler
     - skip_verify: true
     - group: root
     - mode: 755
 
 /usr/bin/kubectl:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kubectl
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kubectl
     - skip_verify: true
     - group: root
     - mode: 755

@@ -1,4 +1,4 @@
-{%- set k8sVersion = pillar['k8s']['kubernetesVersion'] -%}
+{%- set k8s-version = pillar['kubernetes']['version'] -%}
 {%- set dockerVersion = pillar['k8s']['dockerVersion'] -%}
 {%- set enableIPv6 = pillar['k8s']['enableIPv6'] -%}
 
@@ -65,14 +65,14 @@ docker-latest-archive:
 
 /usr/bin/kubelet:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kubelet
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kubelet
     - skip_verify: true
     - group: root
     - mode: 755
 
 /usr/bin/kube-proxy:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kube-proxy
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kube-proxy
     - skip_verify: true
     - group: root
     - mode: 755

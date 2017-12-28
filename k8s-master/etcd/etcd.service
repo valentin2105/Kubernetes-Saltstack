@@ -1,5 +1,5 @@
-{%- set clusterDomain =  pillar['k8s']['clusterDomain'] -%}
 ### THIS FILE IS MANAGED BY SALTSTACK
+{%- set clusterDomain =  pillar['kubernetes']['domain'] -%}
 [Unit]
 Description=etcd
 Documentation=https://github.com/coreos

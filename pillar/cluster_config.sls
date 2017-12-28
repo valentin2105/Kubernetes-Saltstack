@@ -34,3 +34,5 @@ kubernetes:
     helm-version: v2.7.2
     admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
     kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi  
+
+

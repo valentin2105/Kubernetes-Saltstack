@@ -1,5 +1,5 @@
-{%- set clusterIpRange =  pillar['k8s']['clusterIpRange'] -%} 
 ### THIS FILE IS MANAGED BY SALTSTACK
+{%- set clusterIpRange =  pillar['kubernetes']['global']['clusterIP-range'] -%} 
 [Unit]
 Description=Kubernetes Controller Manager
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes

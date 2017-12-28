@@ -6,8 +6,7 @@
     "kubernetes.default",
     "kubernetes.default.svc.cluster.local",
     "<Kubernetes MASTER hostname>",
-    "<Kubernetes Worker01 hostname>",
-    "<...>"
+    "<Kubernetes Worker01 hostname>"
   ],
   "key": {
     "algo": "ecdsa",

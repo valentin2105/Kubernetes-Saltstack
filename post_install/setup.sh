@@ -2,9 +2,9 @@
 
 cd /srv/salt/post_install/
 
-HELM_VERSION=$(cat /srv/salt/pillar/cluster_config.sls |grep helmVersion |sed  's/^.*: //g')
-CLUSTER_DOMAIN=$(cat /srv/salt/pillar/cluster_config.sls |grep clusterDomain |sed  's/^.*: //g')
-MASTER_HOSTNAME=$(cat /srv/salt/pillar/cluster_config.sls |grep apiServerHost |sed  's/^.*: //g')
+HELM_VERSION=$(cat /srv/salt/pillar/cluster_config.sls |grep helm-version |sed  's/^.*: //g')
+CLUSTER_DOMAIN=$(cat /srv/salt/pillar/cluster_config.sls |grep domain |sed  's/^.*: //g')
+MASTER_HOSTNAME=$(cat /srv/salt/pillar/cluster_config.sls |grep hostname |sed  's/^.*: //g')
 
 sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" policy-controller.yaml
 sed -i -e "s/MASTER_HOSTNAME/$MASTER_HOSTNAME/g" policy-controller.yaml
