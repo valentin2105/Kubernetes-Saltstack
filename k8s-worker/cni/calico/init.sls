@@ -1,6 +1,6 @@
-{%- set calicoCniVersion = pillar['k8s']['calicoCniVersion'] -%}
-{%- set cniVersion = pillar['k8s']['cniVersion'] -%}
-{%- set calicoctlVersion = pillar['k8s']['calicoctlVersion'] -%}
+{%- set calicoCniVersion = pillar['kubernetes']['worker']['networking']['calico']['cni-version'] -%}
+{%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
+{%- set cniVersion = pillar['kubernetes']['worker']['networking']['cni-version'] -%}
 
 /usr/bin/calicoctl:
   file.managed:
@@ -56,3 +56,18 @@
     - skip_verify: true
     - group: root
     - mode: 755
+
+/etc/systemd/system/calico.service:
+    file.managed:
+    - source: salt://k8s-worker/calico/calico.service
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 644
+
+calico:
+  service.running:
+   - enable: True
+   - watch:
+     - /etc/systemd/system/calico.service
+

@@ -1,5 +1,6 @@
 {%- set cni-version = pillar['kubernetes']['networking']['cni-version'] -%}
 {%- set cni-provider = pillar['kubernetes']['networking']['provider'] -%}
+
 include:
   - k8s-worker/cni/{{ cni-provider }}
 

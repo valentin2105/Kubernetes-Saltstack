@@ -1,11 +1,11 @@
-{%- set calicoNodeVersion = pillar['k8s']['calicoNodeVersion'] -%}
-{%- set etcdEndpoint = pillar['k8s']['apiServerHost'] -%}
-{%- set ipv4Range = pillar['k8s']['podsIPv4Range'] -%}
-{%- set ipv6Range = pillar['k8s']['podsIPv6Range'] -%}
-{%- set ipv6NatEnabled = pillar['k8s']['enableIPv6NAT'] -%}
-{%- set IpIp = pillar['k8s']['enableIPinIP'] -%}
-{%- set ASnumber = pillar['k8s']['calicoASnumber'] -%}
-{%- set enableIPv6 = pillar['k8s']['enableIPv6'] -%}
+{%- set calicoNodeVersion = pillar['kubernetes']['worker']['networking']['calico']['version'] -%}
+{%- set etcdEndpoint = pillar['kubernetes']['master']['etcd']['version'] -%}
+{%- set ipv4Range = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['range'] -%}
+{%- set IpIp = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['ip-in-ip'] -%}
+{%- set ASnumber = pillar['kubernetes']['worker']['networking']['calico']['as-number'] -%}
+{%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
+{%- set ipv6Range = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['range'] -%}
+{%- set ipv6NatEnable = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['nat'] -%}
 {% if enableIPv6 == true %}
 	{%- set IPv6env = "-e IP6=autodetect" -%}
 {% else %}

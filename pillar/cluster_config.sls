@@ -19,6 +19,7 @@ kubernetes:
         version: v3.0.1
         cni-version: v2.0.0
         calicoctl-version: v2.0.0
+        controller-version: v2.0.0
         as-number: 64512
         token: hu0daeHais3aCHANGEMEhu0daeHais3a
         ipv4:

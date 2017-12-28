@@ -1,11 +1,11 @@
 {%- set dockerVersion = pillar['kubernetes']['worker']['docker']['version'] -%}
-{% if not salt['file.directory_exists' ]('/dockerFS') %}
-/dockerFS:
+{%- set dockerdata = pillar['kubernetes']['worker']['docker']['data-dir'] -%}
+
+/{{ dockerdata }}:
   file.directory:
     - user:  root
     - group:  root
     - mode:  '755'
-{% endif %}
 
 docker-latest-archive:
   archive.extracted:
@@ -51,11 +51,8 @@ docker-latest-archive:
     - group: root
     - mode: 644
 
-
 docker:
   service.running:
     - enable: True
     - watch:
       - /etc/systemd/system/docker.service
-
-

@@ -1,11 +1,9 @@
 {%- set k8s-version = pillar['kubernetes']['version'] -%}
-{%- set enableIPv6 = pillar['k8s']['enableIPv6'] -%}
+{%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
+{%- set cri-provider = pillar['kubernetes']['runtime']['provider'] -%}
+
 include:
-{% if "docker" in pillar['kubernetes']['worker']['runtime']['provider'] %}
-  - k8s-worker/docker
-{% elif "cri-containerd" in pillar['kubernetes']['worker']['runtime']['provider'] %}
-  - k8s-worker/cri-containerd
-{% endif %}
+  - k8s-worker/{{ cri-provider }}
 
 glusterfs-client:
   pkg.latest
@@ -68,13 +66,6 @@ vm.max_map_count:
     - group: root
     - mode: 644
 
-/etc/systemd/system/calico.service:
-    file.managed:
-    - source: salt://k8s-worker/calico.service
-    - user: root
-    - template: jinja
-    - group: root
-    - mode: 644
 
 kubelet:
   service.running:
@@ -87,12 +78,6 @@ kube-proxy:
     - enable: True
     - watch:
       - /etc/systemd/system/kube-proxy.service
-
-calico:
-  service.running:
-   - enable: True
-   - watch:
-     - /etc/systemd/system/calico.service
 
 {% if enableIPv6 == true %}
 net.ipv6.conf.all.forwarding:
