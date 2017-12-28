@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/SJAtDZk.png" width="560" height="150" >
 
-This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers. It use **Calico as CNI Provider** that provide secure and scalable networking. It also come with a `post_install` script to install **few Kubernetes add-ons** (DNS, Dashboard, Helm, Heapster, kube-controller).  
+This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers. It use **Calico** as default CNI Provider that provide secure and scalable networking and Docker as the Container Runtime (but you can change them). It also come with a `post_install` script to install **few Kubernetes add-ons** (DNS, Dashboard, Helm, Heapster, kube-controller).  
 Using this configuration, you can easily **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
 
 ## I - Preparation
@@ -25,7 +25,7 @@ Because you generate our own CA and Certificates for the cluster, You MUST put *
 You can use public names (DNS) or private names (you need to add them on Master/Worker `/etc/hosts`).
 
 ```
-cd /srv/salt/certs
+cd /srv/salt/k8s-certs
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 cfssl gencert \
@@ -35,31 +35,45 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
-After that, You need to tweak the `pillar/cluster_config.sls` to adapt version / config of Kubernetes :
+After that, You need to tweak the `pillar/cluster_config.sls` to adapt the configuration of your futur Kubernetes cluster :
 
 ```
-k8s:
-  apiServerHost: k8s-master-CHANGEME-hostname
-  clusterDomain: cluster.local
-  kubernetesVersion: v1.8.6
-  etcdVersion: v3.2.12
-  cniVersion: v0.6.0
-  dockerVersion: 17.09.1-ce
-  calicoCniVersion: v2.0.0
-  calicoctlVersion: v2.0.0
-  calicoNodeVersion: v3.0.1
-  helmVersion: v2.7.2
-  clusterIpRange: 10.32.0.0/16
-  podsIPv4Range: 192.168.0.0/16
-  enableIPv6: false
-  enableIPv6NAT: true
-  podsIPv6Range: fd80:24e2:f998:72d6::/64
-  calicoASnumber: 64512
-  enableIPinIP: always
-  adminToken: Haim8kay1rarCHANGEMEHaim8kay1rar
-  calicoToken: hu0daeHais3aCHANGEMEhu0daeHais3a
-  kubeletToken: ahT1eipae1wiCHANGEMEahT1eipae1wi  
-
+kubernetes:
+  version: v1.8.6
+  domain: cluster.local
+  master:
+    count: 1
+    hostname: k8s-master.hostname.tld
+    etcd:
+      version: v3.2.12
+  worker:
+    runtime:
+      provider: docker
+      docker:
+        version: 17.09.1-ce
+        data-dir: /dockerFS
+    networking:
+      cni-version: v0.6.0
+      provider: calico
+      calico:
+        version: v3.0.1
+        cni-version: v2.0.0
+        calicoctl-version: v2.0.0
+        as-number: 64512
+        token: hu0daeHais3aCHANGEMEhu0daeHais3a
+        ipv4:
+          range: 192.168.0.0/16
+          nat: true
+          ip-in-ip: true
+        ipv6:
+          enable: false
+          nat: true
+          range: fd80:24e2:f998:72d6::/64
+  global:
+    clusterIP-range: 10.32.0.0/16
+    helm-version: v2.7.2
+    admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
+    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi  
 ```
 ##### Don't forget to change Tokens using command like `pwgen 64` !
 
