@@ -37,7 +37,7 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
-After that, You need to tweak the `pillar/cluster_config.sls` to adapt the configuration of your futur Kubernetes cluster :
+After that, You need to tweak the `pillar/cluster_config.sls` to configure your futur Kubernetes cluster :
 
 ```
 kubernetes:
