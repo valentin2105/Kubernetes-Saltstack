@@ -1,6 +1,6 @@
 {%- set k8sVersion = pillar['kubernetes']['version'] -%}
 {%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
-{%- set criProvider = pillar['kubernetes']['runtime']['provider'] -%}
+{%- set criProvider = pillar['kubernetes']['worker']['runtime']['provider'] -%}
 
 include:
   - k8s-worker/cri/{{ criProvider }}
