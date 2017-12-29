@@ -29,7 +29,7 @@
 
 /etc/cni/net.d/10-calico.conf:
     file.managed:
-    - source: salt://cni/10-calico.conf
+    - source: salt://k8s-worker/cni/calico/10-calico.conf
     - user: root
     - template: jinja
     - group: root
@@ -37,7 +37,7 @@
 
 /etc/cni/net.d/calico-kubeconfig:
     file.managed:
-    - source: salt://cni/calico-kubeconfig
+    - source: salt://k8s-worker/cni/calico/calico-kubeconfig
     - user: root
     - template: jinja
     - group: root
@@ -59,7 +59,7 @@
 
 /etc/systemd/system/calico.service:
     file.managed:
-    - source: salt://k8s-worker/calico/calico.service
+    - source: salt://k8s-worker/cni/calico/calico.service
     - user: root
     - template: jinja
     - group: root
@@ -70,4 +70,3 @@ calico:
    - enable: True
    - watch:
      - /etc/systemd/system/calico.service
-

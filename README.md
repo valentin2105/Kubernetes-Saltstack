@@ -1,11 +1,12 @@
 <img src="https://i.imgur.com/SJAtDZk.png" width="560" height="150" >
 
-This Saltstack configuration provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers.  
-It use **Calico** as default CNI Provider that provide secure and scalable networking and Docker as the Container Runtime (but you can change them).   
-It also come with a `post_install` script to install **few Kubernetes add-ons** (DNS, Dashboard, Helm...).  
-Using this configuration, you can easily **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
+Kubernetes-Saltstack provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers using Salt.  
+It's fully tweakable to allow different Networking et Runtime providers and it also come with a `post_install` script to install some *Kubernetes add-ons** (DNS, Dashboard, Helm...). 
+ Let's **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
 
-## I - Preparation
+## I - Features
+
+## II - Preparations
 
 Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using `CfSSL tools`:
 
@@ -23,6 +24,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
 ### IMPORTANT Point
+
 Because you generate our own CA and Certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
 You can use public names (DNS) or private names (you need to add them on Master/Worker `/etc/hosts`).
 
@@ -81,7 +83,7 @@ kubernetes:
 
 If you want to enable IPv6 on pod's side, you need to change `ipv6/enable` to `true`. 
 
-## II - Deployment
+## III - Deployment
 
 To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) to enhance the process. 
 
@@ -147,7 +149,7 @@ kube-system   monitoring-grafana-5bccc9f786-f4lf2     1/1       Running   0     
 kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0          1m
 ```
 
-## III - Good to know
+## IV - Good to know
 
 If you want to add a node on your Kubernetes cluster, just add his **Hostname** on `kubernetes-csr.json` and run theses commands :
 
