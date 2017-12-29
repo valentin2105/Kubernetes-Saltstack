@@ -1,6 +1,6 @@
 {%- set hostname = salt['grains.get']('fqdn') -%}
 {%- set calicoNodeVersion = pillar['kubernetes']['worker']['networking']['calico']['version'] -%}
-{%- set etcdEndpoint = pillar['kubernetes']['master']['etcd']['version'] -%}
+{%- set etcdEndpoint = pillar['kubernetes']['master']['hostname'] -%}
 {%- set ipv4Range = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['range'] -%}
 {%- set IpIp = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['ip-in-ip'] -%}
 {%- set ASnumber = pillar['kubernetes']['worker']['networking']['calico']['as-number'] -%}
