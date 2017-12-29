@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/SJAtDZk.png" width="560" height="150" >
 
-Kubernetes-Saltstack provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers using Salt.  
+Kubernetes-Saltstack provide an easy way to deploy **Kubernetes Cluster** using Salt.  
 It's fully tweakable to allow different Networking et Runtime providers and it also come with a `post_install` script to install some **Kubernetes add-ons** (DNS, Dashboard, Helm...). 
 
 ## Features
@@ -180,7 +180,7 @@ salt -G 'role:k8s-worker' state.highstate
 
 Last `highstates` reload your Kubernetes Master and configure automaticly new Workers.
 
-- It work and created for Debian / Ubuntu distributions. (PR are welcome for Fedora/RedHat support).
+- Tested on Debian, Ubuntu and Fedora.
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
