@@ -21,7 +21,7 @@ It's fully tweakable to allow different Networking et Runtime providers and it a
 Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using **`CfSS`** tools:
 
 ```bash
-git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
+git clone https://github.com/valentin2105/Kubernetes-Saltstack.git /srv/salt
 ln -s /srv/salt/pillar /srv/pillar
 
 wget -q --show-progress --https-only --timestamping \
