@@ -6,6 +6,16 @@ It's fully tweakable to allow different Networking et Runtime providers and it a
 
 ## Features
 
+	- Cloud-provider agnostic
+	- Composable (CNI, CRI)
+	- Work on `SystemD` based Linux systems
+	- Use the power of Saltstack
+	- Fully-routed networking by default
+	- TLS between Kubernetes components
+	- Support IPv6
+	- Integrated Add-ons
+	- RBAC by default
+
 ## Getting started 
 
 Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using `CfSSL tools`:
