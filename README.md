@@ -114,19 +114,19 @@ The Minion's roles are matched with `Salt Grains` (kind of inventory), so you ne
 cat << EOF > /etc/salt/grains
 role:
   - k8s-master
-  - k8s-worker  # If you want a Master/Worker node. 
+  - k8s-worker  	# If you want a Master/Worker node. 
 EOF
 
 # Kubernetes Workers
 echo "role: k8s-worker" > /etc/salt/grains
 
-service salt-minion restart  # On Both
+service salt-minion restart 
 ```
 
 After that, you can apply your configuration (`highstate`) on Minions :
 
 ```
-# Apply kubernetes Master
+# Apply Kubernetes Master
 salt -G 'role:k8s-master' state.highstate
 
 ~# kubectl get componentstatuses
@@ -135,7 +135,7 @@ scheduler            Healthy   ok
 controller-manager   Healthy   ok
 etcd-0               Healthy   {"health": "true"}
 
-# Apply Kubernetes worker
+# Apply Kubernetes Worker
 salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
@@ -166,7 +166,7 @@ kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0     
 If you want to add a node on your Kubernetes cluster, just add his **Hostname** on `kubernetes-csr.json` and run theses commands :
 
 ```
-cd /srv/salt/certs
+cd /srv/salt/k8s-certs
 
 cfssl gencert \
   -ca=ca.pem \
@@ -174,9 +174,12 @@ cfssl gencert \
   -config=ca-config.json \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
+
+salt -G 'role:k8s-master' state.highstate
+salt -G 'role:k8s-worker' state.highstate
 ```
 
-After that, just lauch `highstate` to reload your Kubernetes Master and configure automaticly new Workers.
+Last `highstates` reload your Kubernetes Master and configure automaticly new Workers.
 
 - It work and created for Debian / Ubuntu distributions. (PR are welcome for Fedora/RedHat support).
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
