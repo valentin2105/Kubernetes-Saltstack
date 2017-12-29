@@ -18,7 +18,6 @@ nfs-common:
 socat:
   pkg.latest
 
-
 vm.max_map_count:
   sysctl.present:
     - value: 2097152
@@ -67,7 +66,6 @@ vm.max_map_count:
     - group: root
     - mode: 644
 
-
 kubelet:
   service.running:
     - enable: True
@@ -86,4 +84,3 @@ net.ipv6.conf.all.forwarding:
   sysctl.present:
     - value: 1
 {% endif %}
-

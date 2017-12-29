@@ -13,7 +13,7 @@ sed -i -e "s/MASTER_HOSTNAME/$MASTER_HOSTNAME/g" kube-dns.yaml
 
 kubectl create -f rbac-calico.yaml
 kubectl create -f policy-controller.yaml
-sleep 2
+sleep 10
 kubectl create -f kube-dns.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
@@ -32,7 +32,7 @@ kubectl create serviceaccount tiller --namespace kube-system
 kubectl create -f rbac-tiller.yaml
 helm init --service-account tiller
 
-sleep 10
+sleep 2
 echo ""
 echo "Kubernetes is now configured with Policy-Controller, Dashboard, Helm and Kube-DNS..."
 echo ""
