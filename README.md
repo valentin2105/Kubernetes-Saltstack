@@ -18,7 +18,7 @@ It's fully tweakable to allow different Networking et Runtime providers and it a
 
 ## Getting started 
 
-Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using `CfSSL tools`:
+Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using `**CfSSL** tools`:
 
 ```
 git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
@@ -36,6 +36,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ### IMPORTANT Point
 
 Because you generate our own CA and Certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
+
 You can use public names (DNS) or private names (you need to add them on Master/Worker `/etc/hosts`).
 
 ```
@@ -49,7 +50,7 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
-After that, you need to edit the `pillar/cluster_config.sls` to configure your futur Kubernetes cluster :
+After that, edit the `pillar/cluster_config.sls` to configure your futur Kubernetes cluster :
 
 ```
 kubernetes:
@@ -95,7 +96,8 @@ If you want to enable IPv6 on pod's side, you need to change `ipv6/enable` to `t
 
 ## Deployment
 
-To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) to enhance the process. 
+To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion.  
+You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) or [Salt-Cloud](https://docs.saltstack.com/en/latest/topics/cloud/) to enhance the process. 
 
 The configuration is done to use the Salt-Master as the Kubernetes-Master but you can separate them if needed but the `post_install/script.sh` requiere `kubectl` and access to the `pillar` files.
 
