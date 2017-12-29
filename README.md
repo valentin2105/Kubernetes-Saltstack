@@ -20,7 +20,7 @@ It's fully tweakable to allow different Networking et Runtime providers and it a
 
 Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using `**CfSSL** tools`:
 
-```
+```shell
 git clone git@github.com:valentin2105/Kubernetes-Saltstack.git /srv/salt
 ln -s /srv/salt/pillar /srv/pillar
 
@@ -39,7 +39,7 @@ Because you generate our own CA and Certificates for the cluster, You MUST put *
 
 You can use public names (DNS) or private names (you need to add them on Master/Worker `/etc/hosts`).
 
-```
+```shell
 cd /srv/salt/k8s-certs
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
@@ -52,7 +52,7 @@ cfssl gencert \
 ```
 After that, edit the `pillar/cluster_config.sls` to configure your futur Kubernetes cluster :
 
-```
+```yaml
 kubernetes:
   version: v1.8.6
   domain: cluster.local
@@ -109,7 +109,7 @@ The configuration is done to use the Salt-Master as the Kubernetes-Master but yo
 
 The Minion's roles are matched with `Salt Grains` (kind of inventory), so you need to define theses grains on your servers :
 
-```
+```shell
 # Kubernetes Master
 cat << EOF > /etc/salt/grains
 role:
@@ -125,7 +125,7 @@ service salt-minion restart
 
 After that, you can apply your configuration (`highstate`) on Minions :
 
-```
+```shell
 # Apply Kubernetes Master
 salt -G 'role:k8s-master' state.highstate
 
@@ -146,7 +146,7 @@ k8s-salt-worker01   Ready     <none>     5m       v1.8.6    <none>        Ubuntu
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
 
-```
+```shell
 /srv/salt/post_install/setup.sh
 
 ~# kubectl get pod --all-namespaces
@@ -165,7 +165,7 @@ kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0     
 
 If you want to add a node on your Kubernetes cluster, just add his **Hostname** on `kubernetes-csr.json` and run theses commands :
 
-```
+```shell
 cd /srv/salt/k8s-certs
 
 cfssl gencert \
