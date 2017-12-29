@@ -1,7 +1,7 @@
 {%- set dockerVersion = pillar['kubernetes']['worker']['runtime']['docker']['version'] -%}
 {%- set dockerdata = pillar['kubernetes']['worker']['runtime']['docker']['data-dir'] -%}
 
-/{{ dockerdata }}:
+{{ dockerdata }}:
   file.directory:
     - user:  root
     - group:  root

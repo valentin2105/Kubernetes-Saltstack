@@ -2,10 +2,6 @@
 {%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
 {%- set cniVersion = pillar['kubernetes']['worker']['networking']['cni-version'] -%}
 
-require:
-  - k8s-worker/cri
-  - k8s-worker/cni
-
 /usr/bin/calicoctl:
   file.managed:
     - source: https://github.com/projectcalico/calicoctl/releases/download/{{ calicoctlVersion }}/calicoctl
@@ -38,6 +34,8 @@ require:
     - template: jinja
     - group: root
     - mode: 644
+    - require:
+      - sls: k8s-worker/cni
 
 /etc/cni/net.d/calico-kubeconfig:
     file.managed:
@@ -46,6 +44,8 @@ require:
     - template: jinja
     - group: root
     - mode: 644
+    - require:
+      - sls: k8s-worker/cni
 
 /opt/cni/bin/calico:
   file.managed:
@@ -53,6 +53,8 @@ require:
     - skip_verify: true
     - group: root
     - mode: 755
+    - require:
+      - sls: k8s-worker/cni
 
 /opt/cni/bin/calico-ipam:
   file.managed:
@@ -60,6 +62,8 @@ require:
     - skip_verify: true
     - group: root
     - mode: 755
+    - require:
+      - sls: k8s-worker/cni
 
 /etc/systemd/system/calico.service:
     file.managed:
