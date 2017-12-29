@@ -5,6 +5,7 @@
 {%- set ASnumber = pillar['kubernetes']['worker']['networking']['calico']['as-number'] -%}
 {%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
 {%- set ipv6Range = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['range'] -%}
+{%- set ipv4NatEnabled = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['nat'] -%}
 {%- set ipv6NatEnabled = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['nat'] -%}
 {%- set IpIp = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['ip-in-ip'] -%}
 {% if IpIp == true %}
@@ -34,6 +35,7 @@ ExecStart=/usr/bin/docker run --net=host --privileged --name=calico-node --rm \
         -e ETCD_SCHEME=     \
 	-e IP=autodetect {{ IPv6env }}   \
         -e CALICO_IPV4POOL_CIDR={{ ipv4Range }}  \
+        -e CALICO_IPV4POOL_NAT_OUTGOING={{ ipv4NatEnabled|string }} \
         -e CALICO_IPV6POOL_CIDR={{ ipv6Range }}  \
         -e CALICO_IPV4POOL_NAT_OUTGOING=true  \
         -e CALICO_IPV6POOL_NAT_OUTGOING={{ ipv6NatEnabled|string }}  \
