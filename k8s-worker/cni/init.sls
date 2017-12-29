@@ -1,8 +1,8 @@
-{%- set cni-version = pillar['kubernetes']['networking']['cni-version'] -%}
-{%- set cni-provider = pillar['kubernetes']['networking']['provider'] -%}
+{%- set cniVersion = pillar['kubernetes']['networking']['cni-version'] -%}
+{%- set cniProvider = pillar['kubernetes']['networking']['provider'] -%}
 
 include:
-  - k8s-worker/cni/{{ cni-provider }}
+  - k8s-worker/cni/{{ cniProvider }}
 
 /etc/cni:
   file.directory:
@@ -19,7 +19,7 @@ include:
 cni-latest-archive:
   archive.extracted:
     - name: /opt/cni/bin
-    - source: https://github.com/containernetworking/plugins/releases/download/{{ cni-version }}/cni-plugins-amd64-{{ cni-version }}.tgz
+    - source: https://github.com/containernetworking/plugins/releases/download/{{ cniVersion }}/cni-plugins-amd64-{{ cniVersion }}.tgz
     - skip_verify: true
     - archive_format: tar
     - if_missing: /opt/cni/bin/loopback

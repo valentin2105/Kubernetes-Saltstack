@@ -1,9 +1,9 @@
-{%- set k8s-version = pillar['kubernetes']['version'] -%}
+{%- set k8sVersion = pillar['kubernetes']['version'] -%}
 {%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
-{%- set cri-provider = pillar['kubernetes']['runtime']['provider'] -%}
+{%- set criProvider = pillar['kubernetes']['runtime']['provider'] -%}
 
 include:
-  - k8s-worker/cri/{{ cri-provider }}
+  - k8s-worker/cri/{{ criProvider }}
 
 glusterfs-client:
   pkg.latest
@@ -24,14 +24,14 @@ vm.max_map_count:
 
 /usr/bin/kubelet:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kubelet
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kubelet
     - skip_verify: true
     - group: root
     - mode: 755
 
 /usr/bin/kube-proxy:
   file.managed:
-    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8s-version }}/bin/linux/amd64/kube-proxy
+    - source: https://storage.googleapis.com/kubernetes-release/release/{{ k8sVersion }}/bin/linux/amd64/kube-proxy
     - skip_verify: true
     - group: root
     - mode: 755
