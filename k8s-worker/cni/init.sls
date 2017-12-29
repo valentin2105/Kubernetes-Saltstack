@@ -1,9 +1,6 @@
 {%- set cniVersion = pillar['kubernetes']['worker']['networking']['cni-version'] -%}
 {%- set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] -%}
 
-include:
-  - k8s-worker/cni/{{ cniProvider }}
-
 /etc/cni:
   file.directory:
     - user: root
@@ -24,4 +21,6 @@ cni-latest-archive:
     - archive_format: tar
     - if_missing: /opt/cni/bin/loopback
 
+include:
+  - k8s-worker/cni/{{ cniProvider }}
 
