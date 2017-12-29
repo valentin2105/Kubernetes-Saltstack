@@ -7,10 +7,10 @@ It's fully tweakable to allow different Networking et Runtime providers and it a
 ## Features
 
 - Cloud-provider **agnostic**
-- Use the power of **Saltstack**
+- Use the power of **`Saltstack`**
 - Work on **`SystemD`** based Linux systems
 - **Composable** (CNI, CRI)
-- **Routed** networking by default (Calico)
+- **Routed** networking by default (**`Calico`**)
 - Support **IPv6**
 - **TLS** between Kubernetes components
 - Integrated **Add-ons**
