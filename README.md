@@ -110,11 +110,11 @@ The configuration is done to use the Salt-Master as the Kubernetes-Master but yo
 The Minion's roles are matched with `Salt Grains` (kind of inventory), so you need to define theses grains on your servers :
 
 ```bash
-# Kubernetes Master
+# Kubernetes Master/Worker
 cat << EOF > /etc/salt/grains
 role:
   - k8s-master
-  - k8s-worker  	# If you want a Master/Worker node
+  - k8s-worker
 EOF
 
 # Kubernetes Workers
