@@ -98,7 +98,7 @@ If you want to enable IPv6 on pod's side, you need to change `ipv6/enable` to `t
 To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion.  
 You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) or [Salt-Cloud](https://docs.saltstack.com/en/latest/topics/cloud/) to enhance the process. 
 
-The configuration is done to use the Salt-Master as the Kubernetes-Master but you can separate them if needed but the `post_install/script.sh` requiere `kubectl` and access to the `pillar` files.
+The configuration is done to use the Salt-Master as the Kubernetes-Master but you can separate them if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
 
 #### The recommended configuration is :
 
