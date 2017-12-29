@@ -114,7 +114,7 @@ The Minion's roles are matched with `Salt Grains` (kind of inventory), so you ne
 cat << EOF > /etc/salt/grains
 role:
   - k8s-master
-  - k8s-worker  	# If you want a Master/Worker node. 
+  - k8s-worker  	# If you want a Master/Worker node
 EOF
 
 # Kubernetes Workers
