@@ -4,9 +4,9 @@ Kubernetes-Saltstack provide a way to deploy **Kubernetes Cluster on top of Debi
 It's fully tweakable to allow different Networking et Runtime providers and it also come with a `post_install` script to install some **Kubernetes add-ons** (DNS, Dashboard, Helm...). 
  Let's **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
 
-## I - Features
+## Features
 
-## II - Preparations
+## Getting started 
 
 Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using `CfSSL tools`:
 
@@ -83,7 +83,7 @@ kubernetes:
 
 If you want to enable IPv6 on pod's side, you need to change `ipv6/enable` to `true`. 
 
-## III - Deployment
+## Deployment
 
 To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion. You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) to enhance the process. 
 
@@ -149,7 +149,7 @@ kube-system   monitoring-grafana-5bccc9f786-f4lf2     1/1       Running   0     
 kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0          1m
 ```
 
-## IV - Good to know
+## Good to know
 
 If you want to add a node on your Kubernetes cluster, just add his **Hostname** on `kubernetes-csr.json` and run theses commands :
 
