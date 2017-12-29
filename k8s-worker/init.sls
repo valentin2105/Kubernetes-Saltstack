@@ -1,11 +1,12 @@
 {%- set k8sVersion = pillar['kubernetes']['version'] -%}
+{%- set os = salt['grains.get']('os') -%}
 {%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
 {%- set criProvider = pillar['kubernetes']['worker']['runtime']['provider'] -%}
 
 include:
-  - k8s-worker/cni
   - k8s-worker/cri/{{ criProvider }}
-
+  - k8s-worker/cni
+{% if os == "Debian" or os == "Ubuntu" %}
 glusterfs-client:
   pkg.latest
 
@@ -14,6 +15,7 @@ conntrack:
 
 nfs-common:
   pkg.latest
+{% endif %} 
 
 socat:
   pkg.latest

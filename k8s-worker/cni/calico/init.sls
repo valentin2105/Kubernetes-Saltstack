@@ -34,6 +34,8 @@
     - template: jinja
     - group: root
     - mode: 644
+    - require:
+      - sls: k8s-worker/cni
 
 /etc/cni/net.d/calico-kubeconfig:
     file.managed:
@@ -42,6 +44,8 @@
     - template: jinja
     - group: root
     - mode: 644
+    - require:
+      - sls: k8s-worker/cni
 
 /opt/cni/bin/calico:
   file.managed:
@@ -49,6 +53,8 @@
     - skip_verify: true
     - group: root
     - mode: 755
+    - require:
+      - sls: k8s-worker/cni
 
 /opt/cni/bin/calico-ipam:
   file.managed:
@@ -56,6 +62,8 @@
     - skip_verify: true
     - group: root
     - mode: 755
+    - require:
+      - sls: k8s-worker/cni
 
 /etc/systemd/system/calico.service:
     file.managed:
