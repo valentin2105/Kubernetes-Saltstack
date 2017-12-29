@@ -4,6 +4,7 @@
 
 include:
   - k8s-worker/cri/{{ criProvider }}
+  - k8s-worker/cni
 
 glusterfs-client:
   pkg.latest
