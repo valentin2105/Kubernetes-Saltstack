@@ -10,6 +10,8 @@
 {%- set IpIp = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['ip-in-ip'] -%}
 {% if IpIp == true %}
 	{%- set IpIpenv = "always" -%}
+{% else %}
+	{%- set IpIpenv = "off" -%}
 {% endif %}
 {% if enableIPv6 == true %}
 	{%- set IPv6env = "-e IP6=autodetect" -%}

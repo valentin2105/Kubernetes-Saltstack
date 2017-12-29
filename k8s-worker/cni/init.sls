@@ -23,4 +23,3 @@ cni-latest-archive:
 
 include:
   - k8s-worker/cni/{{ cniProvider }}
-
