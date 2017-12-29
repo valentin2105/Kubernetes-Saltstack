@@ -1,3 +1,4 @@
+{%- set hostname = salt['grains.get']('fqdn') -%}
 {%- set calicoNodeVersion = pillar['kubernetes']['worker']['networking']['calico']['version'] -%}
 {%- set etcdEndpoint = pillar['kubernetes']['master']['etcd']['version'] -%}
 {%- set ipv4Range = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['range'] -%}
@@ -21,10 +22,10 @@ Requires=docker.service
 User=root
 PermissionsStartOnly=true
 ExecStart=/usr/bin/docker run --net=host --privileged --name=calico-node --rm \
-        -e ETCD_ENDPOINTS=http://{{ etcdEndpoint }}:2379  \
         -e CALICO_NETWORKING_BACKEND=bird  \
 	-e CALICO_LIBNETWORK_ENABLED=true  \
         -e CALICO_LIBNETWORK_IFPREFIX=cali \
+        -e ETCD_ENDPOINTS=http://{{ etcdEndpoint }}:2379  \
         -e ETCD_CA_CERT_FILE=/etc/calico/certs/ca_cert.crt \
 	-e ETCD_AUTHORITY=  \
         -e ETCD_SCHEME=     \
@@ -35,6 +36,7 @@ ExecStart=/usr/bin/docker run --net=host --privileged --name=calico-node --rm \
         -e CALICO_IPV6POOL_NAT_OUTGOING={{ ipv6NatEnabled }}  \
         -e CALICO_IPV4POOL_IPIP={{ IpIp }}	 \
         -e AS={{ ASnumber }} \
+        -e NODENAME={{ hostname }} \
 	-v /var/run/calico:/var/run/calico -v /lib/modules:/lib/modules -v /var/log/calico:/var/log/calico  \
 	-v /run/docker/plugins:/run/docker/plugins -v /var/run/docker.sock:/var/run/docker.sock  \
 	-v /var/lib/kubernetes/ca.pem:/etc/calico/certs/ca_cert.crt  \
