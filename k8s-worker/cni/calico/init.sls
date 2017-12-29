@@ -2,6 +2,9 @@
 {%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
 {%- set cniVersion = pillar['kubernetes']['worker']['networking']['cni-version'] -%}
 
+requiere:
+  - k8s-worker/cri
+
 /usr/bin/calicoctl:
   file.managed:
     - source: https://github.com/projectcalico/calicoctl/releases/download/{{ calicoctlVersion }}/calicoctl
