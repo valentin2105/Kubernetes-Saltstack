@@ -1,4 +1,7 @@
-{%- set k8sVersion = pillar['k8s']['kubernetesVersion'] -%}
+{%- set k8sVersion = pillar['kubernetes']['version'] -%}
+
+include:
+  - k8s-master/etcd
 
 /usr/bin/kube-apiserver:
   file.managed:

@@ -1,0 +1,7 @@
+{%- set adminToken =  pillar['kubernetes']['global']['admin-token'] -%} 
+{%- set kubeletToken =  pillar['kubernetes']['global']['kubelet-token'] -%} 
+{%- set calicoToken =  pillar['kubernetes']['worker']['networking']['calico']['token'] -%} 
+
+{{ adminToken }},admin,admin,"cluster-admin,system:masters"
+{{ calicoToken }},calico,calico,"cluster-admin,system:masters"
+{{ kubeletToken }},kubelet,kubelet,"cluster-admin,system:masters"

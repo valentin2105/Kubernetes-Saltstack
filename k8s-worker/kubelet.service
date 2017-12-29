@@ -1,4 +1,4 @@
-{%- set clusterDomain = pillar['k8s']['clusterDomain'] -%}
+{%- set clusterDomain = pillar['kubernetes']['domain'] -%}
 {%- set hostname = salt['grains.get']('fqdn') -%}
 ### THIS FILE IS MANAGED BY SALTSTACK
 [Unit]

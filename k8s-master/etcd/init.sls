@@ -1,4 +1,4 @@
-{%- set etcdVersion = pillar['k8s']['etcdVersion'] -%}
+{%- set etcdVersion = pillar['kubernetes']['master']['etcd']['version'] -%}
 /etc/etcd:
   file.directory:
     - user: root
@@ -31,7 +31,7 @@ etcd-latest-archive:
 
 /etc/systemd/system/etcd.service:
   file.managed:
-    - source: salt://etcd/etcd.service
+    - source: salt://k8s-master/etcd/etcd.service
     - user: root
     - template: jinja
     - group: root
