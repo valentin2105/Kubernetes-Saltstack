@@ -1,7 +1,7 @@
 <img src="https://i.imgur.com/SJAtDZk.png" width="560" height="150" >
 
-Kubernetes-Saltstack provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers using Salt.  
-It's fully tweakable to allow different Networking et Runtime providers and it also come with a `post_install` script to install some **Kubernetes add-ons** (DNS, Dashboard, Helm...). 
+Kubernetes-Saltstack provides a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers using Salt.  
+It's fully tweakable to allow different Networking et Runtime providers and it also comes with a `post_install` script to install some **Kubernetes add-ons** (DNS, Dashboard, Helm...).
  Let's **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
 
 ## Features
@@ -18,7 +18,7 @@ It's fully tweakable to allow different Networking et Runtime providers and it a
 
 ## Getting started 
 
-Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` folder using **`CfSS`** tools:
+Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` directory using **`CfSSL`** tools:
 
 ```bash
 git clone https://github.com/valentin2105/Kubernetes-Saltstack.git /srv/salt
@@ -37,7 +37,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 
 Because you generate our own CA and Certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
 
-You can use public names (DNS) or private names (you need to add them on Master/Worker `/etc/hosts`).
+You can use either public or private names, but they must be registered somewhere (DNS provider, internal DNS server, `/etc/hosts` file).
 
 ```bash
 cd /srv/salt/k8s-certs
@@ -50,7 +50,7 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
-After that, edit the `pillar/cluster_config.sls` to configure your futur Kubernetes cluster :
+After that, edit the `pillar/cluster_config.sls` to configure your future Kubernetes cluster :
 
 ```yaml
 kubernetes:
@@ -92,14 +92,14 @@ kubernetes:
 ```
 ##### Don't forget to put your Master hostname & change Tokens using command like `pwgen 64` !
 
-If you want to enable IPv6 on pod's side, you need to change `ipv6/enable` to `true`. 
+If you want to enable IPv6 on pod's side, you need to change `kubernetes.worker.networking.calico.ipv6.enable` to `true`.
 
 ## Deployment
 
-To deploy your Kubernetes cluster using this Salt-recipe, you first need to setup your Saltstack Master/Minion.  
+To deploy your Kubernetes cluster using this formula, you first need to setup your Saltstack Master/Minion.  
 You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) or [Salt-Cloud](https://docs.saltstack.com/en/latest/topics/cloud/) to enhance the process. 
 
-The configuration is done to use the Salt-Master as the Kubernetes-Master but you can separate them if needed but the `post_install/script.sh` requiere `kubectl` and access to the `pillar` files.
+The configuration is done to use the Salt-Master as the Kubernetes Master. You can have them as different nodes if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
 
 #### The recommended configuration is :
 
@@ -179,9 +179,9 @@ salt -G 'role:k8s-master' state.highstate
 salt -G 'role:k8s-worker' state.highstate
 ```
 
-Last `highstates` reload your Kubernetes Master and configure automaticly new Workers.
+Last `highstate`s reload your Kubernetes Master and configure automaticly new Workers.
 
-- It work and created for Debian / Ubuntu distributions. (PR are welcome for Fedora/RedHat support).
+- It works and has been created for Debian / Ubuntu distributions. (PR are welcome for Fedora/RedHat support).
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
