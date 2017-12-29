@@ -5,7 +5,7 @@
 {%- set ASnumber = pillar['kubernetes']['worker']['networking']['calico']['as-number'] -%}
 {%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
 {%- set ipv6Range = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['range'] -%}
-{%- set ipv6NatEnable = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['nat'] -%}
+{%- set ipv6NatEnabled = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['nat'] -%}
 {% if enableIPv6 == true %}
 	{%- set IPv6env = "-e IP6=autodetect" -%}
 {% else %}
@@ -32,7 +32,7 @@ ExecStart=/usr/bin/docker run --net=host --privileged --name=calico-node --rm \
         -e CALICO_IPV4POOL_CIDR={{ ipv4Range }}  \
         -e CALICO_IPV6POOL_CIDR={{ ipv6Range }}  \
         -e CALICO_IPV4POOL_NAT_OUTGOING=true  \
-        -e CALICO_IPV6POOL_NAT_OUTGOING={{ ipv6NatEnabled}}  \
+        -e CALICO_IPV6POOL_NAT_OUTGOING={{ ipv6NatEnabled }}  \
         -e CALICO_IPV4POOL_IPIP={{ IpIp }}	 \
         -e AS={{ ASnumber }} \
 	-v /var/run/calico:/var/run/calico -v /lib/modules:/lib/modules -v /var/log/calico:/var/log/calico  \

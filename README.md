@@ -1,7 +1,7 @@
 <img src="https://i.imgur.com/SJAtDZk.png" width="560" height="150" >
 
 Kubernetes-Saltstack provide a way to deploy **Kubernetes Cluster on top of Debian/Ubuntu** servers using Salt.  
-It's fully tweakable to allow different Networking et Runtime providers and it also come with a `post_install` script to install some *Kubernetes add-ons** (DNS, Dashboard, Helm...). 
+It's fully tweakable to allow different Networking et Runtime providers and it also come with a `post_install` script to install some **Kubernetes add-ons** (DNS, Dashboard, Helm...). 
  Let's **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
 
 ## I - Features
