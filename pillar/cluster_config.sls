@@ -25,8 +25,8 @@ kubernetes:
       cni-version: v0.6.0
       provider: calico
       calico:
-        version: v3.0.2
-        cni-version: v2.0.0
+        version: v3.0.3
+        cni-version: v2.0.2
         calicoctl-version: v2.0.0
         controller-version: v2.0.0
         as-number: 64512
