@@ -1,0 +1,50 @@
+### THIS FILE IS MANAGED BY SALTSTACK
+{%- set clusterIpRange =  pillar['kubernetes']['global']['clusterIP-range'] -%} 
+{%- set node01 =  pillar['kubernetes']['master']['cluster']['node01']['hostname'] -%} 
+{%- set node02 =  pillar['kubernetes']['master']['cluster']['node02']['hostname'] -%} 
+{%- set node03 =  pillar['kubernetes']['master']['cluster']['node03']['hostname'] -%} 
+
+[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+
+[Service]
+ExecStart=/usr/bin/kube-apiserver \
+  --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
+  --advertise-address=0.0.0.0  \
+  --bind-address=0.0.0.0 \
+  --audit-log-maxage=30 \
+  --audit-log-maxbackup=3 \
+  --audit-log-maxsize=100 \
+  --audit-log-path=/var/lib/audit.log \
+  --allow-privileged=true \
+  --authorization-mode=RBAC \
+  --enable-swagger-ui=true \
+  --experimental-bootstrap-token-auth \
+  --etcd-cafile=/var/lib/kubernetes/ca.pem \
+  --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \
+  --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \
+  --kubelet-certificate-authority=/var/lib/kubernetes/ca.pem \
+  --client-ca-file=/var/lib/kubernetes/ca.pem \
+  --service-cluster-ip-range={{ clusterIpRange }} \
+  --service-node-port-range=30000-32767 \
+  --tls-cert-file=/var/lib/kubernetes/kubernetes.pem \
+  --tls-private-key-file=/var/lib/kubernetes/kubernetes-key.pem \
+  --token-auth-file=/var/lib/kubernetes/token.csv \
+  --service-account-key-file=/var/lib/kubernetes/ca-key.pem \
+  --runtime-config=batch/v2alpha1=true  \
+  --etcd-servers=http://127.0.0.1:2379 \
+  --insecure-bind-address=127.0.0.1 \
+  --event-ttl=1h \
+  --apiserver-count=1 \
+  --kubelet-https=true \
+  --apiserver-count=3 \
+  --runtime-config=api/all \
+  --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \
+  --etcd-servers=https://{{ node01 }}:2379,https://{{ node02 }}:2379,https://{{ node03 }}:2379 \
+  --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

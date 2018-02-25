@@ -1,11 +1,20 @@
 kubernetes:
-  version: v1.8.6
+  version: v1.9.3
   domain: cluster.local
   master:
-    count: 1
-    hostname: k8s-master.hostname.tld
+    count: 3
+    cluster:
+      node01:
+        hostname: master01.domain.tld
+        ipaddr: 10.240.0.10
+      node02:
+        hostname: master02.domain.tld
+        ipaddr: 10.240.0.20
+      node03:
+        hostname: master03.domain.tld
+        ipaddr: 10.240.0.30
     etcd:
-      version: v3.2.12
+      version: v3.3.1
   worker:
     runtime:
       provider: docker
@@ -16,7 +25,7 @@ kubernetes:
       cni-version: v0.6.0
       provider: calico
       calico:
-        version: v3.0.1
+        version: v3.0.2
         cni-version: v2.0.0
         calicoctl-version: v2.0.0
         controller-version: v2.0.0
@@ -32,6 +41,6 @@ kubernetes:
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
-    helm-version: v2.7.2
+    helm-version: v2.8.0
     admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
     kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi  
