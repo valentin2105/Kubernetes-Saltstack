@@ -1,6 +1,11 @@
 {%- set hostname = salt['grains.get']('fqdn') -%}
 {%- set calicoNodeVersion = pillar['kubernetes']['worker']['networking']['calico']['version'] -%}
-{%- set etcdEndpoint = pillar['kubernetes']['master']['hostname'] -%}
+{%- set masterCount = pillar['kubernetes']['master']['count'] -%}
+{% if masterCount == 1 %}
+	{%- set etcdEndpoint = pillar['kubernetes']['master']['hostname'] -%}
+{% elif masterCount == 3 %}
+	{%- set etcdEndpoint = pillar['kubernetes']['master']['cluster']['node01']['hostname'] -%}
+{% endif %}
 {%- set ipv4Range = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['range'] -%}
 {%- set ASnumber = pillar['kubernetes']['worker']['networking']['calico']['as-number'] -%}
 {%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
