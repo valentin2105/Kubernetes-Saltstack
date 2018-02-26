@@ -40,7 +40,7 @@ include:
     - group: root
     - mode: 644
 {% elif masterCount == 3 %}
-etc/systemd/system/kube-apiserver.service:
+/etc/systemd/system/kube-apiserver.service:
     file.managed:
     - source: salt://k8s-master/kube-apiserver-ha.service
     - user: root
