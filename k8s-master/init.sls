@@ -31,7 +31,7 @@ include:
     - skip_verify: true
     - group: root
     - mode: 755
-{% if masterCount == '1' %}
+{% if masterCount == 1 %}
 /etc/systemd/system/kube-apiserver.service:
     file.managed:
     - source: salt://k8s-master/kube-apiserver.service
@@ -39,7 +39,7 @@ include:
     - template: jinja
     - group: root
     - mode: 644
-{% elif masterCount == '3' %}
+{% elif masterCount == 3 %}
 etc/systemd/system/kube-apiserver.service:
     file.managed:
     - source: salt://k8s-master/kube-apiserver-ha.service

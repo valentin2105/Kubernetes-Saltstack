@@ -31,7 +31,7 @@ etcd-latest-archive:
   file.symlink:
     - target: /opt/etcd-{{ etcdVersion }}-linux-amd64/etcdctl
 
-{% if masterCount == '1' %}
+{% if masterCount == 1 %}
 /etc/systemd/system/etcd.service:
   file.managed:
     - source: salt://k8s-master/etcd/etcd.service
@@ -39,7 +39,7 @@ etcd-latest-archive:
     - template: jinja
     - group: root
     - mode: 644
-{% elif masterCount == '3' %}
+{% elif masterCount == 3 %}
 /etc/systemd/system/etcd.service:
   file.managed:
     - source: salt://k8s-master/etcd/etcd-ha.service
@@ -47,9 +47,8 @@ etcd-latest-archive:
     - template: jinja
     - group: root
     - mode: 644
-
-
 {% endif %}
+
 etcd:
   service.running:
     - enable: True
