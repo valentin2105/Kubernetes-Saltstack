@@ -39,6 +39,7 @@ kubernetes:
         ipv6:
           enable: false
           nat: true
+          interface: ens18
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
