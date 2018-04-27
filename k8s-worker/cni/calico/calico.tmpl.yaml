@@ -1,6 +1,7 @@
 {%- set calicoNodeVersion = pillar['kubernetes']['worker']['networking']['calico']['version'] -%}
 {%- set ipv4Range = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['range'] -%}
 {%- set ipv6Interface = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['interface'] -%}
+{%- set masterCount = pillar['kubernetes']['master']['count'] -%}
 {% if masterCount == 1 %}
 	{%- set etcdEndpoint = pillar['kubernetes']['master']['ipaddr'] -%}
 {% elif masterCount == 3 %}
