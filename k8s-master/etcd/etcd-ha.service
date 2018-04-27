@@ -22,12 +22,12 @@ ExecStart=/usr/bin/etcd  \
 --peer-key-file=/etc/etcd/kubernetes-key.pem \
 --trusted-ca-file=/etc/etcd/ca.pem \
 --peer-trusted-ca-file=/etc/etcd/ca.pem \
---listen-client-urls https://[{{ ip[0] }}]:2379,http://127.0.0.1:2379 \
---advertise-client-urls https://[{{ ip[0] }}]:2379 \
---listen-peer-urls https://[{{ ip[0] }}]:2380 \
---initial-advertise-peer-urls https://[{{ ip[0] }}]:2380 \
+--listen-client-urls https://{{ ip[0] }}:2379,http://127.0.0.1:2379 \
+--advertise-client-urls https://{{ ip[0] }}:2379 \
+--listen-peer-urls https://{{ ip[0] }}:2380 \
+--initial-advertise-peer-urls https://{{ ip[0] }}:2380 \
 --initial-cluster-token etcd-cluster-bc-0 \
---initial-cluster {{ node01 }}=https://[{{ node01ip }}]:2380,{{ node02 }}=https://[{{ node02ip }}]:2380,{{ node03 }}=https://[{{ node03ip }}]:2380 \
+--initial-cluster {{ node01 }}=https://{{ node01ip }}:2380,{{ node02 }}=https://{{ node02ip }}:2380,{{ node03 }}=https://{{ node03ip }}:2380 \
 --initial-cluster-state new \
 --peer-client-cert-auth \
 --client-cert-auth
