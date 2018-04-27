@@ -3,6 +3,9 @@
 {%- set node01 =  pillar['kubernetes']['master']['cluster']['node01']['hostname'] -%} 
 {%- set node02 =  pillar['kubernetes']['master']['cluster']['node02']['hostname'] -%} 
 {%- set node03 =  pillar['kubernetes']['master']['cluster']['node03']['hostname'] -%} 
+{%- set node01ip =  pillar['kubernetes']['master']['cluster']['node01']['ipaddr'] -%} 
+{%- set node02ip =  pillar['kubernetes']['master']['cluster']['node02']['ipaddr'] -%} 
+{%- set node03ip =  pillar['kubernetes']['master']['cluster']['node03']['ipaddr'] -%} 
 
 [Unit]
 Description=Kubernetes API Server
@@ -41,7 +44,7 @@ ExecStart=/usr/bin/kube-apiserver \
   --apiserver-count=3 \
   --runtime-config=api/all \
   --experimental-encryption-provider-config=/var/lib/kubernetes/encryption-config.yaml \
-  --etcd-servers=https://{{ node01 }}:2379,https://{{ node02 }}:2379,https://{{ node03 }}:2379 \
+  --etcd-servers=https://{{ node01ip }}:2379,https://{{ node02ip }}:2379,https://{{ node03ip }}:2379 \
   --v=2
 Restart=on-failure
 RestartSec=5
