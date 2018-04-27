@@ -17,7 +17,6 @@ ExecStart=/usr/bin/kubelet \
   --container-runtime=docker \
   --docker=unix:///var/run/docker.sock \
   --network-plugin=cni \
-  --network-plugin-dir=/opt/cni/bin \
   --kubeconfig=/var/lib/kubelet/kubeconfig \
   --runtime-cgroups=/systemd/system.slice \
   --kubelet-cgroups=/systemd/system.slice \
