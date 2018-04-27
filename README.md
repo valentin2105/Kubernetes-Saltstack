@@ -7,6 +7,8 @@ It's fully tweakable to allow different Networking et Runtime providers and it a
 
 - Cloud-provider **agnostic**
 - Use the power of **`Saltstack`**
+- Latest Kubernetes release (**1.10.1**)
+- Support **High-Available** cluster
 - Work on **`SystemD`** based Linux systems
 - **Composable** (CNI, CRI)
 - **Routed** networking by default (**`Calico`**)
@@ -53,26 +55,37 @@ After that, edit the `pillar/cluster_config.sls` to configure your future Kubern
 
 ```yaml
 kubernetes:
-  version: v1.8.6
+  version: v1.10.1
   domain: cluster.local
   master:
-    count: 1
-    hostname: k8s-master.hostname.tld
+    count: 3
+    cluster:
+      node01:
+        hostname: master01.domain.tld
+        ipaddr: 10.240.0.10
+      node02:
+        hostname: master02.domain.tld
+        ipaddr: 10.240.0.20
+      node03:
+        hostname: master03.domain.tld
+        ipaddr: 10.240.0.30
+    encryption-key: 'w3RNESCMG+o3GCHTUcrQUUdq6CFV72q/Zik9LAO8uEc='
     etcd:
-      version: v3.2.12
+      version: v3.3.3
   worker:
     runtime:
       provider: docker
       docker:
-        version: 17.09.1-ce
+        version: 18.03.0-ce
         data-dir: /dockerFS
     networking:
-      cni-version: v0.6.0
+      cni-version: v0.7.1
       provider: calico
       calico:
-        version: v3.0.1
-        cni-version: v2.0.0
-        calicoctl-version: v2.0.0
+        version: v3.1.1
+        cni-version: v3.1.1
+        calicoctl-version: v3.1.1
+        controller-version: 3.1-release
         as-number: 64512
         token: hu0daeHais3aCHANGEMEhu0daeHais3a
         ipv4:
@@ -82,12 +95,14 @@ kubernetes:
         ipv6:
           enable: false
           nat: true
+          interface: ens18
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
-    helm-version: v2.7.2
+    helm-version: v2.8.2
+    dashboard-version: v1.8.3
     admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
-    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi  
+    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi
 ```
 ##### Don't forget to put your Master hostname & change Tokens using command like `pwgen 64` !
 
@@ -185,8 +200,6 @@ Last `highstate`s reload your Kubernetes Master and configure automaticly new Wo
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
 - You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
 - If you use `salt-ssh` or `salt-cloud` you can easily scale new workers.
-- Kubernetes-master H/A will be available soon (need some tests).
-- Kubernetes v1.9.x will be available soon.
 
 
  	Let's **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
