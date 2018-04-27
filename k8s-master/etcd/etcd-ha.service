@@ -14,9 +14,9 @@
 	{% set currentip = node02ip %}
 {% elif hostname == node03 %}
 	{% set currentip = node03ip %}
+{% else %}
+	{% set currentip = "127.0.0.1" %}
 {% endif %}
-
-
 
 [Unit]
 Description=etcd
