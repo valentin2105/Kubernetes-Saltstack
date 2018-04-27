@@ -13,6 +13,7 @@ kubernetes:
       node03:
         hostname: master03.domain.tld
         ipaddr: 10.240.0.30
+    encryption-key: 'w3RNESCMG+o3GCHTUcrQUUdq6CFV72q/Zik9LAO8uEc='
     etcd:
       version: v3.3.3
   worker:

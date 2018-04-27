@@ -65,6 +65,14 @@ include:
     - group: root
     - mode: 644
 
+/var/lib/kubernetes/encryption-config.yaml:    
+    file.managed:
+    - source: salt://k8s-master/encryption-config.yaml
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 644
+
 kube-apiserver:
   service.running:
     - enable: True

@@ -23,7 +23,6 @@ ExecStart=/usr/bin/kube-apiserver \
   --allow-privileged=true \
   --authorization-mode=RBAC \
   --enable-swagger-ui=true \
-  --experimental-bootstrap-token-auth \
   --etcd-cafile=/var/lib/kubernetes/ca.pem \
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \
