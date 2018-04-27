@@ -1,19 +1,18 @@
-<img src="https://i.imgur.com/SJAtDZk.png" width="560" height="150" >
+<img src="https://i.imgur.com/SJAtDZk.png" width="460" height="125" >
 
 Kubernetes-Saltstack provide an easy way to deploy **Kubernetes Cluster** using Salt.  
-It's fully tweakable to allow different Networking et Runtime providers and it also come with a `post_install` script to install some **Kubernetes add-ons** (DNS, Dashboard, Helm...). 
 
 ## Features
 
 - Cloud-provider **agnostic**
 - Use the power of **`Saltstack`**
-- Latest Kubernetes release (**1.10.1**)
 - Support **High-Available** cluster
 - Work on **`SystemD`** based Linux systems
 - **Composable** (CNI, CRI)
 - **Routed** networking by default (**`Calico`**)
 - Support **IPv6**
 - **TLS** between Kubernetes components
+- Latest Kubernetes release (**1.10.1**)
 - Integrated **Add-ons**
 - **RBAC** by default
 
