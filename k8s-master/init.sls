@@ -73,6 +73,19 @@ include:
     - group: root
     - mode: 644
 
+{%- set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] -%}
+{% if cniProvider == "calico" %}
+
+/opt/calico.yaml:
+    file.managed:
+    - source: salt://k8s-worker/cni/calico/calico.tmpl.yaml
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 644
+{% endif %}
+
+
 kube-apiserver:
   service.running:
     - enable: True

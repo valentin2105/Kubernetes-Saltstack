@@ -14,6 +14,13 @@
     - group: root
     - dir_mode: 750
 
+/etc/calico/kube/:
+  file.directory:
+    - user: root
+    - group: root
+    - dir_mode: 750
+
+
 /opt/calico/:
   file.directory:
     - user: root
@@ -44,10 +51,23 @@
     - require:
       - sls: k8s-worker/cni
 
-/opt/calico.yaml:
+/etc/calico/kube/kubeconfig:
     file.managed:
-    - source: salt://k8s-worker/cni/calico/calico.tmpl.yaml
+    - source: salt://k8s-worker/cni/calico/kubeconfig
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 640
+    - require:
+      - sls: k8s-worker/cni
+
+/etc/cni/net.d/10-calico.conf:
+    file.managed:
+    - source: salt://k8s-worker/cni/calico/10-calico.conf
     - user: root
     - template: jinja
     - group: root
     - mode: 644
+    - require:
+      - sls: k8s-worker/cni
+
