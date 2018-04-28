@@ -221,11 +221,11 @@ spec:
             - name: ENABLED_CONTROLLERS
               value: policy,profile,workloadendpoint,node
             - name: KUBERNETES_SERVICE_HOST
-              value: 10.32.0.1
+              value: "{{ etcdEndpoint }}"
             - name: KUBERNETES_SERVICE_PORT_HTTPS
-              value: "443"
+              value: "6443"
             - name: KUBERNETES_SERVICE_PORT
-              value: "443"
+              value: "6443"
           volumeMounts:
             - mountPath: /var/lib/kubernetes
               name: var-lib-k8s
