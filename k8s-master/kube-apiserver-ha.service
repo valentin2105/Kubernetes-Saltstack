@@ -1,11 +1,21 @@
 ### THIS FILE IS MANAGED BY SALTSTACK
 {%- set clusterIpRange =  pillar['kubernetes']['global']['clusterIP-range'] -%} 
+{%- set hostname = salt['grains.get']('fqdn') -%}
 {%- set node01 =  pillar['kubernetes']['master']['cluster']['node01']['hostname'] -%} 
 {%- set node02 =  pillar['kubernetes']['master']['cluster']['node02']['hostname'] -%} 
 {%- set node03 =  pillar['kubernetes']['master']['cluster']['node03']['hostname'] -%} 
 {%- set node01ip =  pillar['kubernetes']['master']['cluster']['node01']['ipaddr'] -%} 
 {%- set node02ip =  pillar['kubernetes']['master']['cluster']['node02']['ipaddr'] -%} 
 {%- set node03ip =  pillar['kubernetes']['master']['cluster']['node03']['ipaddr'] -%} 
+{% if hostname == node01 %}
+	{% set currentip = node01ip %}
+{% elif hostname == node02 %}
+	{% set currentip = node02ip %}
+{% elif hostname == node03 %}
+	{% set currentip = node03ip %}
+{% else %}
+	{% set currentip = "127.0.0.1" %}
+{% endif %}
 
 [Unit]
 Description=Kubernetes API Server
@@ -14,7 +24,7 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 [Service]
 ExecStart=/usr/bin/kube-apiserver \
   --admission-control=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota \
-  --advertise-address=0.0.0.0  \
+  --advertise-address={{ currentip }}   \
   --bind-address=0.0.0.0 \
   --audit-log-maxage=30 \
   --audit-log-maxbackup=3 \
