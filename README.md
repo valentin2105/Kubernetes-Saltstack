@@ -5,16 +5,15 @@ Kubernetes-Saltstack provide an easy way to deploy **Kubernetes Cluster** using 
 ## Features
 
 - Cloud-provider **agnostic**
-- Use the power of **`Saltstack`**
-- Support **High-Available** cluster
-- Work on **`SystemD`** based Linux systems
+- Support **high-available** cluster
 - **Composable** (CNI, CRI)
+- Use the power of **`Saltstack`**
+- Made for **`SystemD`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
-- Support **IPv6**
-- **TLS** between Kubernetes components
 - Latest Kubernetes release (**1.10.1**)
-- Integrated **Add-ons**
-- **RBAC** by default
+- Support **IPv6**
+- Integrated **add-ons**
+- **RBAC** & **TLS** by default
 
 ## Getting started 
 
