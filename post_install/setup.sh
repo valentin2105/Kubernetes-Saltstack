@@ -11,7 +11,7 @@ sed -i -e "s/MASTER_HOSTNAME/$MASTER_HOSTNAME/g" policy-controller.yaml
 sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" kube-dns.yaml
 sed -i -e "s/MASTER_HOSTNAME/$MASTER_HOSTNAME/g" kube-dns.yaml
 
-#kubectl create -f rbac-calico.yaml
+kubectl create -f rbac-calico.yaml
 #kubectl create -f policy-controller.yaml
 kubectl create -f /opt/calico.yaml
 sleep 10

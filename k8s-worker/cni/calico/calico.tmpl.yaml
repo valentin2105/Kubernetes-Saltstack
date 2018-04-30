@@ -68,6 +68,14 @@ spec:
             # The location of the Calico etcd cluster.
             - name: ETCD_ENDPOINTS
               value: "https://{{ etcdEndpoint }}:2379"
+            - name: ETCD_CA_CERT_FILE
+              value: "/var/lib/kubernetes/ca.pem"
+            # Location of the client key for etcd.
+            - name: ETCD_KEY_FILE
+              value: "/var/lib/kubernetes/kubernetes-key.pem"
+            # Location of the client certificate for etcd.
+            - name: ETCD_CERT_FILE
+              value: "/var/lib/kubernetes/kubernetes.pem"
             # Choose the backend to use.
             - name: CALICO_NETWORKING_BACKEND
               value: bird
