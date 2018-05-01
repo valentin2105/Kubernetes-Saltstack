@@ -1,6 +1,5 @@
 {%- set calicoCniVersion = pillar['kubernetes']['worker']['networking']['calico']['cni-version'] -%}
 {%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
-{%- set cniVersion = pillar['kubernetes']['worker']['networking']['cni-version'] -%}
 
 /usr/bin/calicoctl:
   file.managed:
@@ -15,6 +14,13 @@
     - group: root
     - dir_mode: 750
 
+/etc/calico/kube/:
+  file.directory:
+    - user: root
+    - group: root
+    - dir_mode: 750
+
+
 /opt/calico/:
   file.directory:
     - user: root
@@ -26,26 +32,6 @@
     - user: root
     - group: root
     - dir_mode: 750
-
-/etc/cni/net.d/10-calico.conf:
-    file.managed:
-    - source: salt://k8s-worker/cni/calico/10-calico.conf
-    - user: root
-    - template: jinja
-    - group: root
-    - mode: 644
-    - require:
-      - sls: k8s-worker/cni
-
-/etc/cni/net.d/calico-kubeconfig:
-    file.managed:
-    - source: salt://k8s-worker/cni/calico/calico-kubeconfig
-    - user: root
-    - template: jinja
-    - group: root
-    - mode: 644
-    - require:
-      - sls: k8s-worker/cni
 
 /opt/cni/bin/calico:
   file.managed:
@@ -65,16 +51,23 @@
     - require:
       - sls: k8s-worker/cni
 
-/etc/systemd/system/calico.service:
+/etc/calico/kube/kubeconfig:
     file.managed:
-    - source: salt://k8s-worker/cni/calico/calico.service
+    - source: salt://k8s-worker/cni/calico/kubeconfig
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 640
+    - require:
+      - sls: k8s-worker/cni
+
+/etc/cni/net.d/10-calico.conf:
+    file.managed:
+    - source: salt://k8s-worker/cni/calico/10-calico.conf
     - user: root
     - template: jinja
     - group: root
     - mode: 644
+    - require:
+      - sls: k8s-worker/cni
 
-calico:
-  service.running:
-   - enable: True
-   - watch:
-     - /etc/systemd/system/calico.service

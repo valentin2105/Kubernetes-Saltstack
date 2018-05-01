@@ -1,0 +1,50 @@
+### THIS FILE IS MANAGED BY SALTSTACK
+{%- set clusterDomain =  pillar['kubernetes']['domain'] -%}
+{%- set hostname = salt['grains.get']('fqdn') -%}
+{%- set ip = salt['grains.get']('fqdn_ip4') -%}
+{%- set node01ip =  pillar['kubernetes']['master']['cluster']['node01']['ipaddr'] -%} 
+{%- set node02ip =  pillar['kubernetes']['master']['cluster']['node02']['ipaddr'] -%} 
+{%- set node03ip =  pillar['kubernetes']['master']['cluster']['node03']['ipaddr'] -%} 
+{%- set node01 =  pillar['kubernetes']['master']['cluster']['node01']['hostname'] -%} 
+{%- set node02 =  pillar['kubernetes']['master']['cluster']['node02']['hostname'] -%} 
+{%- set node03 =  pillar['kubernetes']['master']['cluster']['node03']['hostname'] -%} 
+{% if hostname == node01 %}
+	{% set currentip = node01ip %}
+{% elif hostname == node02 %}
+	{% set currentip = node02ip %}
+{% elif hostname == node03 %}
+	{% set currentip = node03ip %}
+{% else %}
+	{% set currentip = "127.0.0.1" %}
+{% endif %}
+
+[Unit]
+Description=etcd
+Documentation=https://github.com/coreos
+
+[Service]
+ExecStart=/usr/bin/etcd  \
+--name={{ hostname }} \
+--data-dir=/var/lib/etcd \
+--cert-file=/etc/etcd/kubernetes.pem  \
+--key-file=/etc/etcd/kubernetes-key.pem \
+--peer-cert-file=/etc/etcd/kubernetes.pem \
+--peer-key-file=/etc/etcd/kubernetes-key.pem \
+--trusted-ca-file=/etc/etcd/ca.pem \
+--peer-trusted-ca-file=/etc/etcd/ca.pem \
+--listen-client-urls https://{{ currentip }}:2379,http://127.0.0.1:2379 \
+--advertise-client-urls https://{{ currentip }}:2379 \
+--listen-peer-urls https://{{ currentip }}:2380 \
+--initial-advertise-peer-urls https://{{ currentip }}:2380 \
+--initial-cluster-token kubernete-cluster \
+--initial-cluster {{ node01 }}=https://{{ node01ip }}:2380,{{ node02 }}=https://{{ node02ip }}:2380,{{ node03 }}=https://{{ node03ip }}:2380 \
+--initial-cluster-state new \
+--peer-client-cert-auth \
+--client-cert-auth
+
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=30000
+
+[Install]
+WantedBy=multi-user.target

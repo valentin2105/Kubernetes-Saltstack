@@ -1,4 +1,6 @@
 {%- set etcdVersion = pillar['kubernetes']['master']['etcd']['version'] -%}
+{%- set masterCount = pillar['kubernetes']['master']['count'] -%}
+
 /etc/etcd:
   file.directory:
     - user: root
@@ -29,6 +31,7 @@ etcd-latest-archive:
   file.symlink:
     - target: /opt/etcd-{{ etcdVersion }}-linux-amd64/etcdctl
 
+{% if masterCount == 1 %}
 /etc/systemd/system/etcd.service:
   file.managed:
     - source: salt://k8s-master/etcd/etcd.service
@@ -36,6 +39,15 @@ etcd-latest-archive:
     - template: jinja
     - group: root
     - mode: 644
+{% elif masterCount == 3 %}
+/etc/systemd/system/etcd.service:
+  file.managed:
+    - source: salt://k8s-master/etcd/etcd-ha.service
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 644
+{% endif %}
 
 etcd:
   service.running:
