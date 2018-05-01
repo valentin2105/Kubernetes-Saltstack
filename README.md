@@ -67,7 +67,7 @@ kubernetes:
       node03:
         hostname: master03.domain.tld
         ipaddr: 10.240.0.30
-    encryption-key: 'w3RNESCMG+o3GCHTUcrQUUdq6CFV72q/Zik9LAO8uEc='
+    encryption-key: 'w3RNESCMG+o3GCHTUcrCHANGEMEq6CFV72q/Zik9LAO8uEc='
     etcd:
       version: v3.3.3
   worker:
@@ -115,7 +115,7 @@ The configuration is done to use the Salt-Master as the Kubernetes Master. You c
 
 #### The recommended configuration is :
 
-- one Kubernetes-Master (Salt-Master & Minion)
+- one or three Kubernetes-Master (Salt-Master & Minion)
 
 - one or more Kubernetes-Workers (Salt-minion)
 
@@ -146,14 +146,18 @@ NAME                 STATUS    MESSAGE              ERROR
 scheduler            Healthy   ok
 controller-manager   Healthy   ok
 etcd-0               Healthy   {"health": "true"}
+etcd-1               Healthy   {"health": "true"}
+etcd-2               Healthy   {"health": "true"}
 
 # Apply Kubernetes Worker
 salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE 
-k8s-salt-master     Ready     <none>     5m       v1.8.6    <none>        Debian GNU/Linux 9 (stretch) 
-k8s-salt-worker01   Ready     <none>     5m       v1.8.6    <none>        Ubuntu 16.04.3 LTS 
+k8s-salt-worker01   Ready     <none>     5m       v1.10.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker02   Ready     <none>     5m       v1.10.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker03   Ready     <none>     5m       v1.10.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker04   Ready     <none>     5m       v1.10.2    <none>        Ubuntu 18.04.1 LTS 
 ```
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
@@ -164,6 +168,10 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 ~# kubectl get pod --all-namespaces
 NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
 kube-system   calico-policy-fcc5cb8ff-tfm7v           1/1       Running   0          1m
+kube-system   calico-node-bntsh                       1/1       Running   1          1m
+kube-system   calico-node-fbicr                       1/1       Running   1          1m
+kube-system   calico-node-badop                       1/1       Running   1          1m
+kube-system   calico-node-rcrze                       1/1       Running   1          1m
 kube-system   kube-dns-d44664bbd-596tr                3/3       Running   0          1m
 kube-system   kube-dns-d44664bbd-h8h6m                3/3       Running   0          1m
 kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0          1m
