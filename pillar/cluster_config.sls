@@ -1,5 +1,5 @@
 kubernetes:
-  version: v1.10.2
+  version: v1.10.1
   domain: cluster.local
   master:
     count: 3

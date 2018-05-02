@@ -9,7 +9,7 @@ Kubernetes-Saltstack provide an easy way to deploy **Kubernetes Cluster** using 
 - Use the power of **`Saltstack`**
 - Made for **`SystemD`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
-- Latest Kubernetes release (**1.10.2**)
+- Latest Kubernetes release (**1.10.1**)
 - Support **IPv6**
 - Integrated **add-ons**
 - **Composable** (CNI, CRI)
@@ -53,7 +53,7 @@ After that, edit the `pillar/cluster_config.sls` to configure your future Kubern
 
 ```yaml
 kubernetes:
-  version: v1.10.2
+  version: v1.10.1
   domain: cluster.local
   master:
     count: 3
