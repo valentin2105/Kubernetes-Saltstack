@@ -209,3 +209,8 @@ Last `highstate`s reload your Kubernetes Master and configure automaticly new Wo
 
 
  	Let's **scale new workers** in minutes and **effortlessly manage** Kubernetes cluster.  
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/valentin2105/Kubernetes-Saltstack/badge.svg?style=beer-square)](https://beerpay.io/valentin2105/Kubernetes-Saltstack)  [![Beerpay](https://beerpay.io/valentin2105/Kubernetes-Saltstack/make-wish.svg?style=flat-square)](https://beerpay.io/valentin2105/Kubernetes-Saltstack?focus=wish)
