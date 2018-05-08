@@ -17,7 +17,6 @@ ExecStart=/usr/bin/kube-apiserver \
   --authorization-mode=RBAC \
   --enable-swagger-ui=true \
   --experimental-bootstrap-token-auth \
-  --runtime-config=rbac.authorization.k8s.io/v1alpha1 \
   --etcd-cafile=/var/lib/kubernetes/ca.pem \
   --etcd-certfile=/var/lib/kubernetes/kubernetes.pem \
   --etcd-keyfile=/var/lib/kubernetes/kubernetes-key.pem \
