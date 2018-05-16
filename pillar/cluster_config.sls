@@ -2,6 +2,8 @@ kubernetes:
   version: v1.10.1
   domain: cluster.local
   master:
+#    count: 1
+#    hostname: master.domain.tld
     count: 3
     cluster:
       node01:
@@ -15,7 +17,7 @@ kubernetes:
         ipaddr: 10.240.0.30
     encryption-key: 'w3RNESCMG+o3GCHTUcrQUUdq6CFV72q/Zik9LAO8uEc='
     etcd:
-      version: v3.3.3
+      version: v3.3.5
   worker:
     runtime:
       provider: docker

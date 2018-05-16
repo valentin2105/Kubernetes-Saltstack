@@ -2,11 +2,17 @@
   "CN": "kubernetes",
   "hosts": [
     "10.32.0.1",
-    "127.0.0.1",
     "kubernetes.default",
     "kubernetes.default.svc.cluster.local",
-    "<Kubernetes MASTER hostname>",
-    "<Kubernetes Worker01 hostname>"
+    "ha-master-hostname.domain.tld",
+    "master01.domain.tld",
+    "master02.domain.tld",
+    "master03.domain.tld",
+    "worker01.domain.tld",
+    "worker02.domain.tld",
+    "worker03.domain.tld",
+    "worker04.domain.tld",
+    "127.0.0.1"
   ],
   "key": {
     "algo": "ecdsa",
