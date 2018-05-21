@@ -42,6 +42,7 @@ ExecStart=/usr/bin/kube-apiserver \
   --service-node-port-range=30000-32767 \
   --tls-cert-file=/var/lib/kubernetes/kubernetes.pem \
   --tls-private-key-file=/var/lib/kubernetes/kubernetes-key.pem \
+  --enable-bootstrap-token-auth \
   --token-auth-file=/var/lib/kubernetes/token.csv \
   --service-account-key-file=/var/lib/kubernetes/ca-key.pem \
   --runtime-config=batch/v2alpha1=true  \
