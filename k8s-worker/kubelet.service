@@ -13,7 +13,6 @@ ExecStart=/usr/bin/kubelet \
   --cluster-dns=10.32.0.10  \
   --cluster-domain={{ clusterDomain }} \
   --hostname-override={{ hostname }} \
-  --experimental-bootstrap-kubeconfig=/var/lib/kubelet/kubeconfig \
   --container-runtime=docker \
   --docker=unix:///var/run/docker.sock \
   --network-plugin=cni \
