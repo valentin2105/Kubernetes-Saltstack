@@ -4,6 +4,7 @@ kubernetes:
   master:
 #    count: 1
 #    hostname: master.domain.tld
+#    ipaddr: 10.240.0.10
     count: 3
     cluster:
       node01:
