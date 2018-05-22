@@ -17,7 +17,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 
 ## Getting started 
 
-Let's clone the git repo on Salt-Master and create CA & Certificates on the `certs/` directory using **`CfSSL`** tools:
+Let's clone the git repo on Salt-Master and create CA & Certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
 
 ```bash
 git clone https://github.com/valentin2105/Kubernetes-Saltstack.git /srv/salt
