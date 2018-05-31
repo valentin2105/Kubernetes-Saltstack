@@ -7,7 +7,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Cloud-provider **agnostic**
 - Support **high-available** clusters
 - Use the power of **`Saltstack`**
-- Made for **`SystemD`** based Linux systems
+- Made for **`systemd`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
 - Latest Kubernetes release (**1.10.1**)
 - Support **IPv6**
