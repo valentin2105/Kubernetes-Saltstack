@@ -9,7 +9,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Use the power of **`Saltstack`**
 - Made for **`SystemD`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
-- Latest Kubernetes release (**1.10.1**)
+- Latest Kubernetes release (**1.10.4**)
 - Support **IPv6**
 - Integrated **add-ons**
 - **Composable** (CNI, CRI)
@@ -55,7 +55,7 @@ After that, edit the `pillar/cluster_config.sls` to configure your future Kubern
 
 ```yaml
 kubernetes:
-  version: v1.10.1
+  version: v1.10.4
   domain: cluster.local
   master:
 #    count: 1
@@ -168,10 +168,10 @@ salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE 
-k8s-salt-worker01   Ready     <none>     5m       v1.10.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker02   Ready     <none>     5m       v1.10.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker03   Ready     <none>     5m       v1.10.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker04   Ready     <none>     5m       v1.10.1    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker01   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker02   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker03   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker04   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
 ```
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
