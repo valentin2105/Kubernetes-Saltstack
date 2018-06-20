@@ -3,7 +3,7 @@
 cd /srv/salt/post_install/
 
 HELM_VERSION=$(cat /srv/salt/pillar/cluster_config.sls |grep helm-version |sed  's/^.*: //g')
-CLUSTER_DOMAIN=$(cat /srv/salt/pillar/cluster_config.sls |grep domain |sed  's/^.*: //g')
+CLUSTER_DOMAIN=$(cat /srv/salt/pillar/cluster_config.sls |grep domain |head -n 1 |sed  's/^.*: //g')
 
 sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" kube-dns.yaml
 
