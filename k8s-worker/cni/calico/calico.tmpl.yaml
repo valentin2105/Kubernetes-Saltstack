@@ -94,6 +94,8 @@ spec:
             # Set Felix endpoint to host default action to ACCEPT.
             - name: FELIX_DEFAULTENDPOINTTOHOSTACTION
               value: "ACCEPT"
+            - name: FELIX_HEALTHHOST
+              value: "0.0.0.0"
             # Configure the IP Pool from which Pod IPs will be chosen.
             - name: CALICO_IPV4POOL_CIDR
               value: "{{ ipv4Range }}"
