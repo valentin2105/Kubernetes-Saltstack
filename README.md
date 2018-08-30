@@ -9,6 +9,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Use the power of **`Saltstack`**
 - Made for **`systemd`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
+- **CoreDNS** as internal DNS provider
 - Latest Kubernetes release (**1.11.2**)
 - Support **IPv6**
 - Integrated **add-ons**
@@ -181,13 +182,13 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 
 ~# kubectl get pod --all-namespaces
 NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
-kube-system   calico-policy-fcc5cb8ff-tfm7v           1/1       Running   0          1m
+kube-system   calico-kube-controllers-fcc5cb8ff-tfm7v 1/1       Running   0          1m
 kube-system   calico-node-bntsh                       1/1       Running   0          1m
 kube-system   calico-node-fbicr                       1/1       Running   0          1m
 kube-system   calico-node-badop                       1/1       Running   0          1m
 kube-system   calico-node-rcrze                       1/1       Running   0          1m
-kube-system   kube-dns-d44664bbd-596tr                3/3       Running   0          1m
-kube-system   kube-dns-d44664bbd-h8h6m                3/3       Running   0          1m
+kube-system   coredns-d44664bbd-596tr                 1/1       Running   0          1m
+kube-system   coredns-d44664bbd-h8h6m                 1/1       Running   0          1m
 kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0          1m
 kube-system   tiller-deploy-546cf9696c-hjdbm          1/1       Running   0          1m
 kube-system   heapster-55c5d9c56b-7drzs               1/1       Running   0          1m
@@ -197,7 +198,7 @@ kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0     
 
 ## Good to know
 
-If you want to add a node on your Kubernetes cluster, just add the new **Hostname** on `kubernetes-csr.json` and run theses commands :
+If you want add a node on your Kubernetes cluster, just add the new **Hostname** on `kubernetes-csr.json` and run theses commands :
 
 ```bash
 cd /srv/salt/k8s-certs
