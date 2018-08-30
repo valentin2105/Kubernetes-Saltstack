@@ -5,7 +5,7 @@
   file.directory:
     - user:  root
     - group:  root
-    - mode:  '755'
+    - mode:  '711'
 
 docker-latest-archive:
   archive.extracted:
