@@ -9,7 +9,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Use the power of **`Saltstack`**
 - Made for **`systemd`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
-- Latest Kubernetes release (**1.10.4**)
+- Latest Kubernetes release (**1.11.2**)
 - Support **IPv6**
 - Integrated **add-ons**
 - **Composable** (CNI, CRI)
@@ -17,7 +17,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 
 ## Getting started 
 
-Let's clone the git repo on Salt-Master and create CA & Certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
+Let's clone the git repo on Salt-master and create CA & certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
 
 ```bash
 git clone https://github.com/valentin2105/Kubernetes-Saltstack.git /srv/salt
@@ -34,7 +34,7 @@ sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 
 ### IMPORTANT Point
 
-Because we need to generate our own CA and Certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (Master & Workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
+Because we need to generate our own CA and certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (master & workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
 
 You can use either public or private names, but they must be registered somewhere (DNS provider, internal DNS server, `/etc/hosts` file).
 
@@ -55,7 +55,7 @@ After that, edit the `pillar/cluster_config.sls` to configure your future Kubern
 
 ```yaml
 kubernetes:
-  version: v1.10.4
+  version: v1.11.2
   domain: cluster.local
   master:
 #    count: 1
@@ -74,7 +74,7 @@ kubernetes:
         ipaddr: 10.240.0.30
     encryption-key: 'w3RNESCMG+o3GCHTUcrCHANGEMEq6CFV72q/Zik9LAO8uEc='
     etcd:
-      version: v3.3.5
+      version: v3.3.9
   worker:
     runtime:
       provider: docker
@@ -85,10 +85,10 @@ kubernetes:
       cni-version: v0.7.1
       provider: calico
       calico:
-        version: v3.1.1
-        cni-version: v3.1.1
-        calicoctl-version: v3.1.1
-        controller-version: 3.1-release
+        version: v3.2.1
+        cni-version: v3.2.1
+        calicoctl-version: v3.2.1
+        controller-version: 3.2-release
         as-number: 64512
         token: hu0daeHais3aCHANGEMEhu0daeHais3a
         ipv4:
@@ -102,8 +102,8 @@ kubernetes:
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
-    helm-version: v2.8.2
-    dashboard-version: v1.8.3
+    helm-version: v2.10.0
+    dashboard-version: v1.10.0
     admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
     kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi
 ```
@@ -113,33 +113,33 @@ If you want to enable IPv6 on pod's side, you need to change `kubernetes.worker.
 
 ## Deployment
 
-To deploy your Kubernetes cluster using this formula, you first need to setup your Saltstack Master/Minion.  
+To deploy your Kubernetes cluster using this formula, you first need to setup your Saltstack master/Minion.  
 You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) or [Salt-Cloud](https://docs.saltstack.com/en/latest/topics/cloud/) to enhance the process. 
 
-The configuration is done to use the Salt-Master as the Kubernetes Master. You can have them as different nodes if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
+The configuration is done to use the Salt-master as the Kubernetes master. You can have them as different nodes if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
 
 #### The recommended configuration is :
 
-- one or three Kubernetes-Master (Salt-Master & Minion)
+- one or three Kubernetes-master (Salt-master & minion)
 
-- one or more Kubernetes-Workers (Salt-minion)
+- one or more Kubernetes-workers (Salt-minion)
 
 The Minion's roles are matched with `Salt Grains` (kind of inventory), so you need to define theses grains on your servers :
 
-If you want a small cluster, a Master can be a worker too. 
+If you want a small cluster, a master can be a worker too. 
 
 ```bash
-# Kubernetes Masters
+# Kubernetes masters
 cat << EOF > /etc/salt/grains
 role: k8s-master
 EOF
 
-# Kubernetes Workers
+# Kubernetes workers
 cat << EOF > /etc/salt/grains
 role: k8s-worker
 EOF
 
-# Kubernetes Master & Workers
+# Kubernetes master & workers
 cat << EOF > /etc/salt/grains
 role: 
   - k8s-master
@@ -152,7 +152,7 @@ service salt-minion restart
 After that, you can apply your configuration (`highstate`) :
 
 ```bash
-# Apply Kubernetes Master configurations
+# Apply Kubernetes master configurations
 salt -G 'role:k8s-master' state.highstate 
 
 ~# kubectl get componentstatuses
@@ -163,15 +163,15 @@ etcd-0               Healthy   {"health": "true"}
 etcd-1               Healthy   {"health": "true"}
 etcd-2               Healthy   {"health": "true"}
 
-# Apply Kubernetes Worker configurations
+# Apply Kubernetes worker configurations
 salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE 
-k8s-salt-worker01   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker02   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker03   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker04   Ready     <none>     5m       v1.10.4    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker01   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker02   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker03   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker04   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
 ```
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
@@ -213,12 +213,12 @@ salt -G 'role:k8s-master' state.highstate
 salt -G 'role:k8s-worker' state.highstate
 ```
 
-Last `highstate` reload your Kubernetes Master and configure automaticly new Workers.
+Last `highstate` reload your Kubernetes master and configure automatically new workers.
 
 - Tested on Debian, Ubuntu and Fedora.
 - You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
 - This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
-- You can tweak Pod's IPv4 Pool, enable IPv6, change IPv6 Pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
+- You can tweak Pod's IPv4 pool, enable IPv6, change IPv6 pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
 - If you use `salt-ssh` or `salt-cloud` you can quickly scale new workers.
 
 

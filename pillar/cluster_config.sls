@@ -1,5 +1,5 @@
 kubernetes:
-  version: v1.10.4
+  version: v1.11.2
   domain: cluster.local
   master:
 #    count: 1
@@ -18,7 +18,7 @@ kubernetes:
         ipaddr: 10.240.0.30
     encryption-key: 'w3RNESCMG+o3GCHTUcrQUUdq6CFV72q/Zik9LAO8uEc='
     etcd:
-      version: v3.3.8
+      version: v3.3.9
   worker:
     runtime:
       provider: docker
@@ -29,10 +29,10 @@ kubernetes:
       cni-version: v0.7.1
       provider: calico
       calico:
-        version: v3.1.1
-        cni-version: v3.1.1
-        calicoctl-version: v3.1.1
-        controller-version: 3.1-release
+        version: v3.2.1
+        cni-version: v3.2.1
+        calicoctl-version: v3.2.1
+        controller-version: 3.2-release
         as-number: 64512
         token: hu0daeHais3aCHANGEMEhu0daeHais3a
         ipv4:
@@ -42,11 +42,11 @@ kubernetes:
         ipv6:
           enable: false
           nat: true
-          interface: ens18
+          interface: eth0
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
-    helm-version: v2.8.2
-    dashboard-version: v1.8.3
-    admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
-    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi  
+    helm-version: v2.10.0
+    dashboard-version: v1.10.0
+    admin-token: Haim8kay1rarCHANGEMEHaim8kay11ra
+    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipa1e1w

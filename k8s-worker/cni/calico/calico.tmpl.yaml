@@ -6,8 +6,10 @@
 {%- set ipv6Range = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['range'] -%}
 {% if masterCount == 1 %}
 	{%- set etcdEndpoint = pillar['kubernetes']['master']['ipaddr'] -%}
+	{%- set hostname = pillar['kubernetes']['master']['hostname'] -%}
 {% elif masterCount == 3 %}
 	{%- set etcdEndpoint = pillar['kubernetes']['master']['cluster']['node01']['ipaddr'] -%}
+	{%- set hostname = pillar['kubernetes']['master']['cluster']['node01']['hostname'] -%}
 {% endif %}
 {%- set IpIp = pillar['kubernetes']['worker']['networking']['calico']['ipv4']['ip-in-ip'] -%}
 {% if IpIp == true %}
@@ -16,12 +18,13 @@
 	{%- set IpIpenv = "off" -%}
 {% endif %}
 {% if enableIPv6 == true %}
-	{%- set IPv6env = "-e IP6=autodetect" -%}
-	{%- set ipv6Interface = "" -%}
+	{%- set IPv6env = "autodetect" -%}
+	{%- set ipv6preInterface = "interface=" -%}
 {% else %}
-	{%- set IPv6env = "" -%}
+	{%- set IPv6env = "none" -%}
+	{%- set ipv6preInterface = "interface=*" -%}
+	{%- set ipv6preInterface = " " -%}
 {% endif %}
-
 # Calico Version master
 # https://docs.projectcalico.org/master/releases#master
 # This manifest includes the following component versions:
@@ -87,12 +90,12 @@ spec:
               value: "true"
             # Set noderef for node controller.
             - name: CALICO_K8S_NODE_REF
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
+              value: {{ hostname }}
             # Set Felix endpoint to host default action to ACCEPT.
             - name: FELIX_DEFAULTENDPOINTTOHOSTACTION
               value: "ACCEPT"
+            - name: FELIX_HEALTHHOST
+              value: "0.0.0.0"
             # Configure the IP Pool from which Pod IPs will be chosen.
             - name: CALICO_IPV4POOL_CIDR
               value: "{{ ipv4Range }}"
@@ -105,24 +108,15 @@ spec:
             # Set Felix logging to "info"
             - name: FELIX_LOGSEVERITYSCREEN
               value: "info"
-            # Location of the CA certificate for etcd.
-            - name: ETCD_CA_CERT_FILE
-              value: "/var/lib/kubernetes/ca.pem"
-            # Location of the client key for etcd.
-            - name: ETCD_KEY_FILE
-              value: "/var/lib/kubernetes/kubernetes-key.pem"
-            # Location of the client certificate for etcd.
-            - name: ETCD_CERT_FILE
-              value: "/var/lib/kubernetes/kubernetes.pem"
             # Auto-detect the BGP IP address.
             - name: IP
               value: ""
             - name: IP6
-              value: "autodetect"
+              value: "{{ IPv6env }}"
             - name: IP_AUTODETECTION_METHOD
               value: "first-found"
             - name: IP6_AUTODETECTION_METHOD
-              value: "interface={{ ipv6Interface }}"
+              value: "interface={{ ipv6preInterface }}{{ ipv6Interface }}"
             - name: FELIX_HEALTHENABLED
               value: "true"
           securityContext:
@@ -154,7 +148,7 @@ spec:
               readOnly: true
             - mountPath: /var/lib/calico
               name: var-lib-calico
-            - mountPath: /etc/cni/net.d
+            - mountPath: /etc/cni/net.d                                                                                                                                                                           
               name: cni-net-dir
               readOnly: true
 
