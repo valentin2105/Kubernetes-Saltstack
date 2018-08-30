@@ -20,19 +20,6 @@
     - group: root
     - dir_mode: 750
 
-
-/opt/calico/:
-  file.directory:
-    - user: root
-    - group: root
-    - dir_mode: 750
-
-/opt/calico/bin:
-  file.directory:
-    - user: root
-    - group: root
-    - dir_mode: 750
-
 /opt/cni/bin/calico:
   file.managed:
     - source: https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico
