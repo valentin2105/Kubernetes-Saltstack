@@ -6,11 +6,13 @@ HELM_VERSION=$(cat /srv/salt/pillar/cluster_config.sls |grep helm-version |sed  
 CLUSTER_DOMAIN=$(cat /srv/salt/pillar/cluster_config.sls |grep domain |head -n 1 |sed  's/^.*: //g')
 
 sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" kube-dns.yaml
+sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" coredns.yaml
 
 kubectl create -f rbac-calico.yaml
 kubectl create -f /opt/calico.yaml
 sleep 10
-kubectl create -f kube-dns.yaml
+#kubectl create -f kube-dns.yaml
+kubectl create -f coredns.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
 
 kubectl create -f heapster-rbac.yaml
