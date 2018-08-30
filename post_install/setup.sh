@@ -13,7 +13,7 @@ kubectl create -f /opt/calico.yaml
 sleep 10
 #kubectl create -f kube-dns.yaml
 kubectl create -f coredns.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+kubectl create -f kubernetes-dashboard.yaml
 
 kubectl create -f heapster-rbac.yaml
 kubectl create -f influxdb.yaml
