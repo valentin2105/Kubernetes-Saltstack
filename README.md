@@ -223,7 +223,7 @@ Last `highstate` reload your Kubernetes master and configure automatically new w
 - If you use `salt-ssh` or `salt-cloud` you can quickly scale new workers.
 
 
-## Support on Beerpay
-Hey dude! Help me out for a couple of :beers:!
+## Support me on Patreon
+Help me out for a couple of :beers:!
 
-[![Beerpay](https://beerpay.io/valentin2105/Kubernetes-Saltstack/badge.svg?style=beer-square)](https://beerpay.io/valentin2105/Kubernetes-Saltstack)  [![Beerpay](https://beerpay.io/valentin2105/Kubernetes-Saltstack/make-wish.svg?style=flat-square)](https://beerpay.io/valentin2105/Kubernetes-Saltstack?focus=wish)
+https://www.patreon.com/ValentinOuvrard
