@@ -5,6 +5,17 @@ kubernetes:
     count: 1
     hostname: kube-master
     ipaddr: 10.240.0.10
+  #  count: 3
+  #  cluster:
+  #    node01:
+  #      hostname: master01.domain.tld
+  #      ipaddr: 10.240.0.10
+  #    node02:
+  #      hostname: master02.domain.tld
+  #      ipaddr: 10.240.0.20
+  #    node03:
+  #      hostname: master03.domain.tld
+  #      ipaddr: 10.240.0.30
     encryption-key: 'w3RNESCMG+o3GCHTUcrQUUdq6CFV72q/Zik9LAO8uEc='
     etcd:
       version: v3.3.9
