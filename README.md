@@ -33,6 +33,12 @@ sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
+### Local development
+
+You can spin up a local 3 node cluster using vagrant for local development. Following the instruction on the vagrant [website](https://www.vagrantup.com/intro/getting-started/install.html) for installtion, once done run the following command: ```vagrant up```
+
+This will provision a funcational kube master with 2 worker nodes. You can then follow on with the rest of this tutorial. Ensure you use ```vagrant ssh <<node name>>``` to log in to your desired node.
+
 ### IMPORTANT Point
 
 Because we need to generate our own CA and certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (master & workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  

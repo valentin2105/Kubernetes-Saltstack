@@ -25,7 +25,8 @@ ExecStart=/usr/bin/kubelet \
   --tls-private-key-file=/var/lib/kubernetes/kubernetes-key.pem \
   --eviction-pressure-transition-period 30s \
   --cert-dir=/var/lib/kubelet \
-  --v=2
+  --v=2 \
+  --fail-swap-on=false
 
 Restart=on-failure
 RestartSec=5
