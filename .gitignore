@@ -1,0 +1,3 @@
+.vagrant
+k8s-certs/*.pem
+k8s-certs/*.csr
