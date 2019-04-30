@@ -34,7 +34,7 @@ etcd-latest-archive:
 {% if masterCount == 1 %}
 /etc/systemd/system/etcd.service:
   file.managed:
-    - source: salt://k8s-master/etcd/etcd.service
+    - source: salt://{{ slspath }}/etcd.service
     - user: root
     - template: jinja
     - group: root
@@ -42,7 +42,7 @@ etcd-latest-archive:
 {% elif masterCount == 3 %}
 /etc/systemd/system/etcd.service:
   file.managed:
-    - source: salt://k8s-master/etcd/etcd-ha.service
+    - source: salt://{{ slspath }}/etcd-ha.service
     - user: root
     - template: jinja
     - group: root

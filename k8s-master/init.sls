@@ -2,7 +2,7 @@
 {%- set masterCount = pillar['kubernetes']['master']['count'] -%}
 
 include:
-  - k8s-master/etcd
+  - .etcd
 
 /usr/bin/kube-apiserver:
   file.managed:
@@ -34,7 +34,7 @@ include:
 {% if masterCount == 1 %}
 /etc/systemd/system/kube-apiserver.service:
     file.managed:
-    - source: salt://k8s-master/kube-apiserver.service
+    - source: salt://{{ slspath }}/kube-apiserver.service
     - user: root
     - template: jinja
     - group: root
@@ -42,7 +42,7 @@ include:
 {% elif masterCount == 3 %}
 /etc/systemd/system/kube-apiserver.service:
     file.managed:
-    - source: salt://k8s-master/kube-apiserver-ha.service
+    - source: salt://{{ slspath }}/kube-apiserver-ha.service
     - user: root
     - template: jinja
     - group: root
@@ -51,7 +51,7 @@ include:
 
 /etc/systemd/system/kube-controller-manager.service:
   file.managed:
-    - source: salt://k8s-master/kube-controller-manager.service
+    - source: salt://{{ slspath }}/kube-controller-manager.service
     - user: root
     - template: jinja
     - group: root
@@ -59,7 +59,7 @@ include:
 
 /etc/systemd/system/kube-scheduler.service:
   file.managed:
-    - source: salt://k8s-master/kube-scheduler.service
+    - source: salt://{{ slspath }}/kube-scheduler.service
     - user: root
     - template: jinja
     - group: root
@@ -67,7 +67,7 @@ include:
 
 /var/lib/kubernetes/encryption-config.yaml:    
     file.managed:
-    - source: salt://k8s-master/encryption-config.yaml
+    - source: salt://{{ slspath }}/encryption-config.yaml
     - user: root
     - template: jinja
     - group: root
@@ -78,7 +78,7 @@ include:
 
 /opt/calico.yaml:
     file.managed:
-    - source: salt://k8s-worker/cni/calico/calico.tmpl.yaml
+    - source: salt://{{ slspath.split('/')[0] }}/k8s-worker/cni/calico/calico.tmpl.yaml
     - user: root
     - template: jinja
     - group: root
