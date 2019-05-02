@@ -1,5 +1,9 @@
 {%- set k8sVersion = pillar['kubernetes']['version'] -%}
 {%- set masterCount = pillar['kubernetes']['master']['count'] -%}
+{% set post_install_files = [ 
+  "coredns.yaml", "grafana.yaml", "heapster-rbac.yaml", "heapster.yaml",  
+  "influxdb.yaml", "kube-dns.yaml", "kubernetes-dashboard.yaml",  
+  "policy-controller.yaml", "rbac-calico.yaml", "rbac-tiller.yaml", "setup.sh"] %}
 
 include:
   - .etcd
@@ -85,6 +89,20 @@ include:
     - mode: 644
 {% endif %}
 
+{% for file in post_install_files %} 
+/opt/kubernetes/post_install/{{ file }}:
+  file.managed:
+  - source: salt://{{ slspath.split('/')[0] }}/post_install/{{ file }}
+  - makedirs: true
+  - template: jinja
+  - user: root
+  - group: root
+{% if file == "setup.sh" %}
+  - mode: 755
+{% else %}
+  - mode: 644
+{% endif %}
+{% endfor %}
 
 kube-apiserver:
   service.running:

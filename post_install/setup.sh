@@ -1,12 +1,6 @@
 #!/bin/bash
 
-cd /srv/salt/post_install/
-
-HELM_VERSION=$(cat /srv/salt/pillar/cluster_config.sls |grep helm-version |sed  's/^.*: //g')
-CLUSTER_DOMAIN=$(cat /srv/salt/pillar/cluster_config.sls |grep domain |head -n 1 |sed  's/^.*: //g')
-
-sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" kube-dns.yaml
-sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" coredns.yaml
+HELM_VERSION=$(salt-call pillar.get --out=txt kubernetes:global:helm-version |cut -d ' ' -f 2)
 
 kubectl create -f rbac-calico.yaml
 kubectl create -f /opt/calico.yaml
