@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HELM_VERSION=$(salt-call pillar.get --out=txt kubernetes:global:helm-version |cut -d ' ' -f 2)
+{% set HELM_VERSION = salt['pillar.get']('kubernetes:global:helm-version') -%}
 
 kubectl create -f rbac-calico.yaml
 kubectl create -f /opt/calico.yaml
@@ -14,10 +14,10 @@ kubectl create -f influxdb.yaml
 kubectl create -f grafana.yaml
 kubectl create -f heapster.yaml
 
-wget https://kubernetes-helm.storage.googleapis.com/helm-$HELM_VERSION-linux-amd64.tar.gz
-tar -zxvf helm-$HELM_VERSION-linux-amd64.tar.gz
+wget https://kubernetes-helm.storage.googleapis.com/helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
+tar -zxvf helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 mv linux-amd64/helm /usr/local/bin/helm
-rm -r linux-amd64/ && rm -r helm-$HELM_VERSION-linux-amd64.tar.gz
+rm -r linux-amd64/ && rm -r helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 
 kubectl create serviceaccount tiller --namespace kube-system
 
