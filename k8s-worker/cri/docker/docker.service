@@ -1,4 +1,4 @@
-{%- set data-dir = salt['pillar.get']('kubernetes:worker:runtime:docker:data-dir') -%}
+{%- set datadir = salt['pillar.get']('kubernetes:worker:runtime:docker:data-dir') -%}
 ### THIS FILE IS MANAGED BY SALTSTACK
 [Unit]
 
@@ -13,7 +13,7 @@ ExecStart=/usr/bin/dockerd \
   --ip-masq=false \
   --host=unix:///var/run/docker.sock \
   --log-level=error \
-  --data-root={{ data-dir }} \
+  --data-root={{ datadir }} \
   --storage-driver=overlay2
 Restart=on-failure
 RestartSec=5
