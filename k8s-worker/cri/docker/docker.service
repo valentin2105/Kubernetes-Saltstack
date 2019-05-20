@@ -1,4 +1,4 @@
-{%- set data-dir = salt['pillar.get']('kubernetesi:worker:runtime:docker:data-dir') -%}
+{%- set data-dir = salt['pillar.get']('kubernetes:worker:runtime:docker:data-dir') -%}
 ### THIS FILE IS MANAGED BY SALTSTACK
 [Unit]
 

@@ -44,7 +44,7 @@ docker-latest-archive:
     - target: /opt/docker/docker-runc
 
 /etc/systemd/system/docker.service:
-    file.managed:
+  file.managed:
     - source: salt://{{ slspath }}/docker.service
     - user: root
     - template: jinja
