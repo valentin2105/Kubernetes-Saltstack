@@ -22,4 +22,4 @@ cni-latest-archive:
     - if_missing: /opt/cni/bin/loopback
 
 include:
-  - k8s-worker/cni/{{ cniProvider }}
+  - .{{ cniProvider }}

@@ -4,8 +4,8 @@
 {%- set criProvider = pillar['kubernetes']['worker']['runtime']['provider'] -%}
 
 include:
-  - k8s-worker/cri/{{ criProvider }}
-  - k8s-worker/cni
+  - .cri/{{ criProvider }}
+  - .cni
 {% if os == "Debian" or os == "Ubuntu" %}
 glusterfs-client:
   pkg.latest
@@ -46,7 +46,7 @@ vm.max_map_count:
 
 /var/lib/kubelet/kubeconfig:
     file.managed:
-    - source: salt://k8s-worker/kubeconfig
+    - source: salt://{{ slspath }}/kubeconfig
     - user: root
     - template: jinja
     - group: root
@@ -54,7 +54,7 @@ vm.max_map_count:
 
 /etc/systemd/system/kubelet.service:
     file.managed:
-    - source: salt://k8s-worker/kubelet.service
+    - source: salt://{{ slspath }}/kubelet.service
     - user: root
     - template: jinja
     - group: root
@@ -62,7 +62,7 @@ vm.max_map_count:
 
 /etc/systemd/system/kube-proxy.service:
   file.managed:
-    - source: salt://k8s-worker/kube-proxy.service
+    - source: salt://{{ slspath }}/kube-proxy.service
     - user: root
     - template: jinja
     - group: root

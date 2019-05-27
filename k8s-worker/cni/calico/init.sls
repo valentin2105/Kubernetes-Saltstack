@@ -27,7 +27,7 @@
     - group: root
     - mode: 755
     - require:
-      - sls: k8s-worker/cni
+      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
 
 /opt/cni/bin/calico-ipam:
   file.managed:
@@ -36,25 +36,25 @@
     - group: root
     - mode: 755
     - require:
-      - sls: k8s-worker/cni
+      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
 
 /etc/calico/kube/kubeconfig:
     file.managed:
-    - source: salt://k8s-worker/cni/calico/kubeconfig
+    - source: salt://{{ slspath }}/kubeconfig
     - user: root
     - template: jinja
     - group: root
     - mode: 640
     - require:
-      - sls: k8s-worker/cni
+      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
 
 /etc/cni/net.d/10-calico.conf:
     file.managed:
-    - source: salt://k8s-worker/cni/calico/10-calico.conf
+    - source: salt://{{ slspath }}/10-calico.conf
     - user: root
     - template: jinja
     - group: root
     - mode: 644
     - require:
-      - sls: k8s-worker/cni
+      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
 
