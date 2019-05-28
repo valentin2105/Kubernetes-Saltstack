@@ -16,7 +16,7 @@
 cni-latest-archive:
   archive.extracted:
     - name: /opt/cni/bin
-    - source: 
+    - source:
 {%- if "v0.7" in cniVersion %}
       - https://github.com/containernetworking/plugins/releases/download/{{ cniVersion }}/cni-plugins-amd64-{{ cniVersion }}.tgz
 {% else %}

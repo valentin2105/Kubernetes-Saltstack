@@ -36,7 +36,7 @@
 
 /opt/cni/bin/calico-ipam:
   file.managed:
-    - source: 
+    - source:
 {%- if "v3.1" in calicoCniVersion %}
       - https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico-ipam
 {% else %}

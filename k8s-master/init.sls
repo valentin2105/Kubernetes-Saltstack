@@ -1,8 +1,8 @@
 {%- set k8sVersion = pillar['kubernetes']['version'] -%}
 {%- set masterCount = pillar['kubernetes']['master']['count'] -%}
-{% set post_install_files = [ 
-  "coredns.yaml", "grafana.yaml", "heapster-rbac.yaml", "heapster.yaml",  
-  "influxdb.yaml", "kube-dns.yaml", "kubernetes-dashboard.yaml",  
+{% set post_install_files = [
+  "coredns.yaml", "grafana.yaml", "heapster-rbac.yaml", "heapster.yaml",
+  "influxdb.yaml", "kube-dns.yaml", "kubernetes-dashboard.yaml",
   "policy-controller.yaml", "rbac-calico.yaml", "rbac-tiller.yaml", "setup.sh"] %}
 
 include:
@@ -69,7 +69,7 @@ include:
     - group: root
     - mode: 644
 
-/var/lib/kubernetes/encryption-config.yaml:    
+/var/lib/kubernetes/encryption-config.yaml:
     file.managed:
     - source: salt://{{ slspath }}/encryption-config.yaml
     - user: root
@@ -89,7 +89,7 @@ include:
     - mode: 644
 {% endif %}
 
-{% for file in post_install_files %} 
+{% for file in post_install_files %}
 /opt/kubernetes/post_install/{{ file }}:
   file.managed:
   - source: salt://{{ slspath.split('/')[0] }}/post_install/{{ file }}
