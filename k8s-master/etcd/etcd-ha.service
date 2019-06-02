@@ -8,6 +8,7 @@
 {%- set node01 =  pillar['kubernetes']['master']['cluster']['node01']['hostname'] -%} 
 {%- set node02 =  pillar['kubernetes']['master']['cluster']['node02']['hostname'] -%} 
 {%- set node03 =  pillar['kubernetes']['master']['cluster']['node03']['hostname'] -%} 
+{%- set clustername =  pillar['kubernetes']['master']['cluster']['name'] | default("kubernetes-cluster")-%}
 {% if hostname == node01 %}
 	{% set currentip = node01ip %}
 {% elif hostname == node02 %}
@@ -36,7 +37,7 @@ ExecStart=/usr/bin/etcd  \
 --advertise-client-urls https://{{ currentip }}:2379 \
 --listen-peer-urls https://{{ currentip }}:2380 \
 --initial-advertise-peer-urls https://{{ currentip }}:2380 \
---initial-cluster-token kubernete-cluster \
+--initial-cluster-token {{ clustername }} \
 --initial-cluster {{ node01 }}=https://{{ node01ip }}:2380,{{ node02 }}=https://{{ node02ip }}:2380,{{ node03 }}=https://{{ node03ip }}:2380 \
 --initial-cluster-state new \
 --peer-client-cert-auth \
