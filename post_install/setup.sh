@@ -2,17 +2,16 @@
 
 {% set HELM_VERSION = salt['pillar.get']('kubernetes:global:helm-version') -%}
 
-kubectl create -f rbac-calico.yaml
-kubectl create -f /opt/calico.yaml
+kubectl create -f https://docs.projectcalico.org/v3.7/manifests/calico.yaml
 sleep 10
-#kubectl create -f kube-dns.yaml
-kubectl create -f coredns.yaml
-kubectl create -f kubernetes-dashboard.yaml
+#kubectl -n kube-system edit configmap coredns #remove loop to resolve coredns issue
+kubectl create -f https://storage.googleapis.com/kubernetes-the-hard-way/coredns.yaml
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
 
-kubectl create -f heapster-rbac.yaml
-kubectl create -f influxdb.yaml
-kubectl create -f grafana.yaml
-kubectl create -f heapster.yaml
+#kubectl create -f heapster-rbac.yaml
+#kubectl create -f influxdb.yaml
+#kubectl create -f grafana.yaml
+#kubectl create -f heapster.yaml
 
 wget https://kubernetes-helm.storage.googleapis.com/helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 tar -zxvf helm-{{ HELM_VERSION }}-linux-amd64.tar.gz

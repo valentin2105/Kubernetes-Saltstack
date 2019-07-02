@@ -46,7 +46,7 @@ kubernetes:
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
-    helm-version: v2.10.0
+    helm-version: v2.14.1
     dashboard-version: v1.10.1
     admin-token: Haim8kay1rarCHANGEMEHaim8kay11ra
     kubelet-token: ahT1eipae1wiCHANGEMEahT1eipa1e1w

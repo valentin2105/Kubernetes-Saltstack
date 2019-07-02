@@ -103,7 +103,7 @@ kubernetes:
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
-    helm-version: v2.10.0
+    helm-version: v2.14.1
     dashboard-version: v1.10.1
     admin-token: Haim8kay1rarCHANGEMEHaim8kay11ra
     kubelet-token: ahT1eipae1wiCHANGEMEahT1eipa1e1w
@@ -127,6 +127,14 @@ curl -L https://bootstrap.saltstack.com -o install_salt
 chmod +x install_salt
 ./install_salt -M
 ```
+Login to the worker nodes and execute following commands to install saltminion component.
+
+```bash
+curl -L https://bootstrap.saltstack.com -o install_salt
+chmod +x install_salt
+./install_salt -A saltmasterip -i workernodename
+```
+
 
 #### The recommended configuration is :
 

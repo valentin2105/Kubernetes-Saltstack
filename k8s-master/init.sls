@@ -1,9 +1,7 @@
 {%- set k8sVersion = pillar['kubernetes']['version'] -%}
 {%- set masterCount = pillar['kubernetes']['master']['count'] -%}
 {% set post_install_files = [
-  "coredns.yaml", "grafana.yaml", "heapster-rbac.yaml", "heapster.yaml",
-  "influxdb.yaml", "kube-dns.yaml", "kubernetes-dashboard.yaml",
-  "policy-controller.yaml", "rbac-calico.yaml", "rbac-tiller.yaml", "setup.sh"] %}
+  "rbac-tiller.yaml", "setup.sh"] %}
 
 include:
   - .etcd
