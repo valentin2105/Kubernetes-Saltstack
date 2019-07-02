@@ -15,21 +15,25 @@ docker-latest-archive:
     - archive_format: tar
     - if_missing: /opt/docker/
 
-/usr/bin/docker-containerd:
+/usr/bin/containerd:
   file.symlink:
-    - target: /opt/docker/docker-containerd
+    - target: /opt/docker/containerd
 
-/usr/bin/docker-containerd-ctr:
+/usr/bin/ctr:
   file.symlink:
-    - target: /opt/docker/docker-containerd-ctr
+    - target: /opt/docker/ctr
 
-/usr/bin/docker-containerd-shim:
+/usr/bin/containerd-shim:
   file.symlink:
-    - target: /opt/docker/docker-containerd-shim
+    - target: /opt/docker/containerd-shim
 
 /usr/bin/dockerd:
   file.symlink:
     - target: /opt/docker/dockerd
+
+/usr/bin/docker-init:
+  file.symlink:
+    - target: /usr/bin/docker-init
 
 /usr/bin/docker:
   file.symlink:
@@ -39,9 +43,9 @@ docker-latest-archive:
   file.symlink:
     - target: /opt/docker/docker-proxy
 
-/usr/bin/docker-runc:
+/usr/bin/runc:
   file.symlink:
-    - target: /opt/docker/docker-runc
+    - target: /opt/docker/runc
 
 /etc/systemd/system/docker.service:
   file.managed:

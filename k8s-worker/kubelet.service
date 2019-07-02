@@ -9,7 +9,6 @@ Requires=docker.service
 
 [Service]
 ExecStart=/usr/bin/kubelet \
-  --allow-privileged=true \
   --cluster-dns=10.32.0.10  \
   --cluster-domain={{ clusterDomain }} \
   --hostname-override={{ hostname }} \
