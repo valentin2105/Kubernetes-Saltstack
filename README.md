@@ -122,9 +122,11 @@ The configuration is done to use the Salt-master as the Kubernetes master. You c
 #### Bootstrap saltmaster
 To install saltmaster, run the following commands in salt master server
 
+```bash
 curl -L https://bootstrap.saltstack.com -o install_salt
 chmod +x install_salt
 ./install_salt -M
+```
 
 #### The recommended configuration is :
 
