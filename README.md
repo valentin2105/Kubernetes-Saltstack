@@ -10,7 +10,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Made for **`systemd`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
 - **CoreDNS** as internal DNS provider
-- Latest Kubernetes release (**1.11.2**)
+- Latest Kubernetes release (**1.15.0**)
 - Support **IPv6**
 - Integrated **add-ons**
 - **Composable** (CNI, CRI)
@@ -56,40 +56,40 @@ After that, edit the `pillar/cluster_config.sls` to configure your future Kubern
 
 ```yaml
 kubernetes:
-  version: v1.11.2
+  version: v1.15.0
   domain: cluster.local
   master:
-#    count: 1
-#    hostname: master.domain.tld
-#    ipaddr: 10.240.0.10
-    count: 3
-    cluster:
-      node01:
-        hostname: master01.domain.tld
-        ipaddr: 10.240.0.10
-      node02:
-        hostname: master02.domain.tld
-        ipaddr: 10.240.0.20
-      node03:
-        hostname: master03.domain.tld
-        ipaddr: 10.240.0.30
-    encryption-key: 'w3RNESCMG+o3GCHTUcrCHANGEMEq6CFV72q/Zik9LAO8uEc='
+    count: 1
+    hostname: k8s-salt.com
+    ipaddr: 1.2.3.4
+#    count: 3
+#    cluster:
+#      node01:
+#        hostname: master01.domain.tld
+#        ipaddr: 10.240.0.10
+#      node02:
+#        hostname: master02.domain.tld
+#        ipaddr: 10.240.0.20
+#      node03:
+#        hostname: master03.domain.tld
+#        ipaddr: 10.240.0.30
+    encryption-key: 'w3RNESCMG+o3GCHTUcrQUUdq6CFV72q/Zik9LAO8uEc='
     etcd:
-      version: v3.3.9
+      version: v3.3.10
   worker:
     runtime:
       provider: docker
       docker:
-        version: 18.03.0-ce
+        version: 18.09.7
         data-dir: /dockerFS
     networking:
-      cni-version: v0.7.1
+      cni-version: v0.7.5
       provider: calico
       calico:
-        version: v3.2.1
-        cni-version: v3.2.1
-        calicoctl-version: v3.2.1
-        controller-version: 3.2-release
+        version: v3.3.1
+        cni-version: v3.3.1
+        calicoctl-version: v3.3.1
+        controller-version: 3.3-release
         as-number: 64512
         token: hu0daeHais3aCHANGEMEhu0daeHais3a
         ipv4:
@@ -99,14 +99,14 @@ kubernetes:
         ipv6:
           enable: false
           nat: true
-          interface: ens18
+          interface: eth0
           range: fd80:24e2:f998:72d6::/64
   global:
     clusterIP-range: 10.32.0.0/16
     helm-version: v2.10.0
-    dashboard-version: v1.10.0
-    admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
-    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi
+    dashboard-version: v1.10.1
+    admin-token: Haim8kay1rarCHANGEMEHaim8kay11ra
+    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipa1e1w
 ```
 ##### Don't forget to change hostnames & tokens  using command like `pwgen 64` !
 
@@ -118,6 +118,13 @@ To deploy your Kubernetes cluster using this formula, you first need to setup yo
 You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) or [Salt-Cloud](https://docs.saltstack.com/en/latest/topics/cloud/) to enhance the process. 
 
 The configuration is done to use the Salt-master as the Kubernetes master. You can have them as different nodes if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
+
+#### Bootstrap saltmaster
+To install saltmaster, run the following commands in salt master server
+
+curl -L https://bootstrap.saltstack.com -o install_salt
+chmod +x install_salt
+./install_salt -M
 
 #### The recommended configuration is :
 
