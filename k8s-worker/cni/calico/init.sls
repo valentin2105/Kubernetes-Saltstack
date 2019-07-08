@@ -1,6 +1,10 @@
 {%- set calicoCniVersion = pillar['kubernetes']['worker']['networking']['calico']['cni-version'] -%}
 {%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
 
+# set k8s-worker.cni if k8s-worker is at the same level of top.sls
+# set <path>.k8s-worker.cni if k8s-worker is in a sub folder
+{% set require_cni = "k8s-worker.cni" if ((sls.split('.') | count) is le 3) else sls.split(".")[0] + ".k8s-worker.cni" %}
+
 /usr/bin/calicoctl:
   file.managed:
     - source: https://github.com/projectcalico/calicoctl/releases/download/{{ calicoctlVersion }}/calicoctl
@@ -23,7 +27,7 @@
 /opt/cni/bin/calico:
   file.managed:
     - source:
-{%- if "v3.1" in calicoCniVersion %}
+{%- if "v3.1" in calicoCniVersion or calicoCniVersion in ["v3.2.1","v3.2.2"] %}
       - https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico
 {% else %}
       - https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico-amd64
@@ -32,12 +36,12 @@
     - group: root
     - mode: 755
     - require:
-      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
+      - sls: {{ require_cni }}
 
 /opt/cni/bin/calico-ipam:
   file.managed:
     - source:
-{%- if "v3.1" in calicoCniVersion %}
+{%- if "v3.1" in calicoCniVersion or calicoCniVersion in ["v3.2.1","v3.2.2"] %}
       - https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico-ipam
 {% else %}
       - https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico-ipam-amd64
@@ -46,7 +50,7 @@
     - group: root
     - mode: 755
     - require:
-      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
+      - sls: {{ require_cni }}
 
 /etc/calico/kube/kubeconfig:
     file.managed:
@@ -56,7 +60,7 @@
     - group: root
     - mode: 640
     - require:
-      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
+      - sls: {{ require_cni }}
 
 /etc/cni/net.d/10-calico.conf:
     file.managed:
@@ -66,5 +70,4 @@
     - group: root
     - mode: 644
     - require:
-      - sls: {{ sls.split('.')[0] }}.k8s-worker.cni
-
+      - sls: {{ require_cni }}
