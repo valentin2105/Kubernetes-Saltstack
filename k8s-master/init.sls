@@ -5,6 +5,10 @@
   "influxdb.yaml", "kube-dns.yaml", "kubernetes-dashboard.yaml",
   "policy-controller.yaml", "rbac-calico.yaml", "rbac-tiller.yaml", "setup.sh"] %}
 
+# set empty if k8s-master is at the same level of top.sls
+# set <path> if k8s-master is in a sub folder
+{% set root_path = "" if ((slspath | wordcount) is lt 3) else slspath.split("/")[0] %}
+
 include:
   - .etcd
 
@@ -82,7 +86,7 @@ include:
 
 /opt/calico.yaml:
     file.managed:
-    - source: salt://{{ slspath.split('/')[0] }}/k8s-worker/cni/calico/calico.tmpl.yaml
+    - source: salt://{{ root_path }}/k8s-worker/cni/calico/calico.tmpl.yaml
     - user: root
     - template: jinja
     - group: root
@@ -92,7 +96,7 @@ include:
 {% for file in post_install_files %}
 /opt/kubernetes/post_install/{{ file }}:
   file.managed:
-  - source: salt://{{ slspath.split('/')[0] }}/post_install/{{ file }}
+  - source: salt://{{ root_path }}/post_install/{{ file }}
   - makedirs: true
   - template: jinja
   - user: root
