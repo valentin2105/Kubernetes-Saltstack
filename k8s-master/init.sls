@@ -7,7 +7,7 @@
 
 # set empty if k8s-master is at the same level of top.sls
 # set <path> if k8s-master is in a sub folder
-{% set root_path = "" if ((slspath | wordcount) is lt 3) else slspath.split("/")[0] %}
+{% set root_path = "" if ((slspath | wordcount) < 3) else slspath.split("/")[0] %}
 
 include:
   - .etcd

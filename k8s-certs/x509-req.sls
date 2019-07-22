@@ -53,5 +53,5 @@ k8s_cert:
     - public_key: "{{ params.pki_path }}/{{ params.pki_cert }}.key"
     - CN: {{ salt['grains.get']('fqdn') }}
     - subjectAltName: 'DNS:{{ salt["grains.get"]("fqdn") }}, {{ ip_list | join(", ") }}'
-    - days_valid: 30
+    - days_valid: 365
     - days_remaining: 10
