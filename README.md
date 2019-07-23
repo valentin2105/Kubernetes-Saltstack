@@ -16,7 +16,11 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - **Composable** (CNI, CRI)
 - **RBAC** & **TLS** by default
 
-## Getting started 
+## Getting started
+
+There a two possibilities, you can create and manage CA and certificates manualy with **`CFSSL`** or you can use **`salted`** managed PKI
+
+### With static CA using cfssl
 
 Let's clone the git repo on Salt-master and create CA & certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
 
@@ -33,7 +37,7 @@ sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
-### IMPORTANT Point
+#### IMPORTANT Point
 
 Because we need to generate our own CA and certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (master & workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
 
@@ -52,12 +56,24 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
+### With internal salt PKI (auto create certificates)
+
+Let's clone the git repo on Salt-master
+
+```bash
+git clone https://github.com/valentin2105/Kubernetes-Saltstack.git /srv/salt
+ln -s /srv/salt/pillar /srv/pillar
+```
+
 After that, edit the `pillar/cluster_config.sls` to configure your future Kubernetes cluster :
 
 ```yaml
 kubernetes:
   version: v1.11.2
   domain: cluster.local
+  pki:
+    enable: true
+    host: master01.domain.tld
   master:
 #    count: 1
 #    hostname: master.domain.tld
@@ -196,7 +212,18 @@ kube-system   monitoring-grafana-5bccc9f786-f4lf2     1/1       Running   0     
 kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0          1m
 ```
 
-## Good to know
+## Good to know with internal salt PKI
+
+you need to start the pki at first, so run the highstate on this node at first (default is kubernetes:cluster:node01)
+
+If you want add a node on your Kubernetes cluster, just add the role into the grains of the server, and then run the command on the new node
+
+```bash
+salt -G 'role:k8s-master' state.highstate
+salt -G 'role:k8s-worker' state.highstate
+```
+
+## Good to know with cfssl
 
 If you want add a node on your Kubernetes cluster, just add the new **Hostname** on `kubernetes-csr.json` and run theses commands :
 
