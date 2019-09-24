@@ -10,7 +10,6 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Made for **`systemd`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
 - **CoreDNS** as internal DNS provider
-- Latest Kubernetes release (**1.11.2**)
 - Support **IPv6**
 - Integrated **add-ons**
 - **Composable** (CNI, CRI)
