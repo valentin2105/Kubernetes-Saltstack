@@ -10,13 +10,16 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Made for **`systemd`** based Linux systems
 - **Routed** networking by default (**`Calico`**)
 - **CoreDNS** as internal DNS provider
-- Latest Kubernetes release (**1.11.2**)
 - Support **IPv6**
 - Integrated **add-ons**
 - **Composable** (CNI, CRI)
 - **RBAC** & **TLS** by default
 
-## Getting started 
+## Getting started
+
+There a two possibilities, you can create and manage CA and certificates manualy with **`CFSSL`** or you can use **`salted`** managed PKI
+
+### With static CA using cfssl
 
 Let's clone the git repo on Salt-master and create CA & certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
 
@@ -33,7 +36,7 @@ sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
-### IMPORTANT Point
+#### IMPORTANT Point
 
 Because we need to generate our own CA and certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (master & workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
 
@@ -52,65 +55,18 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 ```
+### With internal salt PKI (auto create certificates)
+
+Let's clone the git repo on Salt-master
+
+```bash
+git clone https://github.com/valentin2105/Kubernetes-Saltstack.git /srv/salt
+ln -s /srv/salt/pillar /srv/pillar
+```
+
 After that, edit the `pillar/cluster_config.sls` to configure your future Kubernetes cluster :
 
 ```yaml
-kubernetes:
-  version: v1.16.0
-  domain: cluster.local
-
-  master:
-    count: 1
-    hostname: master.domain.tld
-    ipaddr: 10.240.0.10
-
-#    count: 3
-#    cluster:
-#      node01:
-#        hostname: master01.domain.tld
-#        ipaddr: 10.240.0.10
-#      node02:
-#        hostname: master02.domain.tld
-#        ipaddr: 10.240.0.20
-#      node03:
-#        hostname: master03.domain.tld
-#        ipaddr: 10.240.0.30
-
-    encryption-key: 'w3RNESCMG+oNGEMEV72q/Zik9LAO8uEc='
-    etcd:
-      version: v3.3.12
-
-  worker:
-    runtime:
-      provider: docker
-      docker:
-        version: 18.09.9
-        data-dir: /dockerFS
-    networking:
-      cni-version: v0.7.1
-      provider: calico
-      calico:
-        version: v3.9.0
-        cni-version: v3.9.0
-        calicoctl-version: v3.9.0
-        controller-version: 3.9-release
-        as-number: 64512
-        token: hu0daeHais3aNGEMEhu0daeHais3a
-        ipv4:
-          range: 192.168.0.0/16
-          nat: true
-          ip-in-ip: true
-        ipv6:
-          enable: false
-          nat: true
-          interface: eth0
-          range: fd80:24e2:f998:72d6::/64
-  global:
-    clusterIP-range: 10.32.0.0/16
-    helm-version: v2.13.1
-    dashboard-version: v1.10.1
-    admin-token: Haim8kay1rarCHANGEMEHaim8kay1rar
-    kubelet-token: ahT1eipae1wiCHANGEMEahT1eipae1wi
 ```
 ##### Don't forget to change hostnames & tokens  using command like `pwgen 64` !
 
@@ -200,7 +156,18 @@ kube-system   monitoring-grafana-5bccc9f786-f4lf2     1/1       Running   0     
 kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0          1m
 ```
 
-## Good to know
+## Good to know with internal salt PKI
+
+you need to start the pki at first, so run the highstate on this node at first (default is kubernetes:cluster:node01)
+
+If you want add a node on your Kubernetes cluster, just add the role into the grains of the server, and then run the command on the new node
+
+```bash
+salt -G 'role:k8s-master' state.highstate
+salt -G 'role:k8s-worker' state.highstate
+```
+
+## Good to know with cfssl
 
 If you want add a node on your Kubernetes cluster, just add the new **Hostname** on `kubernetes-csr.json` and run theses commands :
 
@@ -227,7 +194,7 @@ Last `highstate` reload your Kubernetes master and configure automatically new w
 - If you use `salt-ssh` or `salt-cloud` you can quickly scale new workers.
 
 
-## Support on Beerpay
-Hey dude! Help me out for a couple of :beers:!
+## Support me on Patreon
+Help me out for a couple of :beers:!
 
-[![Beerpay](https://beerpay.io/valentin2105/Kubernetes-Saltstack/badge.svg?style=beer-square)](https://beerpay.io/valentin2105/Kubernetes-Saltstack)  [![Beerpay](https://beerpay.io/valentin2105/Kubernetes-Saltstack/make-wish.svg?style=flat-square)](https://beerpay.io/valentin2105/Kubernetes-Saltstack?focus=wish)
+https://www.patreon.com/ValentinOuvrard

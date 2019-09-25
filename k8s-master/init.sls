@@ -1,8 +1,16 @@
 {%- set k8sVersion = pillar['kubernetes']['version'] -%}
 {%- set masterCount = pillar['kubernetes']['master']['count'] -%}
+{% set post_install_files = [
+  "coredns.yaml", "grafana.yaml", "heapster-rbac.yaml", "heapster.yaml",
+  "influxdb.yaml", "kube-dns.yaml", "kubernetes-dashboard.yaml",
+  "policy-controller.yaml", "rbac-calico.yaml", "rbac-tiller.yaml", "setup.sh"] %}
+
+# set empty if k8s-master is at the same level of top.sls
+# set <path> if k8s-master is in a sub folder
+{% set root_path = "" if ((slspath | wordcount) < 3) else slspath.split("/")[0] %}
 
 include:
-  - k8s-master/etcd
+  - .etcd
 
 /usr/bin/kube-apiserver:
   file.managed:
@@ -34,7 +42,7 @@ include:
 {% if masterCount == 1 %}
 /etc/systemd/system/kube-apiserver.service:
     file.managed:
-    - source: salt://k8s-master/kube-apiserver.service
+    - source: salt://{{ slspath }}/kube-apiserver.service
     - user: root
     - template: jinja
     - group: root
@@ -42,7 +50,7 @@ include:
 {% elif masterCount == 3 %}
 /etc/systemd/system/kube-apiserver.service:
     file.managed:
-    - source: salt://k8s-master/kube-apiserver-ha.service
+    - source: salt://{{ slspath }}/kube-apiserver-ha.service
     - user: root
     - template: jinja
     - group: root
@@ -51,7 +59,7 @@ include:
 
 /etc/systemd/system/kube-controller-manager.service:
   file.managed:
-    - source: salt://k8s-master/kube-controller-manager.service
+    - source: salt://{{ slspath }}/kube-controller-manager.service
     - user: root
     - template: jinja
     - group: root
@@ -59,15 +67,15 @@ include:
 
 /etc/systemd/system/kube-scheduler.service:
   file.managed:
-    - source: salt://k8s-master/kube-scheduler.service
+    - source: salt://{{ slspath }}/kube-scheduler.service
     - user: root
     - template: jinja
     - group: root
     - mode: 644
 
-/var/lib/kubernetes/encryption-config.yaml:    
+/var/lib/kubernetes/encryption-config.yaml:
     file.managed:
-    - source: salt://k8s-master/encryption-config.yaml
+    - source: salt://{{ slspath }}/encryption-config.yaml
     - user: root
     - template: jinja
     - group: root
@@ -78,13 +86,27 @@ include:
 
 /opt/calico.yaml:
     file.managed:
-    - source: salt://k8s-worker/cni/calico/calico.tmpl.yaml
+    - source: salt://{{ root_path }}/k8s-worker/cni/calico/calico.tmpl.yaml
     - user: root
     - template: jinja
     - group: root
     - mode: 644
 {% endif %}
 
+{% for file in post_install_files %}
+/opt/kubernetes/post_install/{{ file }}:
+  file.managed:
+  - source: salt://{{ root_path }}/post_install/{{ file }}
+  - makedirs: true
+  - template: jinja
+  - user: root
+  - group: root
+{% if file == "setup.sh" %}
+  - mode: 755
+{% else %}
+  - mode: 644
+{% endif %}
+{% endfor %}
 
 kube-apiserver:
   service.running:

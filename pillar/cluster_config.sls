@@ -2,6 +2,11 @@ kubernetes:
   version: v1.16.0
   domain: cluster.local
 
+  pki:
+    enable: true
+    host: master01.domain.tld
+    wildcard: '*.domain.tld'
+
   master:
     count: 1
     hostname: master.domain.tld

@@ -1,12 +1,6 @@
 #!/bin/bash
 
-cd /srv/salt/post_install/
-
-HELM_VERSION=$(cat /srv/salt/pillar/cluster_config.sls |grep helm-version |sed  's/^.*: //g')
-CLUSTER_DOMAIN=$(cat /srv/salt/pillar/cluster_config.sls |grep domain |head -n 1 |sed  's/^.*: //g')
-
-sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" kube-dns.yaml
-sed -i -e "s/CLUSTER_DOMAIN/$CLUSTER_DOMAIN/g" coredns.yaml
+{% set HELM_VERSION = salt['pillar.get']('kubernetes:global:helm-version') -%}
 
 kubectl create -f rbac-calico.yaml
 kubectl create -f /opt/calico.yaml
@@ -20,10 +14,10 @@ kubectl create -f influxdb.yaml
 kubectl create -f grafana.yaml
 kubectl create -f heapster.yaml
 
-wget https://kubernetes-helm.storage.googleapis.com/helm-$HELM_VERSION-linux-amd64.tar.gz
-tar -zxvf helm-$HELM_VERSION-linux-amd64.tar.gz
+wget https://kubernetes-helm.storage.googleapis.com/helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
+tar -zxvf helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 mv linux-amd64/helm /usr/local/bin/helm
-rm -r linux-amd64/ && rm -r helm-$HELM_VERSION-linux-amd64.tar.gz
+rm -r linux-amd64/ && rm -r helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 
 kubectl create serviceaccount tiller --namespace kube-system
 
