@@ -62,6 +62,17 @@
     - require:
       - sls: {{ require_cni }}
 
+
+/etc/calico/calicoctl.cfg:
+    file.managed:
+    - source: salt://{{ slspath }}/calicoctl.cfg
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 640
+    - require:
+      - sls: {{ require_cni }}
+
 /etc/cni/net.d/10-calico.conf:
     file.managed:
     - source: salt://{{ slspath }}/10-calico.conf

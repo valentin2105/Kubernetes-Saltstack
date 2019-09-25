@@ -54,6 +54,8 @@ cfssl gencert \
   -config=ca-config.json \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
+
+chown salt: /srv/salt/k8s-certs/ -R
 ```
 ### With internal salt PKI (auto create certificates)
 
