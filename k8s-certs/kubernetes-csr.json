@@ -5,13 +5,8 @@
     "kubernetes.default",
     "kubernetes.default.svc.cluster.local",
     "ha-master-hostname.domain.tld",
-    "master01.domain.tld",
-    "master02.domain.tld",
-    "master03.domain.tld",
-    "worker01.domain.tld",
-    "worker02.domain.tld",
-    "worker03.domain.tld",
-    "worker04.domain.tld",
+    "<node-hostname>",
+    "<node-public-ip>",
     "127.0.0.1"
   ],
   "key": {

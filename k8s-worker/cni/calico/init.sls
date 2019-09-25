@@ -22,7 +22,7 @@
 
 /opt/cni/bin/calico:
   file.managed:
-    - source: https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico
+    - source: https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico-amd64
     - skip_verify: true
     - group: root
     - mode: 755
@@ -31,7 +31,7 @@
 
 /opt/cni/bin/calico-ipam:
   file.managed:
-    - source: https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico-ipam
+    - source: https://github.com/projectcalico/cni-plugin/releases/download/{{ calicoCniVersion }}/calico-ipam-amd64
     - skip_verify: true
     - group: root
     - mode: 755
@@ -57,4 +57,3 @@
     - mode: 644
     - require:
       - sls: k8s-worker/cni
-

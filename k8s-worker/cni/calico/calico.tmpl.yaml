@@ -32,7 +32,7 @@
 #   calico/cni:master
 #   calico/kube-controllers:master
 kind: DaemonSet
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: calico-node
   namespace: kube-system
@@ -176,7 +176,7 @@ spec:
 
 # This manifest deploys the Calico Kubernetes controllers.
 # See https://github.com/projectcalico/kube-controllers
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-kube-controllers
@@ -189,6 +189,9 @@ metadata:
       [{"key": "dedicated", "value": "master", "effect": "NoSchedule" },
        {"key":"CriticalAddonsOnly", "operator":"Exists"}]
 spec:
+  selector:
+    matchLabels:
+      k8s-app: calico-kube-controllers
   # The controllers can only have a single active instance.
   replicas: 1
   strategy:
@@ -206,7 +209,7 @@ spec:
       serviceAccountName: calico-kube-controllers
       containers:
         - name: calico-kube-controllers
-          image: quay.io/calico/kube-controllers:release-v3.1
+          image: quay.io/calico/kube-controllers:release-v3.9
           env:
             - name: ETCD_ENDPOINTS
               value: "https://{{ etcdEndpoint }}:2379"

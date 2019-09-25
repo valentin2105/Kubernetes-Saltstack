@@ -19,6 +19,15 @@ docker-latest-archive:
   file.symlink:
     - target: /opt/docker/docker-containerd
 
+/usr/bin/containerd:
+  file.symlink:
+    - target: /opt/docker/containerd
+
+
+/usr/bin/runc:
+  file.symlink:
+    - target: /opt/docker/runc
+
 /usr/bin/docker-containerd-ctr:
   file.symlink:
     - target: /opt/docker/docker-containerd-ctr
@@ -26,6 +35,10 @@ docker-latest-archive:
 /usr/bin/docker-containerd-shim:
   file.symlink:
     - target: /opt/docker/docker-containerd-shim
+
+/usr/bin/containerd-shim:
+  file.symlink:
+    - target: /opt/docker/containerd-shim
 
 /usr/bin/dockerd:
   file.symlink:
