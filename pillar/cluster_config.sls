@@ -3,7 +3,7 @@ kubernetes:
   domain: cluster.local
 
   pki:
-    enable: true
+    enable: false
     host: master01.domain.tld
     wildcard: '*.domain.tld'
 
