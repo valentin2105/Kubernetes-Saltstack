@@ -24,7 +24,7 @@ kubernetes:
 #        hostname: master03.domain.tld
 #        ipaddr: 10.240.0.30
 
-    encryption-key: 'w3RNESCMG+oNGEMEV72q/Zik9LAO8uEc='
+    encryption-key: 'w3RNESCMG+o--CHANGEME--V72q/Zik9LAO8uEc='
     etcd:
       version: v3.3.12
 
@@ -43,7 +43,7 @@ kubernetes:
         calicoctl-version: v3.9.0
         controller-version: 3.9-release
         as-number: 64512
-        token: hu0daeHais3aNGEMEhu0daeHais3a
+        token: hu0daeHais3a--CHANGEME--hu0daeHais3a
         ipv4:
           range: 192.168.0.0/16
           nat: true
@@ -58,5 +58,5 @@ kubernetes:
     clusterIP-range: 10.32.0.0/16
     helm-version: v2.13.1
     dashboard-version: v1.10.1
-    admin-token: Haim8kay1rarNGEMEHaim8kay11ra
-    kubelet-token: ahT1eipae1wiNGEMEahT1eipa1e1w
+    admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
+    kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w

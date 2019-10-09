@@ -57,73 +57,18 @@ cfssl gencert \
 
 chown salt: /srv/salt/k8s-certs/ -R
 ```
+### With internal salt PKI (auto create certificates)
+
+Let's clone the git repo on Salt-master
+
+```bash
+git clone https://github.com/valentin2105/Kubernetes-Saltstack.git /srv/salt
+ln -s /srv/salt/pillar /srv/pillar
+```
 
 After that, edit the `pillar/cluster_config.sls` to configure your future Kubernetes cluster :
 
 ```yaml
-kubernetes:
-  version: v1.16.0
-  domain: cluster.local
-
-  pki:
-    enable: false
-    host: master01.domain.tld
-    wildcard: '*.domain.tld'
-
-  master:
-    count: 1
-    hostname: master.domain.tld
-    ipaddr: 10.240.0.10
-
-#    count: 3
-#    cluster:
-#      node01:
-#        hostname: master01.domain.tld
-#        ipaddr: 10.240.0.10
-#      node02:
-#        hostname: master02.domain.tld
-#        ipaddr: 10.240.0.20
-#      node03:
-#        hostname: master03.domain.tld
-#        ipaddr: 10.240.0.30
-
-    encryption-key: 'w3RNESCMG+o--CHANGEME--V72q/Zik9LAO8uEc='
-    etcd:
-      version: v3.3.12
-
-  worker:
-    runtime:
-      provider: docker
-      docker:
-        version: 18.09.9
-        data-dir: /dockerFS
-    networking:
-      cni-version: v0.7.1
-      provider: calico
-      calico:
-        version: v3.9.0
-        cni-version: v3.9.0
-        calicoctl-version: v3.9.0
-        controller-version: 3.9-release
-        as-number: 64512
-        token: hu0daeHais3a--CHANGEME--hu0daeHais3a
-        ipv4:
-          range: 192.168.0.0/16
-          nat: true
-          ip-in-ip: true
-        ipv6:
-          enable: false
-          nat: true
-          interface: eth0
-          range: fd80:24e2:f998:72d6::/64
-
-  global:
-    clusterIP-range: 10.32.0.0/16
-    helm-version: v2.13.1
-    dashboard-version: v1.10.1
-    admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
-    kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
-
 ```
 ##### Don't forget to change hostnames & tokens  using command like `pwgen 64` !
 
@@ -186,16 +131,16 @@ salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE 
-k8s-salt-worker01   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker02   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker03   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker04   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker01   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker02   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker03   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
+k8s-salt-worker04   Ready     <none>     5m       v1.11.2    <none>        Ubuntu 18.04.1 LTS 
 ```
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
 
 ```bash
-/opt/kubernetes/post_install/setup.sh
+/srv/salt/post_install/setup.sh
 
 ~# kubectl get pod --all-namespaces
 NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
@@ -211,6 +156,17 @@ kube-system   tiller-deploy-546cf9696c-hjdbm          1/1       Running   0     
 kube-system   heapster-55c5d9c56b-7drzs               1/1       Running   0          1m
 kube-system   monitoring-grafana-5bccc9f786-f4lf2     1/1       Running   0          1m
 kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0          1m
+```
+
+## Good to know with internal salt PKI
+
+you need to start the pki at first, so run the highstate on this node at first (default is kubernetes:cluster:node01)
+
+If you want add a node on your Kubernetes cluster, just add the role into the grains of the server, and then run the command on the new node
+
+```bash
+salt -G 'role:k8s-master' state.highstate
+salt -G 'role:k8s-worker' state.highstate
 ```
 
 ## Good to know with cfssl
