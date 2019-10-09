@@ -87,7 +87,7 @@ spec:
       tolerations:
         - key: "CriticalAddonsOnly"
           operator: "Exists"
-      priorityClassName: high-priority
+      #priorityClassName: high-priority
       containers:
       - name: coredns
         image: coredns/coredns:1.2.0
