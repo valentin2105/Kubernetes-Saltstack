@@ -17,8 +17,6 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 
 ## Getting started
 
-There a two possibilities, you can create and manage CA and certificates manualy with **`CFSSL`** or you can use **`salted`** managed PKI
-
 ### With static CA using cfssl
 
 Let's clone the git repo on Salt-master and create CA & certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
