@@ -60,7 +60,7 @@ After that, edit the `pillar/cluster_config.sls` to configure your future Kubern
 
 ```yaml
 kubernetes:
-  version: v1.16.0
+  version: v1.16.1
   domain: cluster.local
 
   pki:
