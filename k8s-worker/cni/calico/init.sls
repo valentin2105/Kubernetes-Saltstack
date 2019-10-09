@@ -3,7 +3,7 @@
 
 # set k8s-worker.cni if k8s-worker is at the same level of top.sls
 # set <path>.k8s-worker.cni if k8s-worker is in a sub folder
-{% set require_cni = "k8s-worker.cni" if ((sls.split('.') | count) < 3) else sls.split(".")[0] + ".k8s-worker.cni" %}
+{% set require_cni = "k8s-worker.cni" %}
 
 /usr/bin/calicoctl:
   file.managed:
