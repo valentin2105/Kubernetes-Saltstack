@@ -7,7 +7,9 @@ kubectl create -f /opt/calico.yaml
 sleep 10
 #kubectl create -f kube-dns.yaml
 kubectl create -f coredns.yaml
-kubectl create -f kubernetes-dashboard.yaml
+
+# Kubernetes Dashboard 2.0.0-beta4
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
 
 #kubectl create -f heapster-rbac.yaml
 #kubectl create -f influxdb.yaml
