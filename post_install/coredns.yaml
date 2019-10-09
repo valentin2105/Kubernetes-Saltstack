@@ -90,7 +90,7 @@ spec:
       #priorityClassName: high-priority
       containers:
       - name: coredns
-        image: coredns/coredns:1.2.0
+        image: coredns/coredns:1.6.4
         env:
         imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
