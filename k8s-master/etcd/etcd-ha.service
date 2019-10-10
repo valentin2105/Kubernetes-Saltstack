@@ -25,7 +25,7 @@ Documentation=https://github.com/coreos
 
 [Service]
 ExecStart=/usr/bin/etcd  \
---name={{ hostname }} \
+--name={{ ip }} \
 --data-dir=/var/lib/etcd \
 --cert-file=/etc/etcd/kubernetes.pem  \
 --key-file=/etc/etcd/kubernetes-key.pem \
@@ -33,7 +33,7 @@ ExecStart=/usr/bin/etcd  \
 --peer-key-file=/etc/etcd/kubernetes-key.pem \
 --trusted-ca-file=/etc/etcd/ca.pem \
 --peer-trusted-ca-file=/etc/etcd/ca.pem \
---listen-client-urls https://{{ currentip }}:2379,http://127.0.0.1:2379 \
+--listen-client-urls https://{{ currentip }}:2379 \
 --advertise-client-urls https://{{ currentip }}:2379 \
 --listen-peer-urls https://{{ currentip }}:2380 \
 --initial-advertise-peer-urls https://{{ currentip }}:2380 \
