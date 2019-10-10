@@ -90,7 +90,7 @@ spec:
       #priorityClassName: high-priority
       containers:
       - name: coredns
-        image: coredns/coredns:1.6.4
+        image: coredns/coredns:{{ salt['pillar.get']('kubernetes:global:coredns-version') }}
         env:
         imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
