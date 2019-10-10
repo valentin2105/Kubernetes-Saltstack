@@ -11,8 +11,8 @@ kubectl create -f coredns.yaml
 # Kubernetes Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/{{ DASHBOARD_VERSION }}/aio/deploy/recommended.yaml
 
-{% set METALLB_ENABLE = salt['pillar.get']('kubernetes:metallb:enable') -%}
-{% set METALLB_VERSION = salt['pillar.get']('kubernetes:metallb:version') -%}
+{% set METALLB_ENABLE = salt['pillar.get']('kubernetes:global:metallb:enable') -%}
+{% set METALLB_VERSION = salt['pillar.get']('kubernetes:global:metallb:version') -%}
 {% if METALLB_ENABLE == true -%}
 # MetalLB
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/{{ METALLB_VERSION }}/manifests/metallb.yaml

@@ -28,20 +28,6 @@ kubernetes:
       version: v3.3.12
     encryption-key: 'w3RNESCMG+o--CHANGEME--V72q/Zik9LAO8uEc='
 
-    metallb: 
-      enable: false
-      version: v0.8.1
-      protocol: layer2
-      addresses: 10.100.0.0/24
-
-  global:
-    clusterIP-range: 10.32.0.0/16
-    helm-version: v2.13.1
-    dashboard-version: v2.0.0-beta4
-    coredns-version: 1.6.4 
-    admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
-    kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
-
   worker:
     runtime:
       provider: docker
@@ -67,3 +53,16 @@ kubernetes:
           nat: true
           interface: eth0
           range: fd80:24e2:f998:72d6::/64
+
+  global:
+    clusterIP-range: 10.32.0.0/16
+    helm-version: v2.13.1
+    dashboard-version: v2.0.0-beta4
+    coredns-version: 1.6.4 
+    admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
+    kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
+    metallb: 
+      enable: false
+      version: v0.8.1
+      protocol: layer2
+      addresses: 10.100.0.0/24

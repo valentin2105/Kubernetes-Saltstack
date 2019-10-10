@@ -9,4 +9,4 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - {{ salt['pillar.get']('kubernetes:metallb:addresses') }}
+      - {{ salt['pillar.get']('kubernetes:global:metallb:addresses') }}
