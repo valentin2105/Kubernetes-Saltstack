@@ -1,15 +1,15 @@
 #!/bin/bash
 
 {% set HELM_VERSION = salt['pillar.get']('kubernetes:global:helm-version') -%}
+{% set DASHBOARD_VERSION = salt['pillar.get']('kubernetes:global:dashboard-version') -%}
 
 kubectl create -f rbac-calico.yaml
 kubectl create -f /opt/calico.yaml
 sleep 10
 kubectl create -f coredns.yaml
 
-# Kubernetes Dashboard 2.0.0-beta4
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
-
+# Kubernetes Dashboard
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/{{ DASHBOARD_VERSION }}/aio/deploy/recommended.yaml
 
 {% set METALLB_ENABLE = salt['pillar.get']('kubernetes:metallb:enable') -%}
 {% set METALLB_VERSION = salt['pillar.get']('kubernetes:metallb:version') -%}

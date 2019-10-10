@@ -37,7 +37,8 @@ kubernetes:
   global:
     clusterIP-range: 10.32.0.0/16
     helm-version: v2.13.1
-    dashboard-version: v1.10.1
+    dashboard-version: v2.0.0-beta4
+    coredns-version: 1.6.4 
     admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
     kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
 

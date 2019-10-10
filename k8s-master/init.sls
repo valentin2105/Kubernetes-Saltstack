@@ -2,8 +2,7 @@
 {%- set masterCount = pillar['kubernetes']['master']['count'] -%}
 {% set post_install_files = [
   "coredns.yaml", "grafana.yaml", "heapster-rbac.yaml", "heapster.yaml",
-  "influxdb.yaml", "kube-dns.yaml", "kubernetes-dashboard.yaml",
-  "policy-controller.yaml", "rbac-calico.yaml", "rbac-tiller.yaml", "setup.sh"] %}
+  "influxdb.yaml", "metallb-configmap.yaml", "policy-controller.yaml", "rbac-calico.yaml", "rbac-tiller.yaml", "setup.sh"] %}
 
 # set empty if k8s-master is at the same level of top.sls
 # set <path> if k8s-master is in a sub folder
