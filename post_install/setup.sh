@@ -44,5 +44,5 @@ kubectl get pod,deploy,svc --all-namespaces
 echo ""
 kubectl get nodes
 echo ""
-echo "Kubernetes is now configured with Policy-Controller, Dashboard, Helm and Kube-DNS..."
+echo "Kubernetes is now configured with Policy-Controller, Dashboard, Helm and CoreDNS..."
 echo ""
