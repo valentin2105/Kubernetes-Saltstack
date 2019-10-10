@@ -206,9 +206,6 @@ kube-system   coredns-d44664bbd-596tr                 1/1       Running   0     
 kube-system   coredns-d44664bbd-h8h6m                 1/1       Running   0          1m
 kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0          1m
 kube-system   tiller-deploy-546cf9696c-hjdbm          1/1       Running   0          1m
-kube-system   heapster-55c5d9c56b-7drzs               1/1       Running   0          1m
-kube-system   monitoring-grafana-5bccc9f786-f4lf2     1/1       Running   0          1m
-kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0          1m
 ```
 
 ## Good to know with cfssl
