@@ -37,7 +37,6 @@ ExecStart=/usr/bin/etcd  \
 --advertise-client-urls https://{{ currentip }}:2379 \
 --listen-peer-urls https://{{ currentip }}:2380 \
 --initial-advertise-peer-urls https://{{ currentip }}:2380 \
-#--initial-cluster-token {{ clustername }} \
 --initial-cluster {{ node01 }}=https://{{ node01ip }}:2380,{{ node02 }}=https://{{ node02ip }}:2380,{{ node03 }}=https://{{ node03ip }}:2380 \
 --initial-cluster-state new \
 --peer-client-cert-auth \
@@ -49,3 +48,7 @@ LimitNOFILE=30000
 
 [Install]
 WantedBy=multi-user.target
+
+
+
+#--initial-cluster-token {{ clustername }} \
