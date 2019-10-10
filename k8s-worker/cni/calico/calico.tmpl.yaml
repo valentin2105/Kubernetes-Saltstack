@@ -22,8 +22,7 @@
 	{%- set ipv6preInterface = "interface=" -%}
 {% else %}
 	{%- set IPv6env = "none" -%}
-	{%- set ipv6preInterface = "interface=*" -%}
-	{%- set ipv6preInterface = " " -%}
+	{%- set ipv6preInterface = "interface=" -%}
 {% endif %}
 # Calico Version master
 # https://docs.projectcalico.org/master/releases#master
@@ -116,7 +115,7 @@ spec:
             - name: IP_AUTODETECTION_METHOD
               value: "first-found"
             - name: IP6_AUTODETECTION_METHOD
-              value: "interface={{ ipv6preInterface }}{{ ipv6Interface }}"
+              value: "{{ ipv6preInterface }}{{ ipv6Interface }}"
             - name: FELIX_HEALTHENABLED
               value: "true"
           securityContext:
