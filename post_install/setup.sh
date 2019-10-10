@@ -10,6 +10,15 @@ kubectl create -f coredns.yaml
 # Kubernetes Dashboard 2.0.0-beta4
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta4/aio/deploy/recommended.yaml
 
+
+{% set METALLB_ENABLE = salt['pillar.get']('kubernetes:metallb:enable') -%}
+{% set METALLB_VERSION = salt['pillar.get']('kubernetes:metallb:version') -%}
+{% if METALLB_ENABLE == true -%}
+# MetalLB
+kubectl apply -f https://raw.githubusercontent.com/google/metallb/{{ METALLB_VERSION }}/manifests/metallb.yaml
+kubectl apply -f metallb-configmap.yaml
+{% endif %}
+
 #kubectl create -f heapster-rbac.yaml
 #kubectl create -f influxdb.yaml
 #kubectl create -f grafana.yaml

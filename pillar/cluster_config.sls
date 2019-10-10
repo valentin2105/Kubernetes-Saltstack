@@ -24,9 +24,22 @@ kubernetes:
 #        hostname: master03.domain.tld
 #        ipaddr: 10.240.0.30
 
-    encryption-key: 'w3RNESCMG+o--CHANGEME--V72q/Zik9LAO8uEc='
     etcd:
       version: v3.3.12
+    encryption-key: 'w3RNESCMG+o--CHANGEME--V72q/Zik9LAO8uEc='
+
+    metallb: 
+      enable: false
+      version: v0.8.1
+      protocol: layer2
+      addresses: 10.100.0.0/24
+
+  global:
+    clusterIP-range: 10.32.0.0/16
+    helm-version: v2.13.1
+    dashboard-version: v1.10.1
+    admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
+    kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
 
   worker:
     runtime:
@@ -53,10 +66,3 @@ kubernetes:
           nat: true
           interface: eth0
           range: fd80:24e2:f998:72d6::/64
-
-  global:
-    clusterIP-range: 10.32.0.0/16
-    helm-version: v2.13.1
-    dashboard-version: v1.10.1
-    admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
-    kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
