@@ -25,7 +25,7 @@ Documentation=https://github.com/coreos
 
 [Service]
 ExecStart=/usr/bin/etcd  \
---name={{ clustername }} \
+--name={{ currentip }} \
 --data-dir=/var/lib/etcd \
 --cert-file=/etc/etcd/kubernetes.pem  \
 --key-file=/etc/etcd/kubernetes-key.pem \
@@ -37,7 +37,7 @@ ExecStart=/usr/bin/etcd  \
 --advertise-client-urls https://{{ currentip }}:2379 \
 --listen-peer-urls https://{{ currentip }}:2380 \
 --initial-advertise-peer-urls https://{{ currentip }}:2380 \
---initial-cluster-token {{ clustername }} \
+#--initial-cluster-token {{ clustername }} \
 --initial-cluster {{ node01 }}=https://{{ node01ip }}:2380,{{ node02 }}=https://{{ node02ip }}:2380,{{ node03 }}=https://{{ node03ip }}:2380 \
 --initial-cluster-state new \
 --peer-client-cert-auth \
