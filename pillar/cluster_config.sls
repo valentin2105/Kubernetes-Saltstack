@@ -1,5 +1,5 @@
 kubernetes:
-  version: v1.16.0
+  version: v1.16.1
   domain: cluster.local
 
   pki:
