@@ -26,7 +26,7 @@ kubernetes:
 
     etcd:
       version: v3.3.12
-    encryption-key: 'RW5jcnlwdGlvbktleQ=='
+    encryption-key: '0Wh+uekJUj3SzaKt+BcHUEJX/9Vo2PLGiCoIsND9GyY='
 
   worker:
     runtime:
