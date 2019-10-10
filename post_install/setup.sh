@@ -3,11 +3,16 @@
 {% set HELM_VERSION = salt['pillar.get']('kubernetes:global:helm-version') -%}
 {% set DASHBOARD_VERSION = salt['pillar.get']('kubernetes:global:dashboard-version') -%}
 
+{% set PROVIDER = salt['pillar.get']('kubernetes:worker:networking:provider') -%}
+{% if PROVIDER == "calico" -%}
 kubectl create -f rbac-calico.yaml
 kubectl create -f /opt/calico.yaml
-sleep 10
-kubectl create -f coredns.yaml
+sleep 15
+{% endif %}
 
+# CoreDNS
+kubectl create -f coredns.yaml
+sleep 5
 # Kubernetes Dashboard
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/{{ DASHBOARD_VERSION }}/aio/deploy/recommended.yaml
 
@@ -35,9 +40,9 @@ helm init --service-account tiller --output yaml | sed 's@apiVersion: extensions
 
 sleep 2
 echo ""
-echo "Kubernetes is now configured with Policy-Controller, Dashboard, Helm and Kube-DNS..."
-echo ""
 kubectl get pod,deploy,svc --all-namespaces
 echo ""
 kubectl get nodes
+echo ""
+echo "Kubernetes is now configured with Policy-Controller, Dashboard, Helm and Kube-DNS..."
 echo ""
