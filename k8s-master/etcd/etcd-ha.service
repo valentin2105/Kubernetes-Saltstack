@@ -25,7 +25,7 @@ Documentation=https://github.com/coreos
 
 [Service]
 ExecStart=/usr/bin/etcd  \
---name={{ ip }} \
+--name={{ node01ip }} \
 --data-dir=/var/lib/etcd \
 --cert-file=/etc/etcd/kubernetes.pem  \
 --key-file=/etc/etcd/kubernetes-key.pem \
