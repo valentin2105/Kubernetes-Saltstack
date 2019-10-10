@@ -3,6 +3,7 @@
 {%- set ipv6Interface = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['interface'] -%}
 {%- set masterCount = pillar['kubernetes']['master']['count'] -%}
 {%- set enableIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['enable'] -%}
+{%- set enableNATIPv6 = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['nat'] -%}
 {%- set ipv6Range = pillar['kubernetes']['worker']['networking']['calico']['ipv6']['range'] -%}
 {% if masterCount == 1 %}
 	{%- set etcdEndpoint = pillar['kubernetes']['master']['ipaddr'] -%}
@@ -116,6 +117,8 @@ spec:
               value: "first-found"
             - name: IP6_AUTODETECTION_METHOD
               value: "{{ ipv6preInterface }}{{ ipv6Interface }}"
+            - name: CALICO_IPV6POOL_NAT_OUTGOING
+              value: "{{ enableNATIPv6 }}"
             - name: FELIX_HEALTHENABLED
               value: "true"
           securityContext:
