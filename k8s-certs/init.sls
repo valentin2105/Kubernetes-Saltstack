@@ -1,4 +1,3 @@
----
 {%- from slspath + "/k8s_params.jinja" import ca_host with context %}
 include:
 {%- if salt["pillar.get"]("kubernetes:pki:enable") %}
