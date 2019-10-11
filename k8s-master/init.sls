@@ -125,3 +125,27 @@ kube-scheduler:
    - watch:
      - /etc/systemd/system/kube-scheduler.service
      - /var/lib/kubernetes/kubernetes.pem
+
+{%- set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] -%}
+{%- if cniProvider == "calico" %}
+{%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
+
+/etc/calico/calicoctl.cfg:
+    file.managed:
+    - source: salt://k8s-worker/cni/calico/calicoctl.cfg
+    - user: root
+    - template: jinja
+    - group: root
+    - mode: 640
+
+/usr/bin/calicoctl:
+  file.managed:
+    - source: https://github.com/projectcalico/calicoctl/releases/download/{{ calicoctlVersion }}/calicoctl
+    - skip_verify: true
+    - group: root
+    - mode: 755
+
+{% endif %}
+
+
+
