@@ -128,7 +128,7 @@ kube-scheduler:
 
 {%- set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] -%}
 {%- if cniProvider == "calico" %}
-{%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
+  {%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
 
 /etc/calico/calicoctl.cfg:
   file.managed:
