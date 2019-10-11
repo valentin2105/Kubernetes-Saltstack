@@ -2,11 +2,6 @@ kubernetes:
   version: v1.16.1
   domain: cluster.local
 
-  pki:
-    enable: false
-    host: master01.domain.tld
-    wildcard: '*.domain.tld'
-
   master:
     count: 1
     hostname: master.domain.tld
@@ -27,6 +22,11 @@ kubernetes:
     etcd:
       version: v3.3.12
     encryption-key: '0Wh+uekJUj3SzaKt+BcHUEJX/9Vo2PLGiCoIsND9GyY='
+
+  pki:
+    enable: false
+    host: master01.domain.tld
+    wildcard: '*.domain.tld'
 
   worker:
     runtime:

@@ -11,7 +11,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - **Routed** networking by default (**`Calico`**)
 - **CoreDNS** as internal DNS provider
 - Support **IPv6**
-- Integrated **add-ons**
+- Integrated **add-ons** (MetalLB, CoreDNS, Dashboard, Helm, ...)
 - **Composable** (CNI, CRI)
 - **RBAC** & **TLS** by default
 
@@ -63,14 +63,9 @@ kubernetes:
   version: v1.16.1
   domain: cluster.local
 
-  pki:
-    enable: false
-    host: master01.domain.tld
-    wildcard: '*.domain.tld'
-
   master:
     count: 1
-    hostname: master.domain.tld
+    hostname: <ValidHostname-or-IP>
     ipaddr: 10.240.0.10
 
 #    count: 3
@@ -85,9 +80,14 @@ kubernetes:
 #        hostname: master03.domain.tld
 #        ipaddr: 10.240.0.30
 
-    encryption-key: 'w3RNESCMG+o--CHANGEME--V72q/Zik9LAO8uEc='
     etcd:
       version: v3.3.12
+    encryption-key: '0Wh+uekJUj3SzaKt+BcHUEJX/9Vo2PLGiCoIsND9GyY='
+
+  pki:
+    enable: false
+    host: master01.domain.tld
+    wildcard: '*.domain.tld'
 
   worker:
     runtime:
@@ -118,10 +118,16 @@ kubernetes:
   global:
     clusterIP-range: 10.32.0.0/16
     helm-version: v2.13.1
-    dashboard-version: v1.10.1
+    dashboard-version: v2.0.0-beta4
+    coredns-version: 1.6.4 
     admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
     kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
 
+    metallb: 
+      enable: true
+      version: v0.8.1
+      protocol: layer2
+      addresses: 10.100.0.0/24
 ```
 ##### Don't forget to change hostnames & tokens  using command like `pwgen 64` !
 
@@ -183,11 +189,11 @@ etcd-2               Healthy   {"health": "true"}
 salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
-NAME                STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE 
-k8s-salt-worker01   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker02   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker03   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
-k8s-salt-worker04   Ready     <none>     5m       v1.16.1    <none>        Ubuntu 18.04.1 LTS 
+NAME           STATUS   ROLES    AGE     VERSION   OS-IMAGE                       KERNEL-VERSION           CONTAINER-RUNTIME
+k8s-worker01   Ready    <none>   3h56m   v1.16.1   Ubuntu 18.04.3 LTS             4.15.0-58-generic        docker://18.9.9
+k8s-worker02   Ready    <none>   3h56m   v1.16.1   Ubuntu 18.04.3 LTS             4.15.0-58-generic        docker://18.9.9
+k8s-worker03   Ready    <none>   91m     v1.16.1   Debian GNU/Linux 10 (buster)   4.19.0-6-cloud-amd64     docker://18.9.9
+k8s-worker04   Ready    <none>   67m     v1.16.1   Fedora 30 (Cloud Edition)      5.2.18-200.fc30.x86_64   docker://18.9.9
 ```
 
 To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
@@ -196,16 +202,25 @@ To enable add-ons on the Kubernetes cluster, you can launch the `post_install/se
 /opt/kubernetes/post_install/setup.sh
 
 ~# kubectl get pod --all-namespaces
-NAMESPACE     NAME                                    READY     STATUS    RESTARTS   AGE
-kube-system   calico-kube-controllers-fcc5cb8ff-tfm7v 1/1       Running   0          1m
-kube-system   calico-node-bntsh                       1/1       Running   0          1m
-kube-system   calico-node-fbicr                       1/1       Running   0          1m
-kube-system   calico-node-badop                       1/1       Running   0          1m
-kube-system   calico-node-rcrze                       1/1       Running   0          1m
-kube-system   coredns-d44664bbd-596tr                 1/1       Running   0          1m
-kube-system   coredns-d44664bbd-h8h6m                 1/1       Running   0          1m
-kube-system   kubernetes-dashboard-7c5d596d8c-4zmt4   1/1       Running   0          1m
-kube-system   tiller-deploy-546cf9696c-hjdbm          1/1       Running   0          1m
+default                pod/debug-85d7f9799-dtc6c                            1/1     Running
+kube-system            pod/calico-kube-controllers-5979855b8-vdpvw          1/1     Running
+kube-system            pod/calico-node-h7n58                                1/1     Running
+kube-system            pod/calico-node-jl4fc                                1/1     Running
+kube-system            pod/calico-node-tv5cq                                1/1     Running
+kube-system            pod/calico-node-xxbgh                                1/1     Running
+kube-system            pod/coredns-7c7c6c44bf-4lxn4                         1/1     Running
+kube-system            pod/coredns-7c7c6c44bf-t9g7v                         1/1     Running
+kube-system            pod/tiller-deploy-6966cf57d8-jpf5k                   1/1     Running
+kubernetes-dashboard   pod/dashboard-metrics-scraper-566cddb686-mf8xn       1/1     Running
+kubernetes-dashboard   pod/kubernetes-dashboard-7b5bf5d559-25cdb            1/1     Running
+metallb-system         pod/controller-6bcfdfd677-g9s6f                      1/1     Running
+metallb-system         pod/speaker-bmx5p                                    1/1     Running
+metallb-system         pod/speaker-g8cqr                                    1/1     Running
+metallb-system         pod/speaker-mklzd                                    1/1     Running
+metallb-system         pod/speaker-xmhkm                                    1/1     Running
+nginx-ingress          pod/nginx-ingress-controller-5dcb7b4488-b68zj        1/1     Running
+nginx-ingress          pod/nginx-ingress-controller-5dcb7b4488-n7kwc        1/1     Running
+nginx-ingress          pod/nginx-ingress-default-backend-659bd647bd-5l2km   1/1     Running
 ```
 
 ## Good to know with cfssl
