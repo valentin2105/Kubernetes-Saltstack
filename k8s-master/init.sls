@@ -131,7 +131,7 @@ kube-scheduler:
 {%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
 
 /etc/calico/calicoctl.cfg:
-    file.managed:
+  file.managed:
     - source: salt://k8s-worker/cni/calico/calicoctl.cfg
     - user: root
     - template: jinja
@@ -146,6 +146,3 @@ kube-scheduler:
     - mode: 755
 
 {% endif %}
-
-
-
