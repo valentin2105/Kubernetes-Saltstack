@@ -126,9 +126,15 @@ kube-scheduler:
      - /etc/systemd/system/kube-scheduler.service
      - /var/lib/kubernetes/kubernetes.pem
 
-{%- set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] -%}
-{%- if cniProvider == "calico" %}
-  {%- set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] -%}
+{% set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] %}
+{% if cniProvider == "calico" %}
+{% set calicoctlVersion = pillar['kubernetes']['worker']['networking']['calico']['calicoctl-version'] %}
+
+/etc/calico:
+  file.directory:
+    - user: root
+    - group: root
+    - dir_mode: 750
 
 /etc/calico/calicoctl.cfg:
   file.managed:
