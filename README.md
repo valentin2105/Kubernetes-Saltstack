@@ -175,7 +175,7 @@ After that, you can apply your configuration (`highstate`) :
 
 ```bash
 # Apply Kubernetes master configurations
-salt -G 'role:k8s-master' state.highstate 
+~# salt -G 'role:k8s-master' state.highstate 
 
 ~# kubectl get componentstatuses
 NAME                 STATUS    MESSAGE              ERROR
@@ -186,7 +186,7 @@ etcd-1               Healthy   {"health": "true"}
 etcd-2               Healthy   {"health": "true"}
 
 # Apply Kubernetes worker configurations
-salt -G 'role:k8s-worker' state.highstate
+~# salt -G 'role:k8s-worker' state.highstate
 
 ~# kubectl get nodes
 NAME           STATUS   ROLES    AGE     VERSION   OS-IMAGE                       KERNEL-VERSION           CONTAINER-RUNTIME
