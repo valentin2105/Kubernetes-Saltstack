@@ -113,18 +113,21 @@ kube-apiserver:
     - watch:
       - /etc/systemd/system/kube-apiserver.service
       - /var/lib/kubernetes/kubernetes.pem
+      - /var/lib/kubernetes/ca.pem
 kube-controller-manager:
   service.running:
     - enable: True
     - watch:
       - /etc/systemd/system/kube-controller-manager.service
       - /var/lib/kubernetes/kubernetes.pem
+      - /var/lib/kubernetes/ca.pem
 kube-scheduler:
   service.running:
-   - enable: True
-   - watch:
-     - /etc/systemd/system/kube-scheduler.service
-     - /var/lib/kubernetes/kubernetes.pem
+    - enable: True
+    - watch:
+      - /etc/systemd/system/kube-scheduler.service
+      - /var/lib/kubernetes/kubernetes.pem
+      - /var/lib/kubernetes/ca.pem
 
 {% set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] %}
 {% if cniProvider == "calico" %}
