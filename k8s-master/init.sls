@@ -107,27 +107,6 @@ include:
 {% endif %}
 {% endfor %}
 
-kube-apiserver:
-  service.running:
-    - enable: True
-    - watch:
-      - /etc/systemd/system/kube-apiserver.service
-      - /var/lib/kubernetes/kubernetes.pem
-      - /var/lib/kubernetes/ca.pem
-kube-controller-manager:
-  service.running:
-    - enable: True
-    - watch:
-      - /etc/systemd/system/kube-controller-manager.service
-      - /var/lib/kubernetes/kubernetes.pem
-      - /var/lib/kubernetes/ca.pem
-kube-scheduler:
-  service.running:
-    - enable: True
-    - watch:
-      - /etc/systemd/system/kube-scheduler.service
-      - /var/lib/kubernetes/kubernetes.pem
-      - /var/lib/kubernetes/ca.pem
 
 {% set cniProvider = pillar['kubernetes']['worker']['networking']['provider'] %}
 {% if cniProvider == "calico" %}
@@ -155,3 +134,28 @@ kube-scheduler:
     - mode: 755
 
 {% endif %}
+
+kube-apiserver:
+  service.running:
+    - enable: True
+    - watch:
+      - /etc/systemd/system/kube-apiserver.service
+      - /var/lib/kubernetes/kubernetes.pem
+      - /var/lib/kubernetes/ca.pem
+      - /usr/bin/kube-apiserver
+kube-controller-manager:
+  service.running:
+    - enable: True
+    - watch:
+      - /etc/systemd/system/kube-controller-manager.service
+      - /var/lib/kubernetes/kubernetes.pem
+      - /var/lib/kubernetes/ca.pem
+      - /usr/bin/kube-controller-manager
+kube-scheduler:
+  service.running:
+    - enable: True
+    - watch:
+      - /etc/systemd/system/kube-scheduler.service
+      - /var/lib/kubernetes/kubernetes.pem
+      - /var/lib/kubernetes/ca.pem
+      - /usr/bin/kube-scheduler

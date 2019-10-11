@@ -56,3 +56,4 @@ etcd:
       - /etc/systemd/system/etcd.service
       - /etc/etcd/kubernetes.pem
       - /etc/etcd/ca.pem
+      - /usr/bin/etcd

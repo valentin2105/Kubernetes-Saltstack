@@ -75,6 +75,7 @@ kubelet:
       - /etc/systemd/system/kubelet.service
       - /var/lib/kubernetes/kubernetes.pem
       - /var/lib/kubernetes/ca.pem
+      - /usr/bin/kubelet
 
 kube-proxy:
   service.running:
@@ -83,6 +84,7 @@ kube-proxy:
       - /etc/systemd/system/kube-proxy.service
       - /var/lib/kubernetes/kubernetes.pem
       - /var/lib/kubernetes/ca.pem
+      - /usr/bin/kube-proxy
 
 {% if enableIPv6 == true %}
 net.ipv6.conf.all.forwarding:
