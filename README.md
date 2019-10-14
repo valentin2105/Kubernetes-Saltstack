@@ -8,16 +8,16 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - Support **high-available** clusters
 - Use the power of **`Saltstack`**
 - Made for **`systemd`** based Linux systems
-- **Routed** networking by default (**`Calico`**)
-- **CoreDNS** as internal DNS provider
-- Support **IPv6**
+- **Layer 3** networking by default (**`Calico`**)
+- **`CoreDNS`** as internal DNS resolver
+- Highly **Composable** (CNI, CRI, Add-ons)
 - Integrated **add-ons** (MetalLB, CoreDNS, Dashboard, Helm, ...)
-- **Composable** (CNI, CRI)
 - **RBAC** & **TLS** by default
+- Support **IPv6**
 
 ## Getting started
 
-### With static CA using cfssl
+#### I. Generate CA and TLS certificates using CfSSL
 
 Let's clone the git repo on Salt-master and create CA & certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
 
@@ -34,17 +34,23 @@ sudo mv cfssl_linux-amd64 /usr/local/bin/cfssl
 sudo mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
 ```
 
-#### IMPORTANT Point
+##### IMPORTANT Point
 
-Because we need to generate our own CA and certificates for the cluster, You MUST put **every hostnames of the Kubernetes cluster** (master & workers) in the `certs/kubernetes-csr.json` (`hosts` field). You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
+Because we generate our own CA and certificates for the cluster, 
 
-You can use either public or private names, but they must be registered somewhere (DNS provider, internal DNS server, `/etc/hosts` file).
+You MUST put **every hostnames and IPs of the Kubernetes cluster** (master & workers) in the `certs/kubernetes-csr.json` (**`hosts`** field). 
+
+You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
+
+You can use either public or private names, but they must be registered somewhere (DNS provider, internal DNS server, `/etc/hosts` file) or use IP records instead of names.
 
 ```bash
 cd /srv/salt/k8s-certs
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
+# !!!!!!!!!
 # Don't forget to edit kubernetes-csr.json before this point !
+# !!!!!!!!!
 
 cfssl gencert \
   -ca=ca.pem \
@@ -67,18 +73,6 @@ kubernetes:
     count: 1
     hostname: <ValidHostname-or-IP>
     ipaddr: 10.240.0.10
-
-#    count: 3
-#    cluster:
-#      node01:
-#        hostname: master01.domain.tld
-#        ipaddr: 10.240.0.10
-#      node02:
-#        hostname: master02.domain.tld
-#        ipaddr: 10.240.0.20
-#      node03:
-#        hostname: master03.domain.tld
-#        ipaddr: 10.240.0.30
 
     etcd:
       version: v3.3.12
@@ -129,13 +123,14 @@ kubernetes:
       protocol: layer2
       addresses: 10.100.0.0/24
 ```
-##### Don't forget to change hostnames & tokens  using command like `pwgen 64` !
+
+###### Don't forget to change Master's hostname & Tokens  using `pwgen` for example !
 
 If you want to enable IPv6 on pod's side, you need to change `kubernetes.worker.networking.calico.ipv6.enable` to `true`.
 
 ## Deployment
 
-To deploy your Kubernetes cluster using this formula, you first need to setup your Saltstack master/Minion.  
+To deploy your Kubernetes cluster using this formula, you first need to setup your Saltstack master/Minion.
 You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) or [Salt-Cloud](https://docs.saltstack.com/en/latest/topics/cloud/) to enhance the process. 
 
 The configuration is done to use the Salt-master as the Kubernetes master. You can have them as different nodes if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
