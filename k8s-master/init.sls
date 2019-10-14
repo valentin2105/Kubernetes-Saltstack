@@ -118,16 +118,18 @@ include:
     - group: root
     - dir_mode: 750
 
-/etc/calico/calicoctl.cfg:
+/etc/calico/calicoctl.cfg-master:
   file.managed:
+    - name: /etc/calico/calicoctl.cfg
     - source: salt://k8s-worker/cni/calico/calicoctl.cfg
     - user: root
     - template: jinja
     - group: root
     - mode: 640
 
-/usr/bin/calicoctl:
+/usr/bin/calicoctl-master:
   file.managed:
+    - name: /usr/bin/calicoctl
     - source: https://github.com/projectcalico/calicoctl/releases/download/{{ calicoctlVersion }}/calicoctl
     - skip_verify: true
     - group: root
