@@ -17,7 +17,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 
 ## Getting started
 
-#### I. Generate CA and TLS certificates using CfSSL
+### I. Generate CA and TLS certificates using CfSSL
 
 Let's clone the git repo on Salt-master and create CA & certificates on the `k8s-certs/` directory using **`CfSSL`** tools:
 
@@ -42,7 +42,7 @@ You MUST put **every hostnames and IPs of the Kubernetes cluster** (master & wor
 
 You can also modify the `certs/*json` files to match your cluster-name / country. (optional)  
 
-You can use either public or private names, but they must be registered somewhere (DNS provider, internal DNS server, `/etc/hosts` file) or use IP records instead of names.
+You can use **either public or private names**, but they must be registered somewhere (DNS provider, internal DNS server, `/etc/hosts` file) or use **IP records instead of names**.
 
 ```bash
 cd /srv/salt/k8s-certs
@@ -62,7 +62,7 @@ cfssl gencert \
 chown salt: /srv/salt/k8s-certs/ -R
 ```
 
-After that, edit the `pillar/cluster_config.sls` to configure your future Kubernetes cluster :
+After that, edit the `pillar/cluster_config.sls` to tweak your future Kubernetes cluster :
 
 ```yaml
 kubernetes:
@@ -128,12 +128,15 @@ kubernetes:
 
 If you want to enable IPv6 on pod's side, you need to change `kubernetes.worker.networking.calico.ipv6.enable` to `true`.
 
-## Deployment
+### II. Cluster deployment
 
 To deploy your Kubernetes cluster using this formula, you first need to setup your Saltstack master/Minion.
+
 You can use [Salt-Bootstrap](https://docs.saltstack.com/en/stage/topics/tutorials/salt_bootstrap.html) or [Salt-Cloud](https://docs.saltstack.com/en/latest/topics/cloud/) to enhance the process. 
 
-The configuration is done to use the Salt-master as the Kubernetes master. You can have them as different nodes if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
+The configuration is done to use the Salt-master as the Kubernetes master. 
+
+You can have them as different nodes if needed but the `post_install/script.sh` require `kubectl` and access to the `pillar` files.
 
 #### The recommended configuration is :
 
@@ -166,13 +169,13 @@ EOF
 service salt-minion restart 
 ```
 
-After that, you can apply your configuration (`highstate`) :
+After that, you can apply your configuration with a (`highstate`) :
 
 ```bash
-# Apply Kubernetes master configurations
-~# salt -G 'role:k8s-master' state.highstate 
+# Apply Kubernetes master configurations :
+~ salt -G 'role:k8s-master' state.highstate 
 
-~# kubectl get componentstatuses
+~ kubectl get componentstatuses
 NAME                 STATUS    MESSAGE              ERROR
 scheduler            Healthy   ok
 controller-manager   Healthy   ok
@@ -180,21 +183,18 @@ etcd-0               Healthy   {"health": "true"}
 etcd-1               Healthy   {"health": "true"}
 etcd-2               Healthy   {"health": "true"}
 
-# Apply Kubernetes worker configurations
-~# salt -G 'role:k8s-worker' state.highstate
+# Apply Kubernetes worker configurations :
+~ salt -G 'role:k8s-worker' state.highstate
 
-~# kubectl get nodes
+~ kubectl get nodes
 NAME           STATUS   ROLES    AGE     VERSION   OS-IMAGE                       KERNEL-VERSION           CONTAINER-RUNTIME
 k8s-worker01   Ready    <none>   3h56m   v1.16.1   Ubuntu 18.04.3 LTS             4.15.0-58-generic        docker://18.9.9
 k8s-worker02   Ready    <none>   3h56m   v1.16.1   Ubuntu 18.04.3 LTS             4.15.0-58-generic        docker://18.9.9
 k8s-worker03   Ready    <none>   91m     v1.16.1   Debian GNU/Linux 10 (buster)   4.19.0-6-cloud-amd64     docker://18.9.9
 k8s-worker04   Ready    <none>   67m     v1.16.1   Fedora 30 (Cloud Edition)      5.2.18-200.fc30.x86_64   docker://18.9.9
-```
 
-To enable add-ons on the Kubernetes cluster, you can launch the `post_install/setup.sh` script :
-
-```bash
-/opt/kubernetes/post_install/setup.sh
+# Deploy Calico and Add-ons :
+~  /opt/kubernetes/post_install/setup.sh
 
 ~# kubectl get pod --all-namespaces
 default                pod/debug-85d7f9799-dtc6c                            1/1     Running
@@ -218,9 +218,9 @@ nginx-ingress          pod/nginx-ingress-controller-5dcb7b4488-n7kwc        1/1 
 nginx-ingress          pod/nginx-ingress-default-backend-659bd647bd-5l2km   1/1     Running
 ```
 
-## Good to know with cfssl
+### III. Add nodes afterwards 
 
-If you want add a node on your Kubernetes cluster, just add the new **Hostname** on `kubernetes-csr.json` and run theses commands :
+If you want add a node on your Kubernetes cluster, just add the new **Hostname**  and *IPs* on `kubernetes-csr.json` and run theses commands to regenerate your cluster certificates :
 
 ```bash
 cd /srv/salt/k8s-certs
@@ -232,18 +232,18 @@ cfssl gencert \
   -profile=kubernetes \
   kubernetes-csr.json | cfssljson -bare kubernetes
 
+# Reload k8s components on Master and Workers.
 salt -G 'role:k8s-master' state.highstate
 salt -G 'role:k8s-worker' state.highstate
 ```
 
-Last `highstate` reload your Kubernetes master and configure automatically new workers.
+The `highstate` configure automatically new workers (if it match the k8s-worker role in Grains).
 
 - Tested on Debian, Ubuntu and Fedora.
-- You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `state.highstate`.
-- This configuration use ECDSA certificates (you can switch to `rsa` if needed in `certs/*.json`).
-- You can tweak Pod's IPv4 pool, enable IPv6, change IPv6 pool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing of different cloud providers).
+- You can easily upgrade software version on your cluster by changing values in `pillar/cluster_config.sls` and apply a `highstate`.
+- This configuration use ECDSA certificates (you can switch to `rsa` in `certs/*.json`).
+- You can change IPv4 IPPool, enable IPv6, change IPv6 IPPool, enable IPv6 NAT (for no-public networks), change BGP AS number, Enable IPinIP (to allow routes sharing between subnets).
 - If you use `salt-ssh` or `salt-cloud` you can quickly scale new workers.
-
 
 ## Support me on Patreon
 Help me out for a couple of :beers:!
