@@ -111,17 +111,23 @@ kubernetes:
 
   global:
     clusterIP-range: 10.32.0.0/16
-    helm-version: v2.13.1
+    helm-version: v2.14.3
     dashboard-version: v2.0.0-beta4
     coredns-version: 1.6.4 
     admin-token: Haim8kay1rar--CHANGEME--Haim8kay11ra
     kubelet-token: ahT1eipae1wi--CHANGEME--ahT1eipa1e1w
-
     metallb: 
-      enable: true
+      enable: false
       version: v0.8.1
       protocol: layer2
       addresses: 10.100.0.0/24
+    nginx-ingress:
+      enable: false 
+      version: 0.26.1
+      service-type: LoadBalancer
+    cert-manager:
+      enable: false
+      version: v0.11.0
 ```
 
 ###### Don't forget to change Master's hostname & Tokens  using `pwgen` for example !
