@@ -11,7 +11,7 @@ Kubernetes-Saltstack provide an easy way to deploy H/A **Kubernetes Cluster** us
 - **Layer 3** networking by default (**`Calico`**)
 - **`CoreDNS`** as internal DNS resolver
 - Highly **Composable** (CNI, CRI, Add-ons)
-- Integrated **add-ons** (MetalLB, CoreDNS, Dashboard, Helm, ...)
+- Integrated **add-ons** (Helm, CoreDNS, MetalLB, Dashboard, Nginx-Ingress, ...)
 - **RBAC** & **TLS** by default
 - Support **IPv6**
 
@@ -197,6 +197,9 @@ k8s-worker04   Ready    <none>   67m     v1.16.1   Fedora 30 (Cloud Edition)    
 ~  /opt/kubernetes/post_install/setup.sh
 
 ~# kubectl get pod --all-namespaces
+cert-manager           pod/cert-manager-55c44f98f-vmpcm                     1/1     Running     
+cert-manager           pod/cert-manager-cainjector-576978ffc8-w7m5j         1/1     Running     
+cert-manager           pod/cert-manager-webhook-c67fbc858-tjcvm             1/1     Running     
 default                pod/debug-85d7f9799-dtc6c                            1/1     Running
 kube-system            pod/calico-kube-controllers-5979855b8-vdpvw          1/1     Running
 kube-system            pod/calico-node-h7n58                                1/1     Running
