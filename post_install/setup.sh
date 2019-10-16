@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /opt/kubernetes/post_install
+
 {% set HELM_VERSION = salt['pillar.get']('kubernetes:global:helm-version') -%}
 {% set DASHBOARD_VERSION = salt['pillar.get']('kubernetes:global:dashboard-version') -%}
 
@@ -24,20 +26,18 @@ mv linux-amd64/helm /usr/local/bin/helm
 rm -r linux-amd64/ && rm -r helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 
 kubectl create serviceaccount tiller --namespace kube-system
-cd /opt/kubernetes/post_install 
+
 kubectl apply -f rbac-tiller.yaml
-cd -
 helm init --service-account tiller --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | sed 's@  replicas: 1@  replicas: 1\n  selector: {"matchLabels": {"app": "helm", "name": "tiller"}}@' | kubectl apply -f -
 sleep 10
 
 # MetalLB
 {% set METALLB_ENABLE = salt['pillar.get']('kubernetes:global:metallb:enable') -%}
 {% set METALLB_VERSION = salt['pillar.get']('kubernetes:global:metallb:version') -%}
+
 {% if METALLB_ENABLE == true -%}
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/{{ METALLB_VERSION }}/manifests/metallb.yaml
-cd /opt/kubernetes/post_install
 kubectl apply -f metallb-configmap.yaml
-cd -
 {% endif %}
 
 # Nginx-Ingress
