@@ -25,11 +25,10 @@ tar -zxvf helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 mv linux-amd64/helm /usr/local/bin/helm
 rm -r linux-amd64/ && rm -r helm-{{ HELM_VERSION }}-linux-amd64.tar.gz
 
-kubectl create serviceaccount tiller --namespace kube-system
-
-kubectl apply -f rbac-tiller.yaml
+kubectl create -f rbac-tiller.yaml
 helm init --service-account tiller --output yaml | sed 's@apiVersion: extensions/v1beta1@apiVersion: apps/v1@' | sed 's@  replicas: 1@  replicas: 1\n  selector: {"matchLabels": {"app": "helm", "name": "tiller"}}@' | kubectl apply -f -
-sleep 10
+helm init --client-only
+sleep 20
 
 # MetalLB
 {% set METALLB_ENABLE = salt['pillar.get']('kubernetes:global:metallb:enable') -%}
@@ -50,8 +49,7 @@ helm install \
   --namespace nginx-ingress \
   --name nginx-ingress \
   --set controller.image.tag={{NGINX_VERSION}} \
-  --set controller.service.type={{NGINX_VERSION}} \  
-  stable/nginx-ingress
+  --set controller.service.type={{NGINX_SVC}} stable/nginx-ingress
 {% endif %}
 
 #Cert-Manager (Helm)
