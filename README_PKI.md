@@ -69,7 +69,22 @@ ln -s /srv/salt/pillar /srv/pillar
 After that, edit the `pillar/cluster_config.sls` to configure your future Kubernetes cluster :
 
 ```yaml
+kubernetes:
+  pki:
+    enable: true
+    host: <fqdn>
+    wildcard: '*'
 ```
+and you need to verify your salt master grant peers to use x509.sign_remote_certificate update the file `/etc/salt/master.d/client_acl.conf`
+
+```yaml
+peer:
+  .*:
+    - x509.sign_remote_certificate
+```
+
+and then restart the salt master
+
 ##### Don't forget to change hostnames & tokens  using command like `pwgen 64` !
 
 If you want to enable IPv6 on pod's side, you need to change `kubernetes.worker.networking.calico.ipv6.enable` to `true`.
