@@ -1,5 +1,6 @@
 ---
 {%- import slspath + "/k8s_params.jinja" as params with context %}
+{%- set ten_days = salt['x509.will_expire'](params.pki_path + '/' + params.pki_cert +'.crt',10) %}
 k8s_internal_ca:
 {%- if params.ca_host == salt["grains.get"]("fqdn") %}
   file.managed:
@@ -45,6 +46,7 @@ k8s_key:
 {%- do ip_list.append("IP:" + ip) %}
 {%- endfor %}
 
+{%- if ten_days.will_expire | default(True) %}
 k8s_cert:
   x509.certificate_managed:
     - name: "{{ params.pki_path }}/{{ params.pki_cert }}.crt"
@@ -55,3 +57,4 @@ k8s_cert:
     - subjectAltName: 'DNS:{{ salt["grains.get"]("fqdn") }}, {{ ip_list | join(", ") }}'
     - days_valid: 365
     - days_remaining: 10
+{%- endif %}

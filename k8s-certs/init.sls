@@ -5,10 +5,10 @@ include:
 {%-   if ca_host == salt["grains.get"]("fqdn") %}
   - .x509-ca
 {%-   endif %}
-{%-   if salt["mine.get"](ca_host, "x509.get_pem_entries")  or ca_host == salt["grains.get"]("fqdn") %}
+{%-   if ('/etc/salt/minion.d/signing_policies.conf' | is_text_file) and (salt["mine.get"](ca_host, "x509.get_pem_entries")  or ca_host == salt["grains.get"]("fqdn")) %}
   - .x509-req
-  - .x509-files 
+  - .x509-files
 {%-   endif %}
 {%  else %}
-  - .files 
+  - .files
 {%- endif %}
