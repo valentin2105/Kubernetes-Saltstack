@@ -175,7 +175,21 @@ kube-system   monitoring-influxdb-85cb4985d4-rd776    1/1       Running   0     
 
 ## Good to know with internal salt PKI
 
-you need to start the pki at first, so run the highstate on this node at first (default is kubernetes:cluster:node01)
+you need to start the pki at first, so you must add acl peer settings file  `/etc/salt/master.d/client_acl.conf` to the salt master 
+
+```yaml
+## use .* or another regexp rule
+peer:
+  .*:
+      - x509.sign_remote_certificate
+```
+
+and then add the `/etc/salt/minion.d/signing_policies.conf` on node01 (k8s master)
+```bash
+salt 'node01*' k8s-certs
+```
+
+if `k8s-certs` is not a top folder, you need to add the relative path like `git.kubernetes.Kubernetes-Saltstack.k8s-certs`
 
 If you want add a node on your Kubernetes cluster, just add the role into the grains of the server, and then run the command on the new node
 
