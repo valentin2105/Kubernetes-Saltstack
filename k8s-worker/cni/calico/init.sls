@@ -3,7 +3,7 @@
 
 # set k8s-worker.cni if k8s-worker is at the same level of top.sls
 # set <path>.k8s-worker.cni if k8s-worker is in a sub folder
-{% set require_cni = "k8s-worker.cni" %}
+{% set require_cni = "cni-latest-archive" %}
 
 /usr/bin/calicoctl:
   file.managed:
@@ -36,7 +36,7 @@
     - group: root
     - mode: 755
     - require:
-      - sls: {{ require_cni }}
+      - id: {{ require_cni }}
 
 /opt/cni/bin/calico-ipam:
   file.managed:
@@ -50,7 +50,7 @@
     - group: root
     - mode: 755
     - require:
-      - sls: {{ require_cni }}
+      - id: {{ require_cni }}
 
 /etc/calico/kube/kubeconfig:
     file.managed:
@@ -60,8 +60,7 @@
     - group: root
     - mode: 640
     - require:
-      - sls: {{ require_cni }}
-
+      - id: {{ require_cni }}
 
 /etc/calico/calicoctl.cfg:
     file.managed:
@@ -71,7 +70,7 @@
     - group: root
     - mode: 640
     - require:
-      - sls: {{ require_cni }}
+      - id: {{ require_cni }}
 
 /etc/cni/net.d/10-calico.conf:
     file.managed:
@@ -81,4 +80,4 @@
     - group: root
     - mode: 644
     - require:
-      - sls: {{ require_cni }}
+      - id: {{ require_cni }}
