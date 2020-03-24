@@ -8,7 +8,7 @@
 
 k8s_salt_x509_module:
   pkg.installed:
-    - name: m2crypto
+    - name: {{ params.m2crypto }}
     - reload_modules: True
   file.directory:
     - name: {{ params.pki_path }}
